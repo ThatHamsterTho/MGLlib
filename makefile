@@ -42,7 +42,7 @@ OBJ		+= $(foreach dir, $(RSRCDIRS), $(patsubst %.c, $(BLDDIR)/%.o, $(foreach fil
 OBJFOLDER := /
 
 $(OUT): $(OBJ)
-	@echo $(OBJFOLDER)
+	@echo ""
 	$(CPP) -o $@ $^ $(LFLAGS)
 
 $(BLDDIR)/%.o: $(SRCDIR)/%.c $(INC)

@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-#include "shader.hpp"
-#include "renderer.hpp"
+#include "Shader.hpp"
+#include "Renderer.hpp"
 
 #include "VertexArray.hpp"
 #include "VertexBuffer.hpp"

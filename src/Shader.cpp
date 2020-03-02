@@ -6,7 +6,7 @@ using namespace std;
 
 #include <GL/glew.h>
 
-#include "shader.hpp"
+#include "Shader.hpp"
 #include "Debugger.hpp"
 
 void Shader::Bind() const{

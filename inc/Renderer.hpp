@@ -5,7 +5,7 @@
 
 #include "VertexArray.hpp"
 #include "IndexBuffer.hpp"
-#include "shader.hpp"
+#include "Shader.hpp"
 
 class Renderer {
     private:
