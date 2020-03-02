@@ -2,12 +2,15 @@
 #version 330 core
 
 // Input vertex data, different for all executions of this shader.
-layout(location = 0) in vec4 vertexPosition_modelspace;
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec2 texCoord;
+
+out vec2 v_TexCoord;
 
 void main(){
 
-    gl_Position = vertexPosition_modelspace;
-
+    gl_Position = position;
+	v_TexCoord = texCoord;
 }
 
 
@@ -18,13 +21,14 @@ void main(){
 // Ouput data
 layout(location = 0) out vec4 color;
 
+in vec2 v_TexCoord;
+
 uniform vec4 u_Color;
+uniform sampler2D u_Texture;
 
 void main()
 {
-
-	// Output color = red 
-	color = u_Color;
-
+	vec4 texColor = texture(u_Texture, v_TexCoord);
+	color = texColor;
 }
 

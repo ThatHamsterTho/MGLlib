@@ -11,6 +11,8 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 
+#include "Texture.hpp"
+
 void render(void);
 void update(void);
 void setVAOVBOIBO(void);
@@ -22,6 +24,7 @@ IndexBuffer *ib;
 Shader *shader;
 Renderer *renderer;
 
+Texture *texture;
 
 
 int main(int ac, char **ap){
@@ -66,10 +69,11 @@ int main(int ac, char **ap){
 
 void setVAOVBOIBO(void){
 	float g_vertex_buffer_data[] = { 
-		-0.5f, -0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 0.5f,  0.5f, 0.0f,
-		-0.5f,  0.5f, 0.0f,
+		// 2D position, Relative Texture coordinate
+		-0.5f, -0.5f, 0.0f, 0.0f,
+		 0.5f, -0.5f, 1.0f, 0.0f,
+		 0.5f,  0.5f, 1.0f, 1.0f,
+		-0.5f,  0.5f, 0.0f, 1.0f
 	};
 
 	// for ibo
@@ -78,11 +82,17 @@ void setVAOVBOIBO(void){
 		2, 3, 0
 	};
 
+	// enable alpha
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	
+
 	va = new VertexArray();
 
-	vb = new VertexBuffer(g_vertex_buffer_data, 4 * 3 * sizeof(float));
+	vb = new VertexBuffer(g_vertex_buffer_data, 4 * 4 * sizeof(float));
 	layout = new VertexBufferLayout();
-	layout->Push<float>(3);
+	layout->Push<float>(2);	// push position coordinate buffer
+	layout->Push<float>(2);	// push texture coordinate buffer
 	
 	va->AddBuffer(vb, layout);
 
@@ -93,6 +103,10 @@ void setVAOVBOIBO(void){
 	shader = new Shader("res/shaders/SimpleShader.Shader");
 
 	renderer = new Renderer();
+
+	texture = new Texture("res/textures/gunsalpha.png");
+	texture->Bind(0);	// bind slot should match u_Texture slot
+	shader->SetUniform1i("u_Texture", 0);
 }
 
 float r = 0.0;
@@ -103,7 +117,7 @@ void render(void){
 
 	// Use our shader
 	shader->Bind();
-	shader->SetUniform4f("u_Color", r, 0.3, 0.8, 1.0);
+	//shader->SetUniform4f("u_Color", 0.0, 0.0, 0.0, 0.0);
 
 	renderer->Draw(va, ib, shader);
 

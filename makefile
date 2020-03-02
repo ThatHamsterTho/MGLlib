@@ -43,15 +43,15 @@ OBJFOLDER := /
 
 $(OUT): $(OBJ)
 	@echo ""
-	$(CPP) -o $@ $^ $(LFLAGS)
+	$(CPP) -o $@ $^ $(IFLAGS) $(LFLAGS)
 
 $(BLDDIR)/%.o: $(SRCDIR)/%.c $(INC)
 	$(eval OBJFOLDER=$(shell echo '$@' | sed 's|\(.*\)/.*|\1|' | xargs mkdir -p))
-	$(CC) $(CFLAGS) -c $< $(IFLAGS) -o $@
+	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 $(BLDDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
 	$(eval OBJFOLDER=$(shell echo '$@' | sed 's|\(.*\)/.*|\1|' | xargs mkdir -p))
-	$(CPP) $(CFLAGS) -c $< $(IFLAGS) -o $@
+	$(CPP) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
 
 clean:

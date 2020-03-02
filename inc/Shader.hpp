@@ -4,7 +4,8 @@
 #include <unordered_map>
 #include <string>
 
-class Shader {
+class Shader 
+{
 private:   
     unsigned int m_RendererID;
     std::string m_filepath[3];
@@ -46,7 +47,8 @@ public:
 
     // set uniforms
     void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
-
+    void SetUniform1f(const std::string& name, float value);
+    void SetUniform1i(const std::string& name, int value);
 };
 
 #endif
