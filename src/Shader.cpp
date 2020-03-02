@@ -74,6 +74,10 @@ void Shader::SetUniform1i(const std::string& name, int value){
 	glUniform1i(GetUniformLocation(name), value);
 }
 
+void Shader::SetuniformMat4f(const std::string& name, glm::mat4 matrix){
+	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+}
+
 // used for multiple shader files
 string Shader::ReadShaderFile(enum __ShaderType T){
 	// Read the Vertex Shader code from the file
@@ -174,4 +178,6 @@ void Shader::LinkShaders(unsigned int VertexShaderID, unsigned int FragmentShade
 	glDeleteShader(VertexShaderID);
 	glDeleteShader(FragmentShaderID);
 }
+
+
 

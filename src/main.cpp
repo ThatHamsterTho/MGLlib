@@ -1,6 +1,9 @@
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <GL/gl.h>
+#include <GL/glew.h>		// sudo apt-get install libglew-dev
+#include <GL/freeglut.h>	// sudo apt-get install freeglut3-dev
+#include <GL/gl.h>			
+#include <glm/glm.hpp>		// sudo apt-get install libglm-dev
+
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <iostream>
 
@@ -98,9 +101,15 @@ void setVAOVBOIBO(void){
 
 	ib = new IndexBuffer(indices, 6);
 
+	// doing glortho but via shader
+	glm::mat4 proj = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+
 	// Create and compile our GLSL program from the shaders
 	// programID = LoadShaders("res/shaders/SimpleVertexShader.vertexshader", "res/shaders/SimpleFragmentShader.fragmentshader" );
 	shader = new Shader("res/shaders/SimpleShader.Shader");
+	shader->Bind();
+	//shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+	shader->SetuniformMat4f("u_MVP", proj);
 
 	renderer = new Renderer();
 
