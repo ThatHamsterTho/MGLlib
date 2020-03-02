@@ -1,0 +1,58 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "create class",
+			"type": "shell",
+			"command": [
+				"touch src/${input:param1}.cpp;",
+				"touch inc/${input:param1}.hpp;",
+				"echo \"",
+				"#pragma once\n\n",
+				"class ${input:param1}{\n",
+				"private:\n\n",
+				"public:\n",
+					"\t${input:param1}();\n",
+					"\t~${input:param1}();\n\n",
+				"};\"",
+				">> inc/${input:param1}.hpp;",
+				"echo '",
+				"#include \"${input:param1}.hpp\"\n\n",
+				"${input:param1}::${input:param1}(){}\n",
+				"${input:param1}::~${input:param1}(){}\n'",
+				">> src/${input:param1}.cpp"
+			],
+			"problemMatcher": [],
+		},
+		{
+			"label": "add function",
+			"type": "shell",
+			"command": [
+				"function=$(cat \"${file}\" | grep \"${selectedText}\");",
+				"classname=$(cat \"${file}\" | grep class | cut -d' ' -f2);",
+				"functiontype=$(echo $function | cut -d' ' -f1);",
+				"functionname=$(echo $function | cut -d' ' -f2- | cut -d';' -f1);",
+				"echo \"\n$functiontype $classname::$functionname{\n\t\n}\" >> src/${fileBasenameNoExtension}.cpp"
+				],
+			"problemMatcher": []
+		}
+	],
+	"inputs": [
+        {
+            "id": "param1",
+            "description": "class name",
+            "default": "Name",
+            "type": "promptString"
+        },
+	],
+	"presentation": {
+		"echo": false,
+		"reveal": "never",
+		"focus": false,
+		"panel": "shared",
+		"showReuseMessage": false,
+		"clear": true
+	}
+}
