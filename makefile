@@ -14,8 +14,8 @@ CPP		= g++
 #	$(OUT)
 #	makefile
 
-INCDIR 	:= inc
-SRCDIR	:= src
+INCDIR 	:= inc External/inc
+SRCDIR	:= src External/src
 BLDDIR  := build
 OUT		:= main
 
@@ -25,18 +25,18 @@ CPPFLAGS 	:=
 LFLAGS		:= -lGLEW -lglut -lGL
 
 # recursive include and source directories
-RINCDIRS	:= $(shell find $(INCDIR) -type d)
-RSRCDIRS	:= $(shell find $(SRCDIR) -type d)
+RINCDIRS	:= $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))
+RSRCDIRS	:= $(foreach dir, $(SRCDIR), $(shell find $(dir) -type d))
 
 # set the include dir
 IFLAGS		:= $(foreach dir, $(RINCDIRS), $(patsubst %,-I%/, $(dir)))
 
 
-INC 	:= $(foreach dir, $(RINCDIRS), $(wildcard $(dir)/*.h))
-INC 	+= $(foreach dir, $(RINCDIRS), $(wildcard $(dir)/*.hpp))
+INC 	:= $(foreach dir, $(RINCDIRS), $(wildcard $(dir)/*.hpp))
+INCH	:= $(foreach dir, $(RINCDIRS), $(wildcard $(dir)/*.h))
 SRC		:= $(foreach dir, $(RSRCDIRS), $(wildcard $(dir)/*.c) $(wildcard $(dir)/*.cpp))
-OBJ		:= $(foreach dir, $(RSRCDIRS), $(patsubst %.cpp, $(BLDDIR)/%.o, $(foreach file, $(wildcard $(dir)/*.cpp), $(shell echo $(file) | sed 's:src/::'))))
-OBJ		+= $(foreach dir, $(RSRCDIRS), $(patsubst %.c, $(BLDDIR)/%.o, $(foreach file, $(wildcard $(dir)/*.c), $(shell echo $(file) | sed 's:src/::'))))
+OBJ		:= $(foreach dir, $(RSRCDIRS), $(patsubst %.cpp, $(BLDDIR)/%.o, $(wildcard $(dir)/*.cpp)))
+OBJ		+= $(foreach dir, $(RSRCDIRS), $(patsubst %.c  , $(BLDDIR)/%.o, $(wildcard $(dir)/*.c)))
 
 
 OBJFOLDER := /
@@ -45,11 +45,11 @@ $(OUT): $(OBJ)
 	@echo ""
 	$(CPP) -o $@ $^ $(IFLAGS) $(LFLAGS)
 
-$(BLDDIR)/%.o: $(SRCDIR)/%.c $(INC)
+$(BLDDIR)/%.o: %.c $(INC)
 	$(eval OBJFOLDER=$(shell echo '$@' | sed 's|\(.*\)/.*|\1|' | xargs mkdir -p))
 	$(CC) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
-$(BLDDIR)/%.o: $(SRCDIR)/%.cpp $(INC)
+$(BLDDIR)/%.o: %.cpp $(INC)
 	$(eval OBJFOLDER=$(shell echo '$@' | sed 's|\(.*\)/.*|\1|' | xargs mkdir -p))
 	$(CPP) $(CFLAGS) -c $< -o $@ $(IFLAGS)
 
