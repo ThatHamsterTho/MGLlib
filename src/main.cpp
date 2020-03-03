@@ -86,7 +86,7 @@ int main(){
 
 	TestMenu->AddTest<test::TestClearColor>("Clear Color");
 	TestMenu->AddTest<test::TestBasicTexture>("Basic Texture");
-
+	
 	// handles drawing
 	Renderer renderer;
 	// loop until user closes the window
