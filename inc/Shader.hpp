@@ -48,9 +48,31 @@ public:
     void UnBind() const;
 
     // set uniforms
-    void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
     void SetUniform1f(const std::string& name, float value);
     void SetUniform1i(const std::string& name, int value);
+    void SetUniform1ui(const std::string& name, unsigned int value);
+    void SetUniform1fv(const std::string& name, int count, const float *value);
+    void SetUniform1iv(const std::string& name, int count, const int *value);
+    void SetUniform1uiv(const std::string& name, int count, const unsigned int *value);
+    void SetUniform2f(const std::string& name, float v0, float v1);
+    void SetUniform2i(const std::string& name, int v0, int v1);
+    void SetUniform2ui(const std::string& name, unsigned int v0, unsigned int v1);
+    void SetUniform2fv(const std::string& name, int count, const float *value);
+    void SetUniform2iv(const std::string& name, int count, const int *value);
+    void SetUniform2uiv(const std::string& name, int count, const unsigned int *value);
+    void SetUniform3f(const std::string& name, float v0, float v1, float v2);
+    void SetUniform3i(const std::string& name, int v0, int v1, int v2);
+    void SetUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2);
+    void SetUniform3fv(const std::string& name, int count, const float *value);
+    void SetUniform3iv(const std::string& name, int count, const int *value);
+    void SetUniform3uiv(const std::string& name, int count, const unsigned int *value);
+    void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void SetUniform4i(const std::string& name, int v0, int v1, int v2, int v3);
+    void SetUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
+    void SetUniform4fv(const std::string& name, int count, const float *value);
+    void SetUniform4iv(const std::string& name, int count, const int *value);
+    void SetUniform4uiv(const std::string& name, int count, const unsigned int *value);
+
     void SetuniformMat4f(const std::string& name, glm::mat4 matrix);
 };
 

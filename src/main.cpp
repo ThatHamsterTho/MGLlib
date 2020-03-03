@@ -80,7 +80,12 @@ int main(){
 
 // INIT END HERE
 
-	test::TestBasicTexture test;
+	test::Test* currentTest = nullptr;
+	test::TestMenu* TestMenu = new test::TestMenu(currentTest);
+	currentTest = TestMenu;
+
+	TestMenu->AddTest<test::TestClearColor>("Clear Color");
+	TestMenu->AddTest<test::TestBasicTexture>("Basic Texture");
 
 	// handles drawing
 	Renderer renderer;
@@ -91,15 +96,23 @@ int main(){
         glfwPollEvents();	
 		renderer.Clear();
 
-		test.onUpdate(0.0f);
-		test.onRender();
-
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-		test.onImGuiRender();
+		// NOTE: ImGui stuff here
+		if (currentTest){
+			currentTest->onUpdate(0.0f);
+			currentTest->onRender();
+			ImGui::Begin("Test");
+				// back button
+				if(currentTest != TestMenu && ImGui::Button("<-")){
+					delete currentTest;
+					currentTest = TestMenu;
+				}
+				currentTest->onImGuiRender();
+			ImGui::End();
+		}
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
