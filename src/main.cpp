@@ -19,6 +19,7 @@
 void render(void);
 void update(void);
 void setVAOVBOIBO(void);
+void setMVP(void);
 
 VertexArray *va;
 VertexBufferLayout *layout;
@@ -55,6 +56,10 @@ int main(int ac, char **ap){
 	// Dark blue background
 	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
 
+	// enable alpha
+	GLCall(glEnable(GL_BLEND));
+	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 	setVAOVBOIBO();	// for the square
 
 	va->UnBind();
@@ -69,14 +74,21 @@ int main(int ac, char **ap){
 	return 0;
 }
 
+glm::mat4 proj;
+glm::mat4 view;
+glm::mat4 model1;
+glm::mat4 model2;
+glm::mat4 mvp;
 
 void setVAOVBOIBO(void){
+	float width  = 200;
+	float height = 200;
 	float g_vertex_buffer_data[] = { 
 		// 2D position, 	Relative Texture coordinate
-		100.0f, 100.0f,		0.0f, 0.0f,
-		400.0f, 100.0f,		1.0f, 0.0f,
-		400.0f, 400.0f,		1.0f, 1.0f,
-		100.0f, 400.0f, 	0.0f, 1.0f
+		 0.0,	0.0,		0.0f, 0.0f,
+		 width, 0.0,		1.0f, 0.0f,
+		 width, height,		1.0f, 1.0f,
+		 0.0,	height,	 	0.0f, 1.0f
 	};
 
 	// for ibo
@@ -84,10 +96,6 @@ void setVAOVBOIBO(void){
 		0, 1, 2,
 		2, 3, 0
 	};
-
-	// enable alpha
-	GLCall(glEnable(GL_BLEND));
-	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	
 
 	va = new VertexArray();
@@ -103,36 +111,35 @@ void setVAOVBOIBO(void){
 
 	// doing glortho but via shader
 	// Maps what the "camera" sees to NDC, taking care of aspect ratio and perspective.
-	glm::mat4 proj = glm::ortho(0.0f, 								// leftbound
-								(float)glutGet(GLUT_WINDOW_WIDTH), 	// rightbound
-								0.0f, 								// bottombound
-								(float)glutGet(GLUT_WINDOW_HEIGHT), // topbound
-								-1.0f, 								// frontbound
-								1.0f);								// backbound
+	proj = glm::ortho( 0.0f,									// leftbound
+								 (float)glutGet(GLUT_WINDOW_WIDTH), 	// rightbound
+								 0.0f,									// bottombound
+								 (float)glutGet(GLUT_WINDOW_HEIGHT), 	// topbound
+								-1.0f, 									// frontbound
+								 1.0f);									// backbound
 	// defines position and orientation of the "camera"
 	//														 camera coords
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+	view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 	// defines position, rotation and scale of the vertices of the model in the world.
 	//														 model coords
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-	
+	model1 = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+	model2 = glm::translate(glm::mat4(1.0f), glm::vec3(500, 200, 0));
 	// 		 move the model in the projection view.
 	//		 move the projection by multiplying it with the view matrix
 	// NOTE: MULTIPLY IN THIS ORDER OR IT BREAKS!
-	glm::mat4 mvp = proj * view * model;
 
 	// Create and compile our GLSL program from the shaders
-	// programID = LoadShaders("res/shaders/SimpleVertexShader.vertexshader", "res/shaders/SimpleFragmentShader.fragmentshader" );
-	shader = new Shader("res/shaders/SimpleShader.Shader");
+	shader = new Shader("res/shaders/SimpleShader.glsl");
 	shader->Bind();
-	//shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
-	shader->SetuniformMat4f("u_MVP", mvp);
+	shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
+	
 
 	renderer = new Renderer();
 
 	texture = new Texture("res/textures/gunsalpha.png");
 	texture->Bind(0);	// bind slot should match u_Texture slot
 	shader->SetUniform1i("u_Texture", 0);
+	shader->SetUniform1i("u_Use_Texture", 1);
 }
 
 float r = 0.0;
@@ -143,8 +150,13 @@ void render(void){
 
 	// Use our shader
 	shader->Bind();
-	//shader->SetUniform4f("u_Color", 0.0, 0.0, 0.0, 0.0);
 
+	mvp = proj * view * model1;
+	shader->SetuniformMat4f("u_MVP", mvp);
+	renderer->Draw(va, ib, shader);
+
+	mvp = proj * view * model2;
+	shader->SetuniformMat4f("u_MVP", mvp);
 	renderer->Draw(va, ib, shader);
 
 	//glFlush();
