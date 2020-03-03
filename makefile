@@ -22,7 +22,7 @@ OUT		:= main
 # Compiler flags
 CFLAGS		:= -Wall -Wextra
 CPPFLAGS 	:=
-LFLAGS		:= -lGLEW -lglut -lGL
+LFLAGS		:= -lGLEW -lglfw -lGL
 
 # recursive include and source directories
 RINCDIRS	:= $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))

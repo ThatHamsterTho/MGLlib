@@ -2,7 +2,7 @@
 #define DEBUGGERHEADERGUARD
 
 #include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <GLFW/glfw3.h>
 #include <GL/gl.h>
 
 #include <cassert>
