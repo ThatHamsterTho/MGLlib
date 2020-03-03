@@ -3,8 +3,6 @@
 #include <GL/gl.h>			
 #include <glm/glm.hpp>		// sudo apt-get install libglm-dev
 
-#include <glm/gtc/matrix_transform.hpp>
-
 #include <iostream>
 
 #include "ImGui/imgui.h"
@@ -12,14 +10,10 @@
 #include "ImGui/imgui_impl_opengl3.h"	// TODO: check what is neede from example files
 
 // custom classes
-#include "Shader.hpp"
 #include "Renderer.hpp"
 
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
-
-#include "Texture.hpp"
+#include "tests/TestClearColor.hpp"
+#include "tests/TestBasicTexture.hpp"
 
 void render(void);
 void update(void);
@@ -29,7 +23,7 @@ void setMVP(void);
 GLFWwindow* window;
 
 int main(){
-
+// INIT START HERE
 	std::cout << glGetString(GL_VERSION) << std::endl;
 
 	// Initialise GLFW
@@ -78,137 +72,38 @@ int main(){
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
-	float width  = 200;
-	float height = 200;
-	float g_vertex_buffer_data[] = { 
-		// 2D position, 	Relative Texture coordinate
-		 0.0,	0.0,		0.0f, 0.0f,
-		 width, 0.0,		1.0f, 0.0f,
-		 width, height,		1.0f, 1.0f,
-		 0.0,	height,	 	0.0f, 1.0f
-	};
-
-	// for ibo
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0
-	};
-
-	VertexBuffer vb(g_vertex_buffer_data, 4 * 4 * sizeof(float));
-	VertexBufferLayout layout;
-	layout.Push<float>(2);	// push position coordinate buffer
-	layout.Push<float>(2);	// push texture coordinate buffer
-	
-	VertexArray va;
-	va.AddBuffer(&vb, &layout);
-
-	IndexBuffer ib(indices, 6);
-
-	// doing glortho but via shader
-	// Maps what the "camera" sees to NDC, taking care of aspect ratio and perspective.
-	glm::mat4 proj = glm::ortho( 0.0f,				// leftbound
-								 800.0f, 	// rightbound
-								 0.0f,		// bottombound
-								 800.0f, 	// topbound
-								-1.0f, 		// frontbound
-								 1.0f);		// backbound
-	// defines position and orientation of the "camera"
-	//														 camera coords
-	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-	// defines position, rotation and scale of the vertices of the model in the world.
-	//														 model coords
-	//glm::mat4 model1 = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-	// 		 move the model in the projection view.
-	//		 move the projection by multiplying it with the view matrix
-	// NOTE: MULTIPLY IN THIS ORDER OR IT BREAKS!
-
-	// Create and compile our GLSL program from the shaders
-	Shader shader("res/shaders/SimpleShader.glsl");
-	shader.Bind();
-	shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 0.5f);
-
-	Texture texture("res/textures/gunsalpha.png");
-	texture.Bind(0);	// bind slot should match u_Texture slot
-	
-	shader.SetUniform1i("u_Texture", 0);
-	shader.SetUniform1i("u_Use_Texture", 1);	// enable textures
-
-
-	va.UnBind();
-	shader.UnBind();
-	vb.UnBind();
-	ib.UnBind();
-
 	// ImGUI init
 	ImGui::CreateContext();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	ImGui::StyleColorsDark();
 
+// INIT END HERE
+
+	test::TestBasicTexture test;
+
 	// handles drawing
 	Renderer renderer;
-
-	glm::vec3 translation1(200, 200, 0);
-	glm::vec3 translation2(500, 200, 0);
-
-	float r = 0.0;
-	float increment = 0.05;
-
-	glm::mat4 mvp;
-	glm::mat4 model;
 	// loop until user closes the window
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 		   glfwWindowShouldClose(window) == 0 ){
 		
-		// Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
-        glfwPollEvents();
+        glfwPollEvents();	
+		renderer.Clear();
+
+		test.onUpdate(0.0f);
+		test.onRender();
 
 		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-		// Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
-		renderer.Clear();
 
-		model = glm::translate(glm::mat4(1.0f), translation1);
-
-		// Use our shader
-		shader.Bind();
-		
-		mvp = proj * view * model;
-		shader.SetuniformMat4f("u_MVP", mvp);
-		renderer.Draw(&va, &ib, &shader);
-
-		model = glm::translate(glm::mat4(1.0f), translation2);
-
-		mvp = proj * view * model;
-		shader.SetuniformMat4f("u_MVP", mvp);
-		renderer.Draw(&va, &ib, &shader);
-		
-
-		// change color
-		if(r > 1.0){
-			increment = -0.05;
-		}
-		else if ( r < 0.0){
-			increment = 0.05;
-		}
-
-		r += increment;
-
-		// draw ImGui window
-		ImGui::SliderFloat3("Translation1", &translation1.x, 0.0f, 800.0f);
-		ImGui::SliderFloat3("Translation2", &translation2.x, 0.0f, 800.0f);
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		test.onImGuiRender();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		// Swap buffers
 		glfwSwapBuffers(window);
 
 	} // Check if the ESC key was pressed or the window was closed
