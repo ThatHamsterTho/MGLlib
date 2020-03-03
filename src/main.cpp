@@ -7,6 +7,11 @@
 
 #include <iostream>
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_glfw.h"
+#include "ImGui/imgui_impl_opengl3.h"	// TODO: check what is neede from example files
+
+// custom classes
 #include "Shader.hpp"
 #include "Renderer.hpp"
 
@@ -34,6 +39,10 @@ int main(){
 		getchar();
 		return -1;
 	}
+
+	// GL 3.0 + GLSL 130
+    const char* glsl_version = "#version 330";
+
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -49,6 +58,7 @@ int main(){
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);	// enable vsync
 
 	// Initialize GLEW
 	glewExperimental = true; // Needed for core profile
@@ -62,7 +72,7 @@ int main(){
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	// Dark blue background
-	glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
 	// enable alpha
 	GLCall(glEnable(GL_BLEND));
@@ -107,8 +117,7 @@ int main(){
 	glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
 	// defines position, rotation and scale of the vertices of the model in the world.
 	//														 model coords
-	glm::mat4 model1 = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
-	glm::mat4 model2 = glm::translate(glm::mat4(1.0f), glm::vec3(500, 200, 0));
+	//glm::mat4 model1 = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
 	// 		 move the model in the projection view.
 	//		 move the projection by multiplying it with the view matrix
 	// NOTE: MULTIPLY IN THIS ORDER OR IT BREAKS!
@@ -117,9 +126,6 @@ int main(){
 	Shader shader("res/shaders/SimpleShader.glsl");
 	shader.Bind();
 	shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 0.5f);
-	
-
-	Renderer renderer;
 
 	Texture texture("res/textures/gunsalpha.png");
 	texture.Bind(0);	// bind slot should match u_Texture slot
@@ -133,14 +139,58 @@ int main(){
 	vb.UnBind();
 	ib.UnBind();
 
+	// ImGUI init
+	ImGui::CreateContext();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init(glsl_version);
+	ImGui::StyleColorsDark();
+
+	// handles drawing
+	Renderer renderer;
+
+	glm::vec3 translation1(200, 200, 0);
+	glm::vec3 translation2(500, 200, 0);
+
 	float r = 0.0;
 	float increment = 0.05;
 
 	glm::mat4 mvp;
-	do{
+	glm::mat4 model;
+	// loop until user closes the window
+	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+		   glfwWindowShouldClose(window) == 0 ){
+		
+		// Poll and handle events (inputs, window resize, etc.)
+        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
+        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
+        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
+        glfwPollEvents();
+
+		// Start the Dear ImGui frame
+		ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 		// Clear the screen. It's not mentioned before Tutorial 02, but it can cause flickering, so it's there nonetheless.
 		renderer.Clear();
+
+		model = glm::translate(glm::mat4(1.0f), translation1);
+
+		// Use our shader
+		shader.Bind();
 		
+		mvp = proj * view * model;
+		shader.SetuniformMat4f("u_MVP", mvp);
+		renderer.Draw(&va, &ib, &shader);
+
+		model = glm::translate(glm::mat4(1.0f), translation2);
+
+		mvp = proj * view * model;
+		shader.SetuniformMat4f("u_MVP", mvp);
+		renderer.Draw(&va, &ib, &shader);
+		
+
+		// change color
 		if(r > 1.0){
 			increment = -0.05;
 		}
@@ -150,25 +200,23 @@ int main(){
 
 		r += increment;
 
-		// Use our shader
-		shader.Bind();
+		// draw ImGui window
+		ImGui::SliderFloat3("Translation1", &translation1.x, 0.0f, 800.0f);
+		ImGui::SliderFloat3("Translation2", &translation2.x, 0.0f, 800.0f);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-		mvp = proj * view * model1;
-		shader.SetuniformMat4f("u_MVP", mvp);
-		renderer.Draw(&va, &ib, &shader);
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		mvp = proj * view * model2;
-		shader.SetuniformMat4f("u_MVP", mvp);
-		renderer.Draw(&va, &ib, &shader);
-		
 		// Swap buffers
 		glfwSwapBuffers(window);
-		glfwPollEvents();
 
 	} // Check if the ESC key was pressed or the window was closed
-	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
-		   glfwWindowShouldClose(window) == 0 );
+	
 
+	// close ImGui
+	ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 	// Close OpenGL window and terminate GLFW
 	glfwTerminate();
 

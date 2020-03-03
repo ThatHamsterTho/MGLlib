@@ -8,20 +8,10 @@
 			"type": "shell",
 			"command": [
 				"touch src/${input:param1}.cpp;",
-				"touch inc/${input:param1}.hpp;",
-				"echo \"",
-				"#pragma once\n\n",
-				"class ${input:param1}{\n",
-				"private:\n\n",
-				"public:\n",
-					"\t${input:param1}();\n",
-					"\t~${input:param1}();\n\n",
-				"};\"",
-				">> inc/${input:param1}.hpp;",
-				"echo '",
-				"#include \"${input:param1}.hpp\"\n\n",
-				"${input:param1}::${input:param1}(){}\n",
-				"${input:param1}::~${input:param1}(){}\n'",
+				"touch inc/${input:param1}.h;",
+				"echo '#pragma once\n\nclass ${input:param1}\n{\n\tpublic:\n\t\t${input:param1}();\n\t\t~${input:param1}();\n\n\tprivate:\n\n\n};'",
+				">> inc/${input:param1}.h;",
+				"echo '#include \"${input:param1}.h\"\n\n${input:param1}::${input:param1}(){}\n${input:param1}::~${input:param1}(){}\n'",
 				">> src/${input:param1}.cpp"
 			],
 			"problemMatcher": [],
@@ -34,7 +24,8 @@
 				"classname=$(cat \"${file}\" | grep class | cut -d' ' -f2);",
 				"functiontype=$(echo $function | cut -d' ' -f1);",
 				"functionname=$(echo $function | cut -d' ' -f2- | cut -d';' -f1);",
-				"echo \"\n$functiontype $classname::$functionname{\n\t\n}\" >> src/${fileBasenameNoExtension}.cpp"
+				"pathtocpp=$(echo \"${relativeFile}\" | sed 's/inc/src/g' | sed 's|\\.hpp|.cpp|g');",
+				"echo \"\n$functiontype $classname::$functionname{\n\t\n}\" >> $pathtocpp; echo $pathtocpp"
 				],
 			"problemMatcher": []
 		}

@@ -1,5 +1,6 @@
 #pragma once
 
+// for testframeworks
 namespace test {
 
 	class Test
@@ -8,7 +9,8 @@ namespace test {
 			Test() {}
 			virtual ~Test() {}
 
-			virtual void onUpdate() {}
+			virtual void onUpdate(float deltaTime) {}
 			virtual void onRender() {}
+			virtual void onImGuiRender() {}
 	};
 }
