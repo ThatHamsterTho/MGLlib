@@ -16,7 +16,7 @@ RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/ -Iinc/tests/
+INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/Core/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/ -Iinc/tests/
 # General linker settings
 LINK_FLAGS = -g -lGLEW -lglfw -lGL
 # Additional release-specific linker settings
