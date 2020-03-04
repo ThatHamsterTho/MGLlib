@@ -5,16 +5,9 @@
 
 #include "Debugger.hpp"
 
-#define SHOWVERSION
-#define SHOWMSAA
-
 namespace MGLlib{
-
-	void BaseInit(){
-		#ifdef SHOWVERSION
-		std::cout << glGetString(GL_VERSION) << std::endl;
-		#endif
-
+	Window::Window(const char* title, int width, int height, int offsetx, int offsety){
+		
 		// Initialise GLFW
 		if( !glfwInit() )
 		{
@@ -22,13 +15,11 @@ namespace MGLlib{
 			exit(-1);
 		}
 
+		glfwWindowHint(GLFW_SAMPLES, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	}
-
-	Window::Window(const char* title, int width, int height, int offsetx, int offsety){
 
 		// Open a window and create its OpenGL context
 		window = glfwCreateWindow( width, height, title, NULL, NULL);
@@ -48,6 +39,10 @@ namespace MGLlib{
 			exit(-1);
 		}
 
+		#ifdef SHOWGLVERSION
+			printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
+		#endif
+
 		// Ensure we can capture the escape key being pressed below
 		glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -58,6 +53,7 @@ namespace MGLlib{
 
 	// Features
 	void Window::enableLighting(void){
+		printf("Lighting init\n");
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -69,14 +65,14 @@ namespace MGLlib{
 		glDepthFunc(GL_LEQUAL);
 	}
 	void Window::enableAA(void){
-		glfwWindowHint(GLFW_SAMPLES, 4);
-		glEnable(GL_LINE_SMOOTH);
-		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-		glEnable(GL_POINT_SMOOTH);
-		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+		printf("Anti Aliasing init\n");
+		//glEnable(GL_LINE_SMOOTH);
+		//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		//glEnable(GL_POINT_SMOOTH);
+		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 		
 		glEnable(GL_MULTISAMPLE);
-		glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
+		//glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
 
 		GLint  iMultiSample = 0;
 		GLint  iNumSamples = 0;
@@ -87,11 +83,13 @@ namespace MGLlib{
 		#endif 
 	}
 	void Window::enableAlpha(void){
+		printf("Alpha init\n");
 		// enable alpha
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	}
 	void Window::enableVsync(void){
+		printf("Vsync init\n");
 		glfwSwapInterval(1);
 	}
 
@@ -146,33 +144,6 @@ namespace MGLlib{
 
 	void Window::Exit(void){
 		glfwTerminate();
-	}
-
-
-	ImGuiHelper::ImGuiHelper(Window *w){
-		ImGui::CreateContext();
-		ImGui_ImplGlfw_InitForOpenGL(w->getGLFWwindow(), true);
-		ImGui_ImplOpenGL3_Init(glsl_version);
-		ImGui::StyleColorsDark();
-	}
-	ImGuiHelper::~ImGuiHelper(){}
-
-	void ImGuiHelper::Exit(void){
-		// close ImGui
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
-	}
-
-	void ImGuiHelper::newFrame(void){
-		// Start the Dear ImGui frame
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-	}
-
-	void ImGuiHelper::render(void){
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 }
 

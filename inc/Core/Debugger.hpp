@@ -1,6 +1,8 @@
 #ifndef DEBUGGERHEADERGUARD
 #define DEBUGGERHEADERGUARD
 
+#include "DefineDebug.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>

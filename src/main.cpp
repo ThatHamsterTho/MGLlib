@@ -1,12 +1,8 @@
-//#undef SHOWVERSION
-//#undef SHOWMSAA
-//#undef SHADERDEBUG
-//#undef SHADERWARNINGS
-
 #include <iostream>
 
 // custom classes
 #include "Window.h"
+#include "ImGuiHelper.h"
 
 #include "tests/TestClearColor.hpp"
 #include "tests/TestBasicTexture.hpp"
@@ -25,9 +21,8 @@ test::TestMenu* TestMenu;
 
 int main(){
 
-	BaseInit();
 	window = new Window("Window name", 800, 800);
-	window->WindowEnableFeatures(Window::F_AA | Window::F_ALPHA | Window::F_VSYNC);
+	window->WindowEnableFeatures(Window::F_AA | Window::F_ALPHA | Window::F_VSYNC | Window::F_3D);
 
 	IGH = new ImGuiHelper(window);
 
@@ -59,7 +54,7 @@ void render(void){
 
 		currentTest->onUpdate();
 		currentTest->onRender();
-		
+
 		ImGui::Begin("Test");
 			// back button
 			if(currentTest != TestMenu && ImGui::Button("<-")){

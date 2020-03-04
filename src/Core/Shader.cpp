@@ -9,9 +9,6 @@ using namespace std;
 #include "Shader.hpp"
 #include "Debugger.hpp"
 
-#define SHADERDEBUG
-#define SHADERWARNINGS
-
 void Shader::Bind() const{
 	GLCall(glUseProgram(m_RendererID));
 }

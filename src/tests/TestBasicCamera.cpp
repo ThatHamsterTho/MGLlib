@@ -1,5 +1,5 @@
 #include "TestBasicCamera.hpp"
-#include "Debugger.hpp"
+
 #include "ImGui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 
