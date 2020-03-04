@@ -9,6 +9,9 @@ using namespace std;
 #include "Shader.hpp"
 #include "Debugger.hpp"
 
+#define SHADERDEBUG
+#define SHADERWARNINGS
+
 void Shader::Bind() const{
 	GLCall(glUseProgram(m_RendererID));
 }
@@ -54,7 +57,9 @@ int Shader::GetUniformLocation(const std::string& name){
 
 	GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
 	if (location == -1){
-		std::cout << "Warning: uniform " << name << " does not exist.\n" << std::endl;
+		#ifdef SHADERWARNINGS
+			std::cout << "Warning: uniform " << name << " does not exist.\n" << std::endl;
+		#endif
 	}
 	else{
 		m_uniformLocationCache[name] = location;
@@ -77,7 +82,7 @@ string Shader::ReadShaderFile(enum __ShaderType T){
 		ShaderCode = sstr.str();
 		ShaderStream.close();
 	}else{
-		cout << "Impossible to open " << m_filepath[T] << ". Are you in the right directory ? Don't forget to read the FAQ !" << endl;
+		cout << "Impossible to open " << m_filepath[T] << ". Are you in the right directory ?" << endl;
 		getchar();
 		return 0;
 	}
@@ -136,7 +141,9 @@ unsigned int Shader::CompileShader(unsigned int type, const string& ShaderCode){
 		cout << &ShaderErrorMessage[0] << endl;
 	}
 
-	cout << "Compiled " << ShaderType[type - 0x8B30] << " Shader" << endl;
+	#ifdef SHADERDEBUG
+		cout << "Compiled " << ShaderType[type - 0x8B30] << " Shader" << endl;
+	#endif
 	return ShaderID;
 }
 // links the shader files
@@ -145,7 +152,9 @@ void Shader::LinkShaders(unsigned int VertexShaderID, unsigned int FragmentShade
 	int InfoLogLength;
 
 	// Link the program
-	cout << "Linking program" << endl;
+	#ifdef SHADERDEBUG
+		cout << "Linking program" << endl;
+	#endif
 	glAttachShader(m_RendererID, VertexShaderID);
 	glAttachShader(m_RendererID, FragmentShaderID);
 	glLinkProgram(m_RendererID);

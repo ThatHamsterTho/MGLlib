@@ -12,13 +12,15 @@
 #include "VertexBuffer.hpp"
 #include "IndexBuffer.hpp"
 
+// http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
+
 namespace test {
 	class TestBasicCamera : public Test {
 		public:
 			TestBasicCamera();
 			~TestBasicCamera();
 
-			void onUpdate(float deltaTime) override;
+			void onUpdate() override;
 			void onRender() override;
 			void onImGuiRender() override;
 		private:
@@ -39,6 +41,9 @@ namespace test {
 			glm::mat4 model;
 			glm::mat4 view;
 			glm::mat4 proj;
+
+			glm::mat4 orth;
+			glm::mat4 pers;
 
 
 			glm::vec3 translation1;

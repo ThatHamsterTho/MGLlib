@@ -11,7 +11,7 @@ namespace test {
 			Test() {}
 			virtual ~Test() {}
 
-			virtual void onUpdate(float deltaTime) {}
+			virtual void onUpdate() {}
 			virtual void onRender() {}
 			virtual void onImGuiRender() {}
 	};
@@ -26,7 +26,7 @@ namespace test {
 			TestMenu(Test*& currentTestPointer);
 			~TestMenu();
 
-			void onUpdate(float deltaTime) override;
+			void onUpdate() override;
 			void onRender() override;
 			void onImGuiRender() override;
 

@@ -18,7 +18,7 @@ namespace test {
 			TestBasicTexture();
 			~TestBasicTexture();
 
-			void onUpdate(float deltaTime) override;
+			void onUpdate() override;
 			void onRender() override;
 			void onImGuiRender() override;
 		private:

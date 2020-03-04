@@ -42,17 +42,17 @@ TestBasicCamera::TestBasicCamera() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 	Perspective[0] = 90.0f;
 	Perspective[1] = 1.0f;
 	Perspective[2] = 0.1f;
-	Perspective[3] = 2.0f;
+	Perspective[3] = 10.0f;
 
 	// doing glortho but via shader
 	// Maps what the "camera" sees to NDC, taking care of aspect ratio and perspective.
-	proj = glm::ortho( 0.0f,   // leftbound
+	orth = glm::ortho( 0.0f,   // leftbound
 					   800.0f, // rightbound
 					   0.0f,   // bottombound
 					   800.0f, // topbound
 					  -1.0f,   // frontbound
 					   1.0f);  // backbound
-	proj = glm::perspective(glm::radians(Perspective[0]), 	// FOV
+	pers = glm::perspective(glm::radians(Perspective[0]), 	// FOV
 							 Perspective[1],				// aspectratio
 							 Perspective[2],				// Znear
 							 Perspective[3]);				// Zfar
@@ -91,14 +91,11 @@ TestBasicCamera::TestBasicCamera() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 }
 TestBasicCamera::~TestBasicCamera() {}
 
-void TestBasicCamera::onUpdate(float deltaTime) {}
+void TestBasicCamera::onUpdate() {}
 
 void TestBasicCamera::onRender()
 {	
-	proj = glm::perspective(glm::radians(Perspective[0]), 	// FOV
-							Perspective[1],					// aspectratio
-							Perspective[2],					// Znear
-							Perspective[3]);				// Zfar
+	proj = pers;
 	// defines position and orientation of the "camera"
 	//	2D										camera coords
 	// view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, 0.0));
@@ -136,13 +133,22 @@ void TestBasicCamera::onRender()
 void TestBasicCamera::onImGuiRender()
 {
 	// draw ImGui window
-	ImGui::SliderFloat2("Translation1", &translation1.x, -1.0f, 1.0f);
-	ImGui::SliderFloat2("Translation2", &translation2.x, -1.0f, 1.0f);
-	ImGui::SliderFloat3("Camera", &Camera[0], -1.0f, 2.0f);
-	ImGui::SliderFloat3("Lookat", &CameraLookat[0], -1.0f, 2.0f);
+	ImGui::SliderFloat3("Translation1", &translation1.x, -1.0f, 1.0f);
+	ImGui::SliderFloat3("Translation2", &translation2.x, -1.0f, 1.0f);
+	ImGui::SliderFloat3("Camera", &Camera[0], -5.0f, 5.0f);
+	ImGui::SliderFloat3("Lookat", &CameraLookat[0], -5.0f, 5.0f);
 	ImGui::SliderFloat("Perspective FOV", &Perspective[0], 0.0f, 180.0f);
 	ImGui::SliderFloat("Perspective ASPECT", &Perspective[1], 0.0f, 5.0f);
 	ImGui::SliderFloat2("Perspective Z", &Perspective[2], 0.0f, 10.0f);
+
+	if(ImGui::Button("Switch Projection")){
+		if(proj == orth){
+			proj == pers;
+		}
+		else{
+			proj = orth;
+		}
+	}
 
 	ImGui::SliderFloat("Scale", &scale, 0.0f, 5.0f);
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

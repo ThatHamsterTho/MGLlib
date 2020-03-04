@@ -10,7 +10,7 @@ namespace test {
 		
 	}
 
-	void TestMenu::onUpdate(float deltaTime){}
+	void TestMenu::onUpdate(){}
 
 	void TestMenu::onRender(){}
 

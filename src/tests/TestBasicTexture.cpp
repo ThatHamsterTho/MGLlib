@@ -16,32 +16,6 @@ namespace test {
 			0.0,	height,	 	0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
 		};
 
-		VertexBufferData *VBD = new VertexBufferData[4];
-		VertexBufferDataArray<4> VBDA;
-		VBD[0].x = 0.0; 	VBD[0].y = 0.0;		VBD[0].Tx = 0.0f; VBD[0].Ty = 0.0f; 
-		VBD[1].x = width; 	VBD[1].y = 0.0;		VBD[1].Tx = 1.0f; VBD[1].Ty = 0.0f; 
-		VBD[2].x = width; 	VBD[2].y = height;	VBD[2].Tx = 1.0f; VBD[2].Ty = 1.0f; 
-		VBD[3].x = 0.0; 	VBD[3].y = height;	VBD[3].Tx = 0.0f; VBD[3].Ty = 1.0f; 
-		for(int i = 0; i < 4; i++){
-			for(int j = 0; j < 4; j++){
-				//VBD[i].Color[j] = 1.0f;
-			}
-			VBDA.VBD[i] = VBD[i];
-		}
-		
-		VertexBufferData VBDD;
-		for(int i = 0; i < 8; i++){
-			printf("%5.1f ", VBDD.data[i]);
-		}
-		printf("\n\n");
-
-		for(int i = 0; i < 4; i++){
-			for(int j = 0; j < 8; j++){
-				printf("%5.1f ", VBDA.VBO[i * VBD[0].ElementCount() + j]);
-			}
-			printf("\n");
-		}
-
 		// for ibo
 		unsigned int indices[] = {
 			0, 1, 2,
@@ -86,7 +60,7 @@ namespace test {
 		texture->Bind(0);	// bind slot should match u_Texture slot
 		
 		shader->SetUniform1i("u_Texture", 0);
-		shader->SetUniform1i("u_Use_Texture", 0);	// enable textures
+		shader->SetUniform1i("u_Use_Texture", false);	// enable textures
 
 
 		va->UnBind();
@@ -99,14 +73,13 @@ namespace test {
 	}
 	TestBasicTexture::~TestBasicTexture() {}
 
-	void TestBasicTexture::onUpdate(float deltaTime){}
+	void TestBasicTexture::onUpdate(){}
 
 	void TestBasicTexture::onRender(){
-		model = glm::translate(glm::mat4(1.0f), translation1);
-
 		// Use our shader
 		shader->Bind();
 		
+		model = glm::translate(glm::mat4(1.0f), translation1);
 
 		mvp = proj * view * model;
 		shader->SetuniformMat4f("u_MVP", mvp);
