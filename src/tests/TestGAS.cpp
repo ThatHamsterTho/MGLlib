@@ -1,11 +1,11 @@
-#include "TestBasicCamera.hpp"
+#include "TestGAS.hpp"
 
 #include "ImGui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace test
 {
-TestBasicCamera::TestBasicCamera() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
+TestGAS::TestGAS() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 {
 	width = 1;
 	height = 1;
@@ -27,10 +27,10 @@ TestBasicCamera::TestBasicCamera() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 	layout->Push<float>(2); // push texture coordinate buffer
 	layout->Push<float>(4); // push color buffer
 
-	va = new VertexArray();
-	va->AddBuffer(vb, layout);
-
 	ib = new IndexBuffer(indices, 6);
+
+	GAShape = new GenericAbstractShape(vb, layout, ib);
+	
 
 	Camera[0] = 0.5f;
 	Camera[1] = 0.5f;
@@ -68,32 +68,23 @@ TestBasicCamera::TestBasicCamera() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 
 	// Create and compile our GLSL program from the shaders
 	//shader = new Shader("res/shaders/SimpleShader.glsl");
-	shader = new Shader("res/shaders/SimpleVert.vert", "res/shaders/SimpleFrag.frag");
-	shader->Bind();
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
 	texture = new Texture("res/textures/gunsalpha.png");
-	texture->Bind(0); // bind slot should match u_Texture slot
-	
+	//GAShape->SetTexture(texture);
+
 	scale = 1.5f;
 
-	shader->SetUniform1i("u_Texture", 0);
-	shader->SetUniform1i("u_Use_Texture", false); // enable textures
-	shader->SetUniform4f("u_Scale", scale, scale, 1.0, 1.0);
-
-	va->UnBind();
-	shader->UnBind();
-	vb->UnBind();
-	ib->UnBind();
+	GAShape->SetScale(scale, scale, 1.0f);
 
 	translation1 = glm::vec3(0, 0, 0);
 	translation2 = glm::vec3(-0.5, -0.5, 0);
 }
-TestBasicCamera::~TestBasicCamera() {}
+TestGAS::~TestGAS() {}
 
-void TestBasicCamera::onUpdate() {}
+void TestGAS::onUpdate() {}
 
-void TestBasicCamera::onRender()
+void TestGAS::onRender()
 {	
 	proj = pers;
 	// defines position and orientation of the "camera"
@@ -103,19 +94,17 @@ void TestBasicCamera::onRender()
 	model = glm::translate(glm::mat4(1.0f), translation1);
 
 	// Use our shader
-	shader->Bind();
-
-	shader->SetUniform4f("u_Scale", scale, scale, 1.0, 1.0);
+	GAShape->SetScale(scale, scale, 1.0f);
 
 	mvp = proj * view * model;
-	shader->SetuniformMat4f("u_MVP", mvp);
-	renderer->Draw(va, ib, shader);
+	GAShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
+	GAShape->Draw();
 
 	model = glm::translate(glm::mat4(1.0f), translation2);
 
 	mvp = proj * view * model;
-	shader->SetuniformMat4f("u_MVP", mvp);
-	renderer->Draw(va, ib, shader);
+	GAShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
+	GAShape->Draw();
 
 	// change color
 	if (m_Color[0] > 1.0)
@@ -130,27 +119,17 @@ void TestBasicCamera::onRender()
 	m_Color[0] += increment;
 }
 
-void TestBasicCamera::onImGuiRender()
+void TestGAS::onImGuiRender()
 {
 	// draw ImGui window
 	ImGui::SliderFloat3("Translation1", &translation1.x, -1.0f, 1.0f);
 	ImGui::SliderFloat3("Translation2", &translation2.x, -1.0f, 1.0f);
+	ImGui::SliderFloat("Scale", &scale, 0.0f, 10.0f);
 	ImGui::SliderFloat3("Camera", &Camera[0], -5.0f, 5.0f);
 	ImGui::SliderFloat3("Lookat", &CameraLookat[0], -5.0f, 5.0f);
-	ImGui::SliderFloat("Perspective FOV", &Perspective[0], 0.0f, 180.0f);
-	ImGui::SliderFloat("Perspective ASPECT", &Perspective[1], 0.0f, 5.0f);
-	ImGui::SliderFloat2("Perspective Z", &Perspective[2], 0.0f, 10.0f);
-
-	if(ImGui::Button("Switch Projection")){
-		if(proj == orth){
-			proj == pers;
-		}
-		else{
-			proj = orth;
-		}
-	}
-
-	ImGui::SliderFloat("Scale", &scale, 0.0f, 5.0f);
+	//ImGui::SliderFloat("Perspective FOV", &Perspective[0], 0.0f, 180.0f);
+	//ImGui::SliderFloat("Perspective ASPECT", &Perspective[1], 0.0f, 5.0f);
+	//ImGui::SliderFloat2("Perspective Z", &Perspective[2], 0.0f, 10.0f);
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }
 } // namespace test

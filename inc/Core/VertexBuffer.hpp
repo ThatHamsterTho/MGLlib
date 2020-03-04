@@ -1,8 +1,8 @@
 #ifndef VBOHEADERGUARD
 #define VBOHEADERGUARD
 
-#define VertexBufferLength 8
-union VertexBufferData { 
+#define VertexBufferLength 10
+struct VertexBufferData { 
 	struct{
 		// position
 		union { struct {
@@ -57,6 +57,7 @@ public:
 
 	void Bind() const;
 	void UnBind() const;
+
 };
 
 #endif

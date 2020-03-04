@@ -7,6 +7,7 @@
 #include "tests/TestClearColor.hpp"
 #include "tests/TestBasicTexture.hpp"
 #include "tests/TestBasicCamera.hpp"
+#include "tests/TestGAS.hpp"
 
 void render(void);
 void update(void);
@@ -35,7 +36,8 @@ int main(){
 	TestMenu->AddTest<test::TestClearColor>("Clear Color");
 	TestMenu->AddTest<test::TestBasicTexture>("Basic Texture");
 	TestMenu->AddTest<test::TestBasicCamera>("Basic Camera");
-	
+	TestMenu->AddTest<test::TestGAS>("GenericAbstractShape");
+
 	window->SetCallback(render);
 
 	window->Show();

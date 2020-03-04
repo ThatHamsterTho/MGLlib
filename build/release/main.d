@@ -7,7 +7,8 @@ build/release/main.o: src/main.cpp inc/Window.h inc/ImGuiHelper.h \
  inc/Core/VertexBuffer.hpp inc/Core/VertexBufferLayout.hpp \
  inc/Core/IndexBuffer.hpp inc/Core/Shader.hpp inc/Core/Shader.hpp \
  inc/Core/Texture.hpp inc/Core/VertexArray.hpp inc/Core/VertexBuffer.hpp \
- inc/Core/IndexBuffer.hpp inc/tests/TestBasicCamera.hpp
+ inc/Core/IndexBuffer.hpp inc/tests/TestBasicCamera.hpp \
+ inc/tests/TestGAS.hpp inc/GenericAbstractShape.h
 
 inc/Window.h:
 
@@ -54,3 +55,7 @@ inc/Core/VertexBuffer.hpp:
 inc/Core/IndexBuffer.hpp:
 
 inc/tests/TestBasicCamera.hpp:
+
+inc/tests/TestGAS.hpp:
+
+inc/GenericAbstractShape.h:

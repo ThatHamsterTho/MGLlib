@@ -14,7 +14,7 @@ uniform mat4 u_MVP; // model view projection
 
 void main() {
 
-  gl_Position = u_MVP * ((position * u_Scale) + u_Scale);
+  gl_Position = (u_MVP * (position * u_Scale));
   v_TexCoord = texCoord;
   v_Color = Color;
 }
