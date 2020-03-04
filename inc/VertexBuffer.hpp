@@ -6,15 +6,15 @@ union VertexBufferData {
 	struct{
 		// position
 		union { struct {
-				float x, y;
+				float x, y, z;
 			};
-			float position[2];
+			float position[3];
 		};
 		// texture position
 		union { struct {
-				float Tx, Ty;
+				float Tx, Ty, Tz;
 			};
-			float TexturePosition[2];
+			float TexturePosition[3];
 		};
 		// Color
         union { struct {

@@ -14,6 +14,7 @@
 
 #include "tests/TestClearColor.hpp"
 #include "tests/TestBasicTexture.hpp"
+#include "tests/TestBasicCamera.hpp"
 
 void render(void);
 void update(void);
@@ -86,6 +87,7 @@ int main(){
 
 	TestMenu->AddTest<test::TestClearColor>("Clear Color");
 	TestMenu->AddTest<test::TestBasicTexture>("Basic Texture");
+	TestMenu->AddTest<test::TestBasicCamera>("Basic Camera");
 	
 	// handles drawing
 	Renderer renderer;
