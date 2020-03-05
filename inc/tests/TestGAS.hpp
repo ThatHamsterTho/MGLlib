@@ -8,9 +8,9 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
+#include "VertexArrayObject.hpp"
+#include "VertexBufferObject.hpp"
+#include "IndexBufferObject.hpp"
 #include "GenericAbstractShape.h"
 
 // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
@@ -50,8 +50,8 @@ namespace test {
 			glm::vec3 translation1;
 			glm::vec3 translation2;
 
-			GenericAbstractShape* GAShape;
-			IndexBuffer* ib;
+			GenericAbstractShape<float>* GAShape;
+			IndexBufferObject* ib;
 			
 			Renderer* renderer;
 			Shader* shader;

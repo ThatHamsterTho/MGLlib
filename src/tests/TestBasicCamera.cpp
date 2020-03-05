@@ -21,16 +21,16 @@ TestBasicCamera::TestBasicCamera() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 		0, 1, 2,
 		2, 3, 0};
 
-	VertexBuffer *vb = new VertexBuffer(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
+	VertexBufferObject *vb = new VertexBufferObject(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
 	VertexBufferLayout *layout = new VertexBufferLayout;
 	layout->Push<float>(3); // push position coordinate buffer
 	layout->Push<float>(2); // push texture coordinate buffer
 	layout->Push<float>(4); // push color buffer
 
-	va = new VertexArray();
+	va = new VertexArrayObject();
 	va->AddBuffer(vb, layout);
 
-	ib = new IndexBuffer(indices, 6);
+	ib = new IndexBufferObject(indices, 6);
 
 	Camera[0] = 0.5f;
 	Camera[1] = 0.5f;

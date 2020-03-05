@@ -22,16 +22,16 @@ namespace test {
 			2, 3, 0
 		};
 
-		VertexBuffer* vb = new VertexBuffer(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
+		VertexBufferObject* vb = new VertexBufferObject(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
 		VertexBufferLayout* layout = new VertexBufferLayout;
 		layout->Push<float>(2);	// push position coordinate buffer
 		layout->Push<float>(2);	// push texture coordinate buffer
 		layout->Push<float>(4); // push color buffer
 		
-		va = new VertexArray();
+		va = new VertexArrayObject();
 		va->AddBuffer(vb, layout);
 
-		ib = new IndexBuffer(indices, 6);
+		ib = new IndexBufferObject(indices, 6);
 
 		// doing glortho but via shader
 		// Maps what the "camera" sees to NDC, taking care of aspect ratio and perspective.

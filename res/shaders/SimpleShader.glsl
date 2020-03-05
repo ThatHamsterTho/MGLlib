@@ -3,22 +3,23 @@
 
 // Input vertex data, different for all executions of this shader.
 layout(location = 0) in vec4 position;
-layout(location = 1) in vec2 texCoord;
+layout(location = 1) in vec3 texCoord;
 layout(location = 2) in vec4 Color;
 
 uniform vec4 u_Scale = vec4(1.0);
 
-out vec2 v_TexCoord;
+out vec3 v_TexCoord;
 out vec4 v_Color;
 
 uniform mat4 u_MVP; // model view projection
 
 void main() {
 
-  gl_Position = u_MVP * ((position * u_Scale) + u_Scale);
+  gl_Position = (u_MVP * (position * u_Scale));
   v_TexCoord = texCoord;
   v_Color = Color;
 }
+
 
 #shader fragment
 #version 330 core 
@@ -26,12 +27,12 @@ void main() {
 // Ouput data
 layout(location = 0) out vec4 color;
 
-in vec2 v_TexCoord;
+in vec3 v_TexCoord;
 in vec4 v_Color;
 
 uniform vec4 u_Color = vec4(1.0);
 uniform bool u_Use_Texture = false;
-uniform sampler2D u_Texture;
+uniform sampler3D u_Texture;
 
 void main() {
   vec4 set_color = vec4(1.0);

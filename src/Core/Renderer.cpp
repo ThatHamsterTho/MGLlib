@@ -5,7 +5,7 @@ Renderer::Renderer() {}
 Renderer::~Renderer(){}
 
 
-void Renderer::Draw(const VertexArray *va, const IndexBuffer *ib, const Shader *shader) const{
+void Renderer::Draw(const VertexArrayObject *va, const IndexBufferObject *ib, const Shader *shader) const{
 	// Use our shader
 	shader->Bind();
 

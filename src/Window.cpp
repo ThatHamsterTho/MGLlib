@@ -11,7 +11,7 @@ namespace MGLlib{
 		// Initialise GLFW
 		if( !glfwInit() )
 		{
-			throw "Failed to initialize GLFW\n";
+			fprintf(stderr, "Failed to initialize GLFW\n");
 			exit(-1);
 		}
 
@@ -25,7 +25,7 @@ namespace MGLlib{
 		window = glfwCreateWindow( width, height, title, NULL, NULL);
 		if( window == NULL ){
 			glfwTerminate();
-			throw "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n";
+			fprintf(stderr, "[ERROR]: Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible.\n");
 			exit(-1);
 		}
 		glfwMakeContextCurrent(window);
@@ -35,12 +35,12 @@ namespace MGLlib{
 		// Initialize GLEW
 		glewExperimental = true; // Needed for core profile
 		if (glewInit() != GLEW_OK) {
-			throw "Failed to initialize GLEW\n";
+			fprintf(stderr, "[ERROR]: Failed to initialize GLEW\n");
 			exit(-1);
 		}
 
 		#ifdef SHOWGLVERSION
-			printf("OpenGL Version: %s\n", glGetString(GL_VERSION));
+			printf("[INFO]: OpenGL Version: %s\n", glGetString(GL_VERSION));
 		#endif
 
 		// Ensure we can capture the escape key being pressed below
@@ -53,43 +53,53 @@ namespace MGLlib{
 
 	// Features
 	void Window::enableLighting(void){
-		printf("Lighting init\n");
+		#ifdef SHOWINITINFO
+			printf("[INFO]: Lighting init\n");
+		#endif
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	}
 	void Window::enable3D(void){
-		printf("3D init\n");
+		#ifdef SHOWINITINFO
+			printf("[INFO]: 3D init\n");
+		#endif
 		// Use depth buffering for hidden surface elimination.
 		glEnable(GL_DEPTH_TEST);	
 		glDepthFunc(GL_LEQUAL);
 	}
 	void Window::enableAA(void){
-		printf("Anti Aliasing init\n");
-		//glEnable(GL_LINE_SMOOTH);
-		//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-		//glEnable(GL_POINT_SMOOTH);
-		//glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+		#ifdef SHOWINITINFO
+			printf("[INFO]: Anti Aliasing init\n");
+		#endif
+		glEnable(GL_LINE_SMOOTH);
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+		glEnable(GL_POINT_SMOOTH);
+		glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
 		
 		glEnable(GL_MULTISAMPLE);
-		//glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
+		glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
 
 		GLint  iMultiSample = 0;
 		GLint  iNumSamples = 0;
 		glGetIntegerv(GL_SAMPLE_BUFFERS, &iMultiSample);
 		glGetIntegerv(GL_SAMPLES, &iNumSamples);
 		#ifdef SHOWMSAA
-			printf("MultiSample: %u, Samples: %u\n", iMultiSample, iNumSamples);
+			printf("[INFO]: MultiSample: %u, Samples: %u\n", iMultiSample, iNumSamples);
 		#endif 
 	}
 	void Window::enableAlpha(void){
-		printf("Alpha init\n");
+		#ifdef SHOWINITINFO
+			printf("[INFO]: Alpha init\n");
+		#endif	
 		// enable alpha
 		GLCall(glEnable(GL_BLEND));
 		GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 	}
 	void Window::enableVsync(void){
-		printf("Vsync init\n");
+		#ifdef SHOWINITINFO
+			printf("[INFO]: Vsync init\n");
+		#endif	
 		glfwSwapInterval(1);
 	}
 

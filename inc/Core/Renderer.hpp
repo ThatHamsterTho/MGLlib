@@ -3,8 +3,8 @@
 
 #include "Debugger.hpp"
 
-#include "VertexArray.hpp"
-#include "IndexBuffer.hpp"
+#include "VertexArrayObject.hpp"
+#include "IndexBufferObject.hpp"
 #include "Shader.hpp"
 
 class Renderer {
@@ -13,7 +13,7 @@ class Renderer {
         Renderer();
         ~Renderer();
         void Clear(unsigned int ClearBufferBit = GL_COLOR_BUFFER_BIT);
-        void Draw(const VertexArray *va, const IndexBuffer *ib, const Shader *shader) const;
+        void Draw(const VertexArrayObject *va, const IndexBufferObject *ib, const Shader *shader) const;
 };
 
 #endif

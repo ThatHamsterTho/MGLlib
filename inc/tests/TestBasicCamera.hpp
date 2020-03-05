@@ -8,9 +8,9 @@
 #include "Shader.hpp"
 #include "Texture.hpp"
 
-#include "VertexArray.hpp"
-#include "VertexBuffer.hpp"
-#include "IndexBuffer.hpp"
+#include "VertexArrayObject.hpp"
+#include "VertexBufferObject.hpp"
+#include "IndexBufferObject.hpp"
 
 // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
 
@@ -49,8 +49,8 @@ namespace test {
 			glm::vec3 translation1;
 			glm::vec3 translation2;
 
-			VertexArray* va;
-			IndexBuffer* ib;
+			VertexArrayObject* va;
+			IndexBufferObject* ib;
 
 			Renderer* renderer;
 			Shader* shader;

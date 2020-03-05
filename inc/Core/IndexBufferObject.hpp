@@ -1,14 +1,14 @@
 #ifndef IBOHEADERGUARD
 #define IBOHEADERGUARD
 
-class IndexBuffer{
+class IndexBufferObject{
 private:
 	unsigned int m_RendererID;
 	unsigned int m_Count;
 
 public:
- 	IndexBuffer(const unsigned int* data, unsigned int count);
- 	~IndexBuffer();
+ 	IndexBufferObject(const unsigned int* data, unsigned int count);
+ 	~IndexBufferObject();
 
 	void Bind() const;
 	void UnBind() const;

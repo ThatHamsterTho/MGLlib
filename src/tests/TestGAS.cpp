@@ -1,5 +1,7 @@
 #include "TestGAS.hpp"
 
+#include "VertexBufferStruct.hpp"
+
 #include "ImGui/imgui.h"
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -7,29 +9,39 @@ namespace test
 {
 TestGAS::TestGAS() : m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 {
-	width = 1;
-	height = 1;
-	float g_vertex_buffer_data[] = {
+	width = 1.0f;
+	height = 1.0f;
+
+	
+	DrawBuffer<float> *VBDA = new DrawBuffer<float>({
 		// 3D position, 			Texture coord		Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f, 		1.0f, 0.0f, 0.0f, 1.0f,
-		width, 	 0.0f, 0.0f,		1.0f, 0.0f, 		0.0f, 1.0f, 0.0f, 1.0f,
-		width, height, 0.0f,		1.0f, 1.0f, 		0.0f, 0.0f, 1.0f, 1.0f,
-		 0.0f, height, 0.0f,		0.0f, 1.0f, 		1.0f, 1.0f, 1.0f, 1.0f};
+		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f, 0.0f,	1.0f, 0.0f, 0.0f, 1.0f,
+		width, 	 0.0f, 0.0f,		1.0f, 0.0f, 0.0f,	0.0f, 1.0f, 0.0f, 1.0f,
+		width, height, 0.0f,		1.0f, 1.0f, 0.0f,	0.0f, 0.0f, 1.0f, 1.0f,
+		 0.0f, height, 0.0f,		0.0f, 1.0f, 0.0f,	1.0f, 1.0f, 1.0f, 1.0f}, 
 
-	// for ibo
-	unsigned int indices[] = {
-		0, 1, 2,
-		2, 3, 0};
+		// IBO
+		{0, 1, 2,
+		 2, 3, 0}
+	);
+	/*
+	DrawBuffer<float> *VBDA = new DrawBuffer<float>(
+		// VBO
+		{// 2D position, 	Texture coord		Color coord
+		 0.0f,   0.0f, 		0.0f, 0.0f, 		1.0f, 0.0f, 0.0f, 1.0f,
+		width, 	 0.0f, 		1.0f, 0.0f,			0.0f, 1.0f, 0.0f, 1.0f,
+		width, height,		1.0f, 1.0f, 		0.0f, 0.0f, 1.0f, 1.0f,
+		 0.0f, height,		0.0f, 1.0f, 		1.0f, 1.0f, 1.0f, 1.0f}, 
 
-	VertexBuffer *vb = new VertexBuffer(g_vertex_buffer_data, sizeof(g_vertex_buffer_data));
-	VertexBufferLayout *layout = new VertexBufferLayout;
-	layout->Push<float>(3); // push position coordinate buffer
-	layout->Push<float>(2); // push texture coordinate buffer
-	layout->Push<float>(4); // push color buffer
-
-	ib = new IndexBuffer(indices, 6);
-
-	GAShape = new GenericAbstractShape(vb, layout, ib);
+		// IBO
+		{0, 1, 2,
+		 2, 3, 0},
+		// layout
+		{2, 2, 4}
+	);
+	*/
+	shader = new Shader("res/shaders/SimpleShader.glsl");
+	GAShape = new GenericAbstractShape<float>(shader, VBDA);
 	
 
 	Camera[0] = 0.5f;

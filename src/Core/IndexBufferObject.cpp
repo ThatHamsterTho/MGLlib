@@ -1,8 +1,8 @@
-#include "IndexBuffer.hpp"
+#include "IndexBufferObject.hpp"
 
 #include "Debugger.hpp"
 
-IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
+IndexBufferObject::IndexBufferObject(const unsigned int* data, unsigned int count)
     : m_Count(count)
 {
     GLCall(glGenBuffers(1, &m_RendererID));
@@ -10,14 +10,14 @@ IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count)
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW));
 }
 
-IndexBuffer::~IndexBuffer(){
+IndexBufferObject::~IndexBufferObject(){
     GLCall(glDeleteBuffers(1, &m_RendererID));
 }
 
-void IndexBuffer::Bind() const{
+void IndexBufferObject::Bind() const{
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
 }
 
-void IndexBuffer::UnBind() const{
+void IndexBufferObject::UnBind() const{
     GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 }
