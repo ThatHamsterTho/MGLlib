@@ -1,10 +1,10 @@
 #include "Test.hpp"
 #include "ImGui/imgui.h"
 
+namespace MGLlib {
 namespace test {
-	TestMenu::TestMenu(Test*& currentTestPointer) : m_CurrentTest(currentTestPointer){
-		
-	}
+	TestMenu::TestMenu(Test*& currentTestPointer, MGLlib::Window* window) 
+		: Test(window), m_CurrentTest(currentTestPointer){}
 
 	TestMenu::~TestMenu(){
 		
@@ -21,4 +21,4 @@ namespace test {
 			}
 		}
 	}
-}
+}} // namespace

@@ -1,52 +1,52 @@
 build/release/tests/TestGAS.o: src/tests/TestGAS.cpp \
- inc/tests/TestGAS.hpp inc/tests/Test.hpp inc/Core/Renderer.hpp \
- inc/Core/Debugger.hpp inc/Core/DefineDebug.h \
- inc/Core/VertexArrayObject.hpp inc/Core/VertexBufferObject.hpp \
- inc/Core/VertexBufferLayout.hpp inc/Core/IndexBufferObject.hpp \
- inc/Core/Shader.hpp inc/Core/Shader.hpp inc/Core/Texture.hpp \
- inc/Core/VertexArrayObject.hpp inc/Core/VertexBufferObject.hpp \
- inc/Core/IndexBufferObject.hpp inc/GenericAbstractShape.h \
- inc/AbstGenericAbstractShape.h inc/Core/VertexBufferStruct.hpp \
- inc/Core/Debugger.hpp inc/external/ImGui/imgui.h \
+ inc/tests/TestGAS.hpp inc/tests/Test.hpp inc/Window.h inc/Core/Camera.h \
+ inc/Core/Debug/DefineDebug.h inc/Core/GenericShape.h \
+ inc/Core/Primitives/Shader.hpp inc/Core/Primitives/Texture.hpp \
+ inc/Core/Debug/Debugger.hpp inc/Core/Debug/DefineDebug.h \
+ inc/Core/Primitives/VertexArrayObject.hpp \
+ inc/Core/Primitives/VertexBufferObject.hpp \
+ inc/Core/Primitives/VertexBufferLayout.hpp \
+ inc/Core/Primitives/VertexBufferObject.hpp \
+ inc/Core/Primitives/IndexBufferObject.hpp \
+ inc/Core/GenericAbstractShape.h inc/Core/Primitives/DrawBuffer.hpp \
+ inc/Core/Primitives/IndexBufferObject.hpp inc/external/ImGui/imgui.h \
  inc/external/ImGui/imconfig.h
 
 inc/tests/TestGAS.hpp:
 
 inc/tests/Test.hpp:
 
-inc/Core/Renderer.hpp:
+inc/Window.h:
 
-inc/Core/Debugger.hpp:
+inc/Core/Camera.h:
 
-inc/Core/DefineDebug.h:
+inc/Core/Debug/DefineDebug.h:
 
-inc/Core/VertexArrayObject.hpp:
+inc/Core/GenericShape.h:
 
-inc/Core/VertexBufferObject.hpp:
+inc/Core/Primitives/Shader.hpp:
 
-inc/Core/VertexBufferLayout.hpp:
+inc/Core/Primitives/Texture.hpp:
 
-inc/Core/IndexBufferObject.hpp:
+inc/Core/Debug/Debugger.hpp:
 
-inc/Core/Shader.hpp:
+inc/Core/Debug/DefineDebug.h:
 
-inc/Core/Shader.hpp:
+inc/Core/Primitives/VertexArrayObject.hpp:
 
-inc/Core/Texture.hpp:
+inc/Core/Primitives/VertexBufferObject.hpp:
 
-inc/Core/VertexArrayObject.hpp:
+inc/Core/Primitives/VertexBufferLayout.hpp:
 
-inc/Core/VertexBufferObject.hpp:
+inc/Core/Primitives/VertexBufferObject.hpp:
 
-inc/Core/IndexBufferObject.hpp:
+inc/Core/Primitives/IndexBufferObject.hpp:
 
-inc/GenericAbstractShape.h:
+inc/Core/GenericAbstractShape.h:
 
-inc/AbstGenericAbstractShape.h:
+inc/Core/Primitives/DrawBuffer.hpp:
 
-inc/Core/VertexBufferStruct.hpp:
-
-inc/Core/Debugger.hpp:
+inc/Core/Primitives/IndexBufferObject.hpp:
 
 inc/external/ImGui/imgui.h:
 

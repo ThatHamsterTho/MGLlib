@@ -24,6 +24,6 @@ namespace MGLlib{
 			//! @brief Call before exiting window object
 			void Exit(void);
 	};
-}
+} // namespace
 
 #endif

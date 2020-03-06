@@ -1,10 +1,12 @@
-#ifndef WINDOWHEADGUARD
+#ifndef WINDOWHEADERGUARD
 #define WINDOWHEADERGUARD
 
 #include <GL/glew.h>		// sudo apt-get install libglew-dev
-#include <GLFW/glfw3.h>		// sudo apt-get install libglfw3-dev
-#include <GL/gl.h>			
+#include <GLFW/glfw3.h>		// sudo apt-get install libglfw3-dev	
 #include <glm/glm.hpp>		// sudo apt-get install libglm-dev
+
+#include "Camera.h"
+#include "GenericShape.h"
 
 namespace MGLlib {	
 	class Window
@@ -16,7 +18,7 @@ namespace MGLlib {
 			typedef void (Window::*WindowVoidFunc)(void);
 
 			glm::vec4 ClearColor = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-			//Camera *cam; TODO: add camera class
+			Camera *cam;
 			//TODO: add lights
 
 			bool use_custom_callback = true;
@@ -43,21 +45,21 @@ namespace MGLlib {
 			~Window();
 
 			/*! @brief enable extra window features
-			*  @param[in] f enable multiple features by | them together
-			*  @remark example: WindowEnableFeatures(F_3D | F_AA);
-			*  call before Show();
-			*/
+			 *  @param[in] f enable multiple features by | them together
+		 	 *  @remark example: WindowEnableFeatures(F_3D | F_AA);
+			 *  call before Show();
+			 */
 			void WindowEnableFeatures(unsigned int f);
 			/*! @brief set Render and Update callback loop
-			*  @param[in] render draws objects
-			*  @param[in] update changes objects values
-			*/
+			 *  @param[in] render draws objects
+			 *  @param[in] update changes objects values
+			 */
 			void SetCallback(void (*render)(void), void (*update)(void) = nullptr);
 			/*! @brief use show when using the default render callback loop.
 			 *	Clears screen, pollsevents and Calls set Render function after Update function.
 			 *	Closes window on [x] button and ESC key.
 			 * 	For other behaviour create custom own GLFW3 loop.
-			*/
+			 */
 			void Show(void);
 			void Exit(void);
 			
@@ -69,5 +71,5 @@ namespace MGLlib {
 			GLFWwindow* getGLFWwindow(void){return this->window;}
 	};
 
-}
+} // namespace
 #endif

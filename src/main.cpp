@@ -1,12 +1,9 @@
 #include <iostream>
 
-// custom classes
 #include "Window.h"
-#include "ImGuiHelper.h"
 
-#include "tests/TestClearColor.hpp"
-#include "tests/TestBasicTexture.hpp"
-#include "tests/TestBasicCamera.hpp"
+// custom classes
+#include "ImGuiHelper.h"
 #include "tests/TestGAS.hpp"
 
 void render(void);
@@ -23,19 +20,16 @@ test::TestMenu* TestMenu;
 int main(){
 
 	window = new Window("Window name", 800, 800);
-	window->WindowEnableFeatures(Window::F_AA | Window::F_ALPHA | Window::F_VSYNC | Window::F_3D);
+	window->WindowEnableFeatures(Window::F_AA | Window::F_ALPHA | Window::F_VSYNC);
 
 	IGH = new ImGuiHelper(window);
 
 // INIT END HERE
 
 	currentTest = nullptr;
-	TestMenu = new test::TestMenu(currentTest);
+	TestMenu = new test::TestMenu(currentTest, window);
 	currentTest = TestMenu;
 
-	TestMenu->AddTest<test::TestClearColor>("Clear Color");
-	TestMenu->AddTest<test::TestBasicTexture>("Basic Texture");
-	TestMenu->AddTest<test::TestBasicCamera>("Basic Camera");
 	TestMenu->AddTest<test::TestGAS>("GenericAbstractShape");
 
 	window->SetCallback(render);
@@ -44,6 +38,14 @@ int main(){
 
 	IGH->Exit();
 	window->Exit();
+
+	// clean up of global instanses
+	delete window;
+	delete IGH;
+	if(TestMenu != currentTest){
+		delete currentTest;
+	}
+	delete TestMenu;
 
 	return 0;
 }

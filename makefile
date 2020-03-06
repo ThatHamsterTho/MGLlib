@@ -10,19 +10,19 @@ SRC_PATH = src
 # Space-separated pkg-config libraries used by this project
 LIBS =
 # General compiler flags
-COMPILE_FLAGS = -std=c++14 -Wall -Wextra
+COMPILE_FLAGS = -std=c++17 -Wall -Wextra
 # Additional release-specific flags
 RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/Core/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/ -Iinc/tests/
+INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/tests/ -Iinc/Core/ -Iinc/Core/Debug/ -Iinc/Core/Primitives/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/
 # General linker settings
-LINK_FLAGS = -g -lGLEW -lglfw -lGL
+LINK_FLAGS = -lGLEW -lglfw -lGL
 # Additional release-specific linker settings
-RLINK_FLAGS =
+RLINK_FLAGS = -o2
 # Additional debug-specific linker settings
-DLINK_FLAGS =
+DLINK_FLAGS = -ggdb3
 # Destination directory, like a jail or mounted system
 DESTDIR = 
 # Install path (bin/ is appended automatically)
