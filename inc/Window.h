@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>		// sudo apt-get install libglm-dev
 
 #include "Camera.h"
+#include "Shader.hpp"		// for default shader
 #include "GenericShape.h"
 
 namespace MGLlib {	

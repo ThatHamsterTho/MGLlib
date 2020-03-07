@@ -5,7 +5,7 @@
 #define SHOWDEBUG
 #define SHOWINFO
 #define SHOWWARNING
-
+//#define SHOWLOGSOURCE
 
 #define SHADERWARNINGS
 
@@ -34,16 +34,23 @@
 #define pERROR(format, ...){\
 	fprintf(stderr, "%-10s ", "[ERROR]:");\
 	fprintf(stderr, format, ##__VA_ARGS__);\
-	fprintf(stderr, "\n in: %s %d\n", __FUNCTION__, __LINE__);\
+	fprintf(stderr, "\n|- %-7s file: \"%s\" ; function: \"%s\" : line: %d\n", "in:", __FILE__, __FUNCTION__, __LINE__);\
 }
 
 #ifdef SHOWWARNING
-#define pWARNING(format, ...){\
-	LOG(stderr, "[WARNING]:", format, ##__VA_ARGS__);\
-	fprintf(stderr, "\n in: %s : %s %d\n", __FILE__, __FUNCTION__, __LINE__);\
-}
-#else
-#define pWARNING(format, ...)
+	#ifdef SHOWLOGSOURCE
+		#define pWARNING(format, ...){\
+			LOG(stderr, "[WARNING]:", format, ##__VA_ARGS__);\
+			fprintf(stderr, "\n|- %-7s file: \"%s\" ; function: \"%s\" : line: %d\n", "in:", __FILE__, __FUNCTION__, __LINE__);\
+		}
+		#else
+		#define pWARNING(format, ...){\
+			LOG(stderr, "[WARNING]:", format, ##__VA_ARGS__);\
+			fprintf(stderr, "\n");\
+		}
+		#endif
+	#else
+	#define pWARNING(format, ...)
 #endif
 
 #ifdef SHOWINFO

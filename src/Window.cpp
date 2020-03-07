@@ -4,6 +4,7 @@
 
 #include "Debugger.hpp"
 
+
 namespace MGLlib{
 
 Window::Window(const char* title, int width, int height, int offsetx, int offsety){

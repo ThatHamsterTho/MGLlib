@@ -87,9 +87,9 @@ class DrawBuffer{
 			DefaultConstructor(array, IndexBuffer, layout);
 		}
 		~DrawBuffer(void){
-			delete[] vertexdata;
-			delete[] IndexBufferData;
-			delete[] layout;
+			delete [] vertexdata;
+			delete [] IndexBufferData;
+			delete [] layout;
 		}
 
 	// setters

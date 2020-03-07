@@ -5,15 +5,11 @@
 namespace MGLlib { 
 namespace Util {
 
-void ErrorMSG(const std::string& msg){
-	std::cerr << msg << std::endl;
-}
-
-float toNormalized(double in, double max){
+float toNDC(double in, double max){
 	return in/max;
 }
 
-float UnNormalize(double in, double max){
+float toPixel(double in, double max){
 	return in * max;
 }
 

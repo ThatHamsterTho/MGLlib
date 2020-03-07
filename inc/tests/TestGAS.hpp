@@ -12,6 +12,7 @@
 #include "VertexBufferObject.hpp"
 #include "IndexBufferObject.hpp"
 #include "GenericAbstractShape.h"
+#include "GenericShape.h"
 
 // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
 
@@ -19,7 +20,7 @@ namespace MGLlib {
 	namespace test {
 		class TestGAS : public Test {
 			public:
-				TestGAS(MGLlib::Window* window);
+				TestGAS(Window* window);
 				~TestGAS();
 
 				void onUpdate() override;
@@ -42,8 +43,7 @@ namespace MGLlib {
 				glm::vec3 translation1;
 				glm::vec3 translation2;
 
-				GenericAbstractShape<float>* GAShape;
-				Primitives::IndexBufferObject* ib;
+				GenericShape* GShape;
 				
 				Primitives::Shader* shader;
 				Primitives::Texture* texture;

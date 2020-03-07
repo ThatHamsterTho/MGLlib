@@ -5,6 +5,8 @@
 // custom classes
 #include "ImGuiHelper.h"
 #include "tests/TestGAS.hpp"
+#include "tests/TestBasicTexture.hpp"
+
 
 void render(void);
 void update(void);
@@ -20,7 +22,7 @@ test::TestMenu* TestMenu;
 int main(){
 
 	window = new Window("Window name", 800, 800);
-	window->WindowEnableFeatures(Window::F_AA | Window::F_ALPHA | Window::F_VSYNC);
+	window->WindowEnableFeatures(Window::F_AA | Window::F_ALPHA | Window::F_VSYNC | Window::F_3D);
 
 	IGH = new ImGuiHelper(window);
 
@@ -31,6 +33,7 @@ int main(){
 	currentTest = TestMenu;
 
 	TestMenu->AddTest<test::TestGAS>("GenericAbstractShape");
+	TestMenu->AddTest<test::TestBasicTexture>("TextureTest");
 
 	window->SetCallback(render);
 

@@ -18,26 +18,30 @@ template<typename type>
 class GenericAbstractShape{
 	public:
 		GenericAbstractShape(const GenericAbstractShape& GAS);
-		GenericAbstractShape(Primitives::Shader* shader, Primitives::DrawBuffer<type>* data);
+		GenericAbstractShape(Primitives::Shader* shader, Primitives::DrawBuffer<type>* data, unsigned int DrawType = GL_TRIANGLES);
 		~GenericAbstractShape();
 
 		void Draw(void);
+		void RenderTextures(void);
 		void SetTexture(Primitives::Texture* texture, int slot = 0);
-		void RemoveTexture(void);
+		void DisableTexture(void);
+		void SetIndexBuffer(unsigned int* IndexBuffer, unsigned int count);
+		void SetVertexBuffer(const void* data, unsigned int size);
+		void SetVertexLayout(unsigned int* layout, unsigned int count);
 		void SetScale(type x, type y, type z);
 		void SetShader(Primitives::Shader* shader);
 		Primitives::Shader* GetShader(void);
 
 	private:
-		Primitives::VertexArrayObject* 	VA;
-		Primitives::VertexBufferObject* VB;
-		Primitives::VertexBufferLayout* Vlayout;
-		Primitives::IndexBufferObject* 	IB;
-		Primitives::Texture* 			texture;
-		Primitives::Shader*				shader;
+		Primitives::VertexArrayObject* 	VA 		= nullptr;
+		Primitives::VertexBufferObject* VB 		= nullptr;
+		Primitives::VertexBufferLayout* Vlayout = nullptr;
+		Primitives::IndexBufferObject* 	IB		= nullptr;
+		Primitives::Texture* 			texture = nullptr;
+		Primitives::Shader*				shader	= nullptr;
 		// used for when no IBO is given
 		unsigned int					Vertices;
-		bool 							use_texture;
+		unsigned int					DrawType;
 };
 
 
@@ -54,8 +58,8 @@ GenericAbstractShape<type>::GenericAbstractShape(const GenericAbstractShape& GAS
 }
 
 template<typename type>
-GenericAbstractShape<type>::GenericAbstractShape(Primitives::Shader* shader, Primitives::DrawBuffer<type>* data)
-	: VA(new Primitives::VertexArrayObject()), use_texture(false)
+GenericAbstractShape<type>::GenericAbstractShape(Primitives::Shader* shader, Primitives::DrawBuffer<type>* data, unsigned int DrawType)
+	: VA(new Primitives::VertexArrayObject()), DrawType(DrawType)
 {	
 	this->shader = shader;
 
@@ -80,24 +84,50 @@ GenericAbstractShape<type>::~GenericAbstractShape(){
 template<typename type>
 void GenericAbstractShape<type>::SetTexture(Primitives::Texture* texture, int slot){
 	this->texture = texture;
-	this->shader->Bind();
-	this->texture->Bind(slot);
 	shader->Bind();
-	shader->SetUniform1i("u_Texture", 0);
+	this->texture->Bind(slot);
+	shader->SetUniform1i("u_Texture", slot);
 	shader->SetUniform1i("u_Use_Texture", true); // enable textures
-	use_texture = true;
 }
 
 template<typename type>
-void GenericAbstractShape<type>::RemoveTexture(void){
+void GenericAbstractShape<type>::DisableTexture(void){
 	shader->Bind();
-	shader->SetUniform1i("u_Use_Texture", false); // enable textures
-	use_texture = false;
+	//texture->Unbind();
+	shader->SetUniform1i("u_Use_Texture", false); // disable textures
+}
+
+template<typename type>
+void GenericAbstractShape<type>::SetIndexBuffer(unsigned int* IndexBuffer, unsigned int count){
+	if(IB){
+		delete IB;
+	}
+	this->IB = new Primitives::IndexBufferObject(IndexBuffer, count); 
+}
+template<typename type>
+void GenericAbstractShape<type>::SetVertexBuffer(const void* data, unsigned int size){
+	if(VB){
+		delete VB;
+	}
+	VB = new Primitives::VertexBufferObject(data, size);
+	VA->AddBuffer(VB, Vlayout);
+}
+
+template<typename type>
+void GenericAbstractShape<type>::SetVertexLayout(unsigned int* layout, unsigned int count){
+	if(Vlayout){
+		delete Vlayout;
+	}
+	Vlayout = new Primitives::VertexBufferLayout();
+	unsigned int* layoutlocal = layout;
+	for(unsigned int i = 0; i < count; i++){
+		Vlayout->Push<type>(layoutlocal[i]);
+	}
+	VA->AddBuffer(VB, Vlayout);
 }
 
 template<typename type>
 void GenericAbstractShape<type>::SetShader(Primitives::Shader* shader){
-	delete this->shader;
 	this->shader = shader;
 }
 
@@ -109,7 +139,6 @@ void GenericAbstractShape<type>::SetScale(type x, type y, type z){
 
 template<typename type>
 Primitives::Shader* GenericAbstractShape<type>::GetShader(void){
-	shader->Bind();
 	return this->shader;
 }
 
@@ -118,7 +147,7 @@ void GenericAbstractShape<type>::Draw(void){
 	shader->Bind();
 	VA->Bind();
 	IB->Bind();
-	GLCall(glDrawElements(GL_TRIANGLES, IB->GetCount(), GL_UNSIGNED_INT, nullptr));
+	GLCall(glDrawElements(DrawType, IB->GetCount(), GL_UNSIGNED_INT, nullptr));
 }
 
 } // namespace

@@ -8,9 +8,8 @@
 namespace MGLlib { 
 namespace Util {
 
-void ErrorMSG(const std::string& msg);
-float toNormalized(double in, double max);
-float UnNormalize(double in, double max);
+float toNDC(double in, double max);
+float toPixel(double in, double max);
 float fastsquare(float n);
 
 // normalized color struct
