@@ -23,7 +23,7 @@ class GenericAbstractShape{
 
 		void Draw(void);
 		void RenderTextures(void);
-		void SetTexture(Primitives::Texture* texture, int slot = 0);
+		void SetTexture(Primitives::Texture* texture, int slot = 0, bool UseDefaultShader = true);
 		void DisableTexture(void);
 		void SetIndexBuffer(unsigned int* IndexBuffer, unsigned int count);
 		void SetVertexBuffer(const void* data, unsigned int size);
@@ -82,12 +82,14 @@ GenericAbstractShape<type>::~GenericAbstractShape(){
 }
 
 template<typename type>
-void GenericAbstractShape<type>::SetTexture(Primitives::Texture* texture, int slot){
+void GenericAbstractShape<type>::SetTexture(Primitives::Texture* texture, int slot, bool UseDefaultShader){
 	this->texture = texture;
 	shader->Bind();
 	this->texture->Bind(slot);
-	shader->SetUniform1i("u_Texture", slot);
-	shader->SetUniform1i("u_Use_Texture", true); // enable textures
+	if(UseDefaultShader){
+		shader->SetUniform1i("u_Texture", slot);
+		shader->SetUniform1i("u_Use_Texture", true); // enable textures
+	}
 }
 
 template<typename type>
@@ -133,7 +135,6 @@ void GenericAbstractShape<type>::SetShader(Primitives::Shader* shader){
 
 template<typename type>
 void GenericAbstractShape<type>::SetScale(type x, type y, type z){
-	shader->Bind();
 	shader->SetUniform4f("u_Scale", x, y, z, 1.0);
 }
 

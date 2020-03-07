@@ -7,7 +7,7 @@
 
 namespace MGLlib{
 
-Window::Window(const char* title, int width, int height, int offsetx, int offsety){
+Window::Window(const char* title, int width, int height, int offsetx, int offsety) {
 	
 	// Initialise GLFW
 	if( !glfwInit() )
@@ -49,6 +49,8 @@ Window::Window(const char* title, int width, int height, int offsetx, int offset
 
 	// Dark blue background
 	glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
+
+	InitHandler(window);
 }
 Window::~Window(){}
 

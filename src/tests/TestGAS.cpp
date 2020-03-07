@@ -3,7 +3,8 @@
 #include "DrawBuffer.hpp"
 
 #include "ImGui/imgui.h"
-#include <glm/gtc/matrix_transform.hpp>
+#include "glm/gtc/matrix_transform.hpp"
+
 
 namespace MGLlib {
 using namespace Primitives;
@@ -13,6 +14,7 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 	width = 1.0f;
 	height = 1.0f;
 
+/*
 	std::vector<float> vbo = {
 		// 3D position, 			Texture coord	Color coord
 		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,
@@ -20,17 +22,25 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 		width, height, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
 		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
 	};
+*/
+	std::vector<float> vbo = {
+		// 3D position,
+		 0.0f,   0.0f, 0.0f,
+		width, 	 0.0f, 0.0f,
+		width, height, 0.0f,
+		 0.0f, height, 0.0f,
+	};
 
 	shader = new Shader("res/shaders/SimpleShader.glsl");
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	GShape = new GenericShape(shader, MGL_QUADS, vbo, {3, 2, 4});
+	GShape = new GenericShape(shader, MGL_QUADS, vbo);
 
 	cam = new Camera({1.0, 1.0, 3.5}, {1.0, 1.0, 0.0});
 	cam->SetFOV(90);
 
 	texture = new Texture("res/textures/gunsalpha.png");
-	GShape->SetTexture(texture);
+	//GShape->SetTexture(texture);
 
 	scale = 1.5f;
 
@@ -49,19 +59,18 @@ void TestGAS::onUpdate() {}
 void TestGAS::onRender()
 {	
 	// Use our shader
+	GShape->GetShader()->Bind();
 	GShape->Scale(scale, scale, scale);
 
-	GShape->GetShader()->Bind();
-
-	model = glm::translate(glm::mat4(1.0f), translation1);
-	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() * model;
+	GShape->SetPosition(translation1);
+	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() * GShape->GetModelMat();
 	GShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
 	GShape->Draw();
 	
+	GShape->SetColor({m_Color[0], 0.0f, 0.0f});
+	GShape->SetPosition(translation2);
 
-	model = glm::translate(glm::mat4(1.0f), translation2);
-
-	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() * model;
+	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() *  GShape->GetModelMat();
 	GShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
 	GShape->Draw();
 	

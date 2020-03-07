@@ -9,6 +9,13 @@
 
 namespace MGLlib{
 
+	struct Color {
+		float R = 1.0f;
+		float G = 1.0f;
+		float B = 1.0f;
+		float A = 1.0f;
+	};
+
 	enum ShapeType {
 		MGL_CUSTOM,
 		MGL_POINTS,
@@ -25,8 +32,8 @@ namespace MGLlib{
 		__SHAPETYPECOUNT
 	};
 
-typedef void (*SetColorFunc)(Primitives::Shader* shader, std::array<float, 4> RGBA);
-void SetColorDefault(Primitives::Shader* shader, std::array<float, 4> RGBA);
+typedef void (*SetColorFunc)(Primitives::Shader* shader, Color RGBA);
+void SetColorDefault(Primitives::Shader* shader, Color RGBA);
 
 class GenericShape
 {
@@ -40,6 +47,7 @@ class GenericShape
 		unsigned int extendCount;
 	};
 	static const ShapeMapItem ShapeMap[__SHAPETYPECOUNT];
+	static bool v_UseDefaultShader;
 
 	unsigned int VertexLength;	// how many floats in 1 vertex
 	unsigned int VertexCount;	// how many vertexes in the buffer
@@ -49,7 +57,7 @@ class GenericShape
 	GenericAbstractShape<float>* GAShape;
 	SetColorFunc SCF = SetColorDefault;
 
-	glm::mat4 Model;
+	glm::vec3 Position = glm::vec3(0.0f);
 
 	public:
 		//! @brief takes vector of points, layout should describe the layout of 1 vector
@@ -60,21 +68,34 @@ class GenericShape
 		//! @brief returns the name of the shape
 		std::string getName();
 		
+		//! @brief draws the shape
+		//! @remark Before drawing bind the right shader
+		void Draw(void);
 
 		//! @brief sets scale of shape
 		void Scale(float x, float y, float z = 1.0f);
-		//! @brief Sets the texture of the shape
-		void SetTexture(Primitives::Texture* texture, int slot = 0);
-		//! @brief Disables the texture
-		void DisableTexture();
 		//! @brief Sets the color of the model
-		void SetColor(std::array<float, 4> RGBA);
-
+		void SetColor(Color RGBA);
 		//! @brief Sets the "SetColor" function, usefull when using custom shaders
 		void SetSetColorFunc(SetColorFunc SCF);
+
+		//! @brief Sets the texture of the shape
+		//! @remark When using a custom shader disable the UseDefaultShader
+		//! @remark Or disable it globally by using UseDefaultShader()
+		void SetTexture(Primitives::Texture* texture, int slot = 0, bool UseDefaultShader = v_UseDefaultShader);
+		//! @brief Sets the default value for all GenericShape SetTexture function's "UseDefaultShader" parameter
+		void UseDefaultShader(bool v);
+		//! @brief Disables the texture
+		void DisableTexture();
 		
 		//! @brief Sets the position of the object relative to the world
-		void SetPosition(std::vector<float> model);
+		void SetPosition(std::array<float, 3> position);
+		void SetPosition(glm::vec3 position);
+		//! @brief returns the objects position relative to the world
+		glm::vec3 GetPosition(void);
+		//! @brief returns the objects model matrix
+		glm::mat4 GetModelMat(void);
+
 		//! @brief Sets vertex data
 		//! @remark This function is slow, if you only want to move the model use SetPosition();
 		void SetVertexData(std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
@@ -82,10 +103,6 @@ class GenericShape
 		//! @remark Call this function when using a [MGL_CUSTOM] with a special indexbufferobject;
 		void SetIndexBuffer(std::vector<unsigned int> IndexBuffer);
 
-		//! @brief draws the shape
-		void Draw(void);
-
-		// TODO: remove?
 		Primitives::Shader* GetShader(void);
 };
 

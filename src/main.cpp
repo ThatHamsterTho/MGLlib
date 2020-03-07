@@ -6,6 +6,7 @@
 #include "ImGuiHelper.h"
 #include "tests/TestGAS.hpp"
 #include "tests/TestBasicTexture.hpp"
+#include "tests/TestShapeHandler.h"
 
 
 void render(void);
@@ -32,6 +33,7 @@ int main(){
 	TestMenu = new test::TestMenu(currentTest, window);
 	currentTest = TestMenu;
 
+	TestMenu->AddTest<test::TestShapeHandler>("ShapeHandlerTest");
 	TestMenu->AddTest<test::TestGAS>("GenericAbstractShape");
 	TestMenu->AddTest<test::TestBasicTexture>("TextureTest");
 

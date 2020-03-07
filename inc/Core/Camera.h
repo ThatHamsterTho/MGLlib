@@ -23,7 +23,7 @@ class Camera
 		void SetFOV(float FOV);
 		void SetPlane(float NearPlane, float FarPlane);
 
-		void UpdateAspectRatio(int width, int height);
+		void UpdateAspectRatio(float width, float height);
 		void UpdatePerspective(void);
 		void UpdateCamera(void);
 

@@ -5,21 +5,17 @@
 #include <GLFW/glfw3.h>		// sudo apt-get install libglfw3-dev	
 #include <glm/glm.hpp>		// sudo apt-get install libglm-dev
 
-#include "Camera.h"
-#include "Shader.hpp"		// for default shader
-#include "GenericShape.h"
+#include "ShapeHandler.h"
 
-namespace MGLlib {	
-	class Window
+namespace MGLlib {
+	
+	class Window : public ShapeHandler
 	{
 		private:
-			GLFWwindow* window;
-
 			// used for enabling functions
 			typedef void (Window::*WindowVoidFunc)(void);
 
 			glm::vec4 ClearColor = glm::vec4(0.2f, 0.2f, 0.2f, 1.0f);
-			Camera *cam;
 			//TODO: add lights
 
 			bool use_custom_callback = true;

@@ -3,7 +3,7 @@
 namespace MGLlib { 
 
 Camera::Camera(std::array<float, 3> pos, std::array<float, 3> lookat)
-    : FOV(70), aspectratio(1.0f), Zplane({0.1f, 20.0f})   {
+    : FOV(90), aspectratio(1.0f), Zplane({0.1f, 20.0f})   {
     SetUp({0, 1, 0});
     Position(pos);
     Lookat(lookat);
@@ -46,8 +46,13 @@ void Camera::UpdateCamera(void){
         glm::vec3(this->up[0], this->up[1], this->up[2]));
 }
 
-void Camera::UpdateAspectRatio(int width, int height){
-    this->aspectratio = width/height;
+void Camera::UpdateAspectRatio(float width, float height){
+    if(height == 0){
+        this->aspectratio = width/1.0;
+    }
+    else{
+        this->aspectratio = width/height;
+    }
 }
 
 // both values should be positive
