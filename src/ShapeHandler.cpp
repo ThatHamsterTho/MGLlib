@@ -15,7 +15,7 @@ void ShapeHandler::InitHandler(GLFWwindow* window){
 	this->window = window;
 	this->shader = new Shader("res/shaders/SimpleShader.glsl");
 	this->cam = new Camera({0.0, 0.0, 0.618}, {0.0, 0.0, 0.0});
-	// .619 is a magic number
+	// .618 is a magic number
 }
 
 

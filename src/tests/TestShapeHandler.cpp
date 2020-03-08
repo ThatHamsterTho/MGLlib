@@ -23,18 +23,10 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	std::vector<float> vbo = {
 		// 3D position, 			Texture coord	Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		255.0f, 255.0f, 255.0f, 128.0f,
-		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		255.0f, 255.0f, 255.0f, 128.0f,	
-		width, height, 0.0f,		1.0f, 1.0f,		255.0f, 255.0f, 255.0f,	128.0f,
-		 0.0f, height, 0.0f,		0.0f, 1.0f,		255.0f, 255.0f, 255.0f,	128.0f
-	};
-
-	std::vector<float> vbo2 = {
-		// 3D position, 			Texture coord	Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 0.5f,
-		 1.0f, 	 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f, 0.5f,
-		 1.0f,   1.0f, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
-		 0.0f,   1.0f, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 0.5f
+		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,
+		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,	
+		width, height, 0.0f,		1.0f, 1.0f,		1.0f, 1.0f, 1.0f, 0.2f,
+		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 0.2f
 	};
 
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -47,11 +39,8 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	translation1 = glm::vec3(-1.0, -1.0,  0.0);
 	translation2 = glm::vec3( 0.0,  0.0,  0.0);
 	translation3 = glm::vec3(-0.5, -0.5,  0.0);
-	//GSH = window->CreateGenShapeNDC(MGL_QUADS, vbo);
 
-	//shader = new Shader("res/shaders/SimpleShader.glsl");
-	//GSH = window->CreateGenShapeNDC(MGL_QUADS, vbo2, {3, 2, 4});
-	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 2, NDC_RGBA});
+	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 2, 4});
 	GSH->SetTexture(texture);
 
 	SH = window->CreateShape(MGL_QUADS);

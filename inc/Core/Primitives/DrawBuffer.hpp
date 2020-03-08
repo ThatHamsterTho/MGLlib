@@ -7,34 +7,6 @@
 
 namespace MGLlib { 
 namespace Primitives {
-template<typename type>
-union Generic3DVertexDataStruct{
-	// position
-	union { struct {
-			type x, y, z;
-		};
-		type position[3];
-	};
-	// texture position
-	union { struct {
-			type Tx, Ty, Tz;
-		};
-		type TexturePosition[3];
-	};
-	// Color
-	union { struct {
-			type r, g, b, a;
-		};
-		type Color[4];
-	};
-	type data[10];
-    unsigned int getSize(){
-        return sizeof(data);
-    }
-	unsigned int ElementCount(){
-		return 10;
-	}
-};
 
 template<typename type>
 class DrawBuffer{
@@ -47,10 +19,7 @@ class DrawBuffer{
 		unsigned int VertexLength;
 		unsigned int VertexCount;
 		
-		union{
-			Generic3DVertexDataStruct<type> *vertexdata = nullptr;
-			type* VertexDataArray;
-		};
+		type* VertexDataArray = nullptr;
 
 	// private methods
 		void SetVertexLength(std::vector<unsigned int> layout){
@@ -63,7 +32,7 @@ class DrawBuffer{
 		void DefaultConstructor(std::vector<type> array, std::vector<unsigned int> IndexBuffer, std::vector<unsigned int> layout){	
 			// create space for data
 			VertexCount = array.size() / VertexLength;
-			vertexdata = new Generic3DVertexDataStruct<type>[VertexCount];
+			VertexDataArray = new float[VertexCount*VertexLength];
 			// set vertex data
 			SetData(array);
 			// create IBO
@@ -87,7 +56,7 @@ class DrawBuffer{
 			DefaultConstructor(array, IndexBuffer, layout);
 		}
 		~DrawBuffer(void){
-			delete [] vertexdata;
+			delete [] VertexDataArray;
 			delete [] IndexBufferData;
 			delete [] layout;
 		}
@@ -143,7 +112,7 @@ class DrawBuffer{
 		}
 
 		unsigned int getSize(){
-			return VertexCount * vertexdata[0].ElementCount() * sizeof(type);
+			return VertexCount * VertexLength * sizeof(type);
 		}
 
 		unsigned int getVertexCount(){

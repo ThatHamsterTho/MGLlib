@@ -3,7 +3,7 @@
 namespace MGLlib { 
 
 Camera::Camera(std::array<float, 3> pos, std::array<float, 3> lookat)
-    : FOV(90), aspectratio(1.0f), Zplane({0.1f, 20.0f})   {
+    : FOV(70), aspectratio(1.0f), Zplane({0.1f, 20.0f})   {
     SetUp({0, 1, 0});
     Position(pos);
     Lookat(lookat);
