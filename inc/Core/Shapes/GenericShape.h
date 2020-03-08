@@ -60,7 +60,8 @@ class GenericShape
 	unsigned int VertexCount;	// how many vertexes in the buffer
 
 	bool use_texture = false;
-	bool change_color_on_render = true;
+	bool CHcolor_on_render = true;
+	bool CHtexture_on_render = true;
 
 protected:
 	ShapeType ST;
@@ -72,6 +73,7 @@ protected:
 	glm::vec3 Position = glm::vec3(0.0f);
 
 	void GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
+	std::vector<unsigned int> GenerateIndexBuffer(ShapeType ST, unsigned int VertexCount);
 
 	public:
 		//! @brief takes vector of points, layout should describe the layout of 1 vector
@@ -99,9 +101,10 @@ protected:
 		//! @brief Sets the "SetColor" function, usefull when using custom shaders
 		//! @remark this function should accept RGBA values between 0.0 and 1.0
 		void SetSetColorFunc(SetColorFunc SCF);
-		//! @brief When turned on the shape uses the color of last drawn shape
-		void change_shader_color_on_render(bool v){this->change_color_on_render = v;}
-
+		//! @brief When turned off the shape uses the color of last drawn shape
+		void change_color_on_render(bool v){this->CHcolor_on_render = v;}
+		//! @brief When turned off the shape uses the texture of the last drawn shape
+		void change_texture_on_render(bool v){this->CHtexture_on_render = v;}
 		//! @brief Sets the texture of the shape
 		//! @remark When using a custom shader disable the UseDefaultShader
 		//! @remark Or disable it globally by using UseDefaultShader()

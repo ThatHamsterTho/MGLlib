@@ -56,45 +56,7 @@ void ShapeHandler::Draw(GenericShape* shape, void (*DrawFunc)(void)){
 
 void ShapeHandler::Draw(Shape* shape, void (*DrawFunc)(void)){
 	shape->UpdateData();
-	
-	if(_3Drendering){
-		if(cam->CheckUpdated()){
-			SetProjectionView();
-		}
-	}
-	shader->Bind();
-	if(DrawFunc){
-		DrawFunc();
-	}
-	glm::mat4 mvp = shape->GetModelMat();
-	if(_3Drendering){
-		mvp = vp * shape->GetModelMat();
-	}
-	
-	shape->GetShader()->SetuniformMat4f("u_MVP", mvp);
-	shape->Draw();
-}
-
-void ShapeHandler::Draw(Cube* cube, void (*DrawFunc)(void)){
-	cube->UpdateData();
-	
-	
-	if(_3Drendering){
-		if(cam->CheckUpdated()){
-			SetProjectionView();
-		}
-	}
-	shader->Bind();
-	if(DrawFunc){
-		DrawFunc();
-	}
-
-	glm::mat4 mvp = cube->GetModelMat();
-	if(_3Drendering){
-		mvp = vp * cube->GetModelMat();
-	}
-	cube->GetShader()->SetuniformMat4f("u_MVP", mvp);
-	cube->Draw();	
+	Draw(reinterpret_cast<GenericShape*>(shape), DrawFunc);
 }
 
 void ShapeHandler::SetDefaultShader(Shader* shader){

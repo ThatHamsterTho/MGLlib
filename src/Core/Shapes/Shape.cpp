@@ -1,23 +1,29 @@
 #include "Shape.h"
 
 namespace MGLlib {
-	Shape::Shape(ShapeType ST, Shader* shader) : GenericShape(shader, ST){
+	Shape::Shape(ShapeType ST, Shader* shader) 
+		: GenericShape(shader, ST){
 		this->ST = ST;
 		this->shader = shader;
+		unsigned int layout[3] = {3, 2, 4};
+		this->GAShape->SetVertexLayout(layout, 3);
 	}
-	Shape::Shape(ShapeType ST, Shader* shader, GLFWwindow* window) : GenericShape(shader, ST){
+	Shape::Shape(ShapeType ST, Shader* shader, GLFWwindow* window) : GenericShape(shader, ST, {0.0f}, {3, 2, 4}){
 		this->ST = ST;
 		this->shader = shader;
 		this->window = window;
 	}
 	Shape::~Shape(){}
 
-	void Shape::GenColors(){
+	void Shape::UpdateVectorBuffers(){
 		for(unsigned int i = this->ColorPerVector.size(); i < VertexCount; i++){
 			ColorPerVector.push_back({1.0f, 1.0f, 1.0f, 1.0f});
 		}
 		for(unsigned int i = this->TextureCoords.size(); i < VertexCount; i++){
-			TextureCoords.push_back({0.0f, 0.0f});
+			TextureCoords.push_back({1.0f, 1.0f});
+		}
+		for(unsigned int i = this->Model.size(); i < VertexCount; i++){
+			Model.push_back({0.0f, 0.0f, 0.0f});
 		}
 		DataChanged = true;
 	}
@@ -48,35 +54,34 @@ namespace MGLlib {
 	}
 
 	void Shape::SetModel3D(std::vector<float> Model){
-		std::vector<std::array<float, 3>> NDCVertexBuffer;
+		//std::vector<std::array<float, 3>> NDCVertexBuffer;
 		int dim[3];
 		glfwGetWindowSize(this->window, &dim[0], &dim[1]);
 		dim[2] = dim[0];
 		UpdateVertexCount(Model, 3);
+		UpdateVectorBuffers();
 		for(unsigned int i = 0; i < Model.size() / 3; i++){
-			NDCVertexBuffer.push_back({0.0f, 0.0f, 0.0f});
+			//NDCVertexBuffer.push_back({0.0f, 0.0f, 0.0f});
 			for(unsigned int j = 0; j < 3; j++){
 				if(Model[i * 3 + j]){
-					NDCVertexBuffer[i][j] = (2*(Model[i * 3 + j])/((float)dim[j]));
+					this->Model[i][j] = (2*(Model[i * 3 + j])/((float)dim[j]));
 				}
 				else{
-					NDCVertexBuffer[i][j] = 0.0f;
+					this->Model[i][j] = 0.0f;
 				}
 			}
 		}
-		this->Model = NDCVertexBuffer;
-		GenColors();
+		//this->Model = NDCVertexBuffer;
 	}
 
 	void Shape::SetTextureCoord(std::vector<float> TextureCoords){
-		std::vector<std::array<float, 2>> TextureBuffer;
 		UpdateVertexCount(TextureCoords, 2);
+		UpdateVectorBuffers();
 		for(unsigned int i = 0; i < TextureCoords.size() / 2; i++){
 			for(unsigned int j = 0; j < 2; j++){
-				TextureBuffer[i][j] = TextureCoords[i * 2 + j];
+				this->TextureCoords[i][j] = TextureCoords[i * 2 + j];
 			}
 		}
-		this->TextureCoords = TextureBuffer;
 		DataChanged = true;
 	}
 	void Shape::SetColor(std::array<float, 4> Color){
@@ -139,27 +144,39 @@ namespace MGLlib {
 			}
 		}
 		DataChanged = true;
-		GenColors();
+		UpdateVectorBuffers();
 	}
 
 	void Shape::SetData(void){
-		delete GAShape;
-		std::vector<float> VBO;
+		float* VertexDataArray = new float[VertexCount*9];
 		for(unsigned int i = 0; i < VertexCount; i++){
 			// push model
 			for(int M = 0; M < 3; M++){
-				VBO.push_back(Model[i][M]);
+				VertexDataArray[i*9+M] = (Model[i][M]);
 			}
 			// push texture
 			for(int T = 0; T < 2; T++){
-				VBO.push_back(TextureCoords[i][T]);
+				VertexDataArray[i*9+T+3] = (TextureCoords[i][T]);
 			}
 			// push color
 			for(int C = 0; C < 4; C++){
-				VBO.push_back(ColorPerVector[i][C]);
+				VertexDataArray[i*9+C+5] = (ColorPerVector[i][C]);
 			}
 		}
-		GenerateGAS(shader, ST, VBO, {3, 2, 4});
+		
+		// settings GenericAbstractShape VBO;
+		this->GAShape->SetVertexBuffer(VertexDataArray, sizeof(float) * VertexCount * 9);
+		delete [] VertexDataArray;
+
+		// settings GenericAbstractShape IBO;
+		std::vector<unsigned int> IndexBuffer = GenerateIndexBuffer(ST, VertexCount);
+		unsigned int *IndexBufferData = new unsigned int[IndexBuffer.size()];
+		for(unsigned int i = 0; i < IndexBuffer.size(); i++){
+			IndexBufferData[i] = IndexBuffer[i];
+		}
+		this->GAShape->SetIndexBuffer(IndexBufferData, IndexBuffer.size());
+		delete [] IndexBufferData;
+		//GenerateGAS(shader, ST, VBO, {3, 2, 4});
 	}
 
 	void Shape::UpdateData(void){

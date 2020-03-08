@@ -27,6 +27,7 @@ class GenericAbstractShape{
 		void SetTexture(Texture* texture, int slot = 0, bool UseDefaultShader = true);
 		void DisableTexture(void);
 		void EnableTexture(void);
+		void BindTexture(void);
 		void SetIndexBuffer(unsigned int* IndexBuffer, unsigned int count);
 		void SetVertexBuffer(const void* data, unsigned int size);
 		void SetVertexLayout(unsigned int* layout, unsigned int count);
@@ -40,6 +41,8 @@ class GenericAbstractShape{
 		Primitives::VertexBufferLayout* Vlayout = nullptr;
 		Primitives::IndexBufferObject* 	IB		= nullptr;
 		Texture* 						texture = nullptr;
+		unsigned int 					TextureSlot = 0;
+		bool 							UseDefaultShader = false;
 		Shader*							shader	= nullptr;
 		// used for when no IBO is given
 		unsigned int					Vertices;
@@ -50,9 +53,13 @@ class GenericAbstractShape{
 // template implementation
 
 template<typename type>
-GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, unsigned int DrawType){
+GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, unsigned int DrawType)
+	: VA(new Primitives::VertexArrayObject()), DrawType(DrawType)
+{
+	float data[] = {0.0f};
+	VB = new Primitives::VertexBufferObject(data, sizeof(float));
+	Vlayout = new Primitives::VertexBufferLayout();
 	this->shader = shader;
-	this->DrawType = DrawType;
 }
 
 template<typename type>
@@ -70,7 +77,6 @@ GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, Primitives::Dra
 	: VA(new Primitives::VertexArrayObject()), DrawType(DrawType)
 {	
 	this->shader = shader;
-
 	VB = new Primitives::VertexBufferObject(data->GetData(), data->getSize());
 	IB = new Primitives::IndexBufferObject(data->GetIBO(), data->GetIBOSize());
 	Vlayout = new Primitives::VertexBufferLayout();
@@ -92,12 +98,8 @@ GenericAbstractShape<type>::~GenericAbstractShape(){
 template<typename type>
 void GenericAbstractShape<type>::SetTexture(Texture* texture, int slot, bool UseDefaultShader){
 	this->texture = texture;
-	shader->Bind();
-	this->texture->Bind(slot);
-	if(UseDefaultShader){
-		shader->SetUniform1i("u_Texture", slot);
-		shader->SetUniform1i("u_Use_Texture", true); // enable textures
-	}
+	this->TextureSlot = slot;
+	this->UseDefaultShader = UseDefaultShader;
 }
 
 template<typename type>
@@ -114,6 +116,16 @@ void GenericAbstractShape<type>::EnableTexture(void){
 }
 
 template<typename type>
+void GenericAbstractShape<type>::BindTexture(void){
+	shader->Bind();
+	this->texture->Bind(TextureSlot);
+	if(UseDefaultShader){
+		shader->SetUniform1i("u_Texture", TextureSlot);
+		shader->SetUniform1i("u_Use_Texture", true); // enable textures
+	}
+}
+
+template<typename type>
 void GenericAbstractShape<type>::SetIndexBuffer(unsigned int* IndexBuffer, unsigned int count){
 	if(IB){
 		delete IB;
@@ -125,6 +137,10 @@ void GenericAbstractShape<type>::SetVertexBuffer(const void* data, unsigned int 
 	if(VB){
 		delete VB;
 	}
+	if(VA){
+		delete VA;
+	}
+	VA = new Primitives::VertexArrayObject();
 	VB = new Primitives::VertexBufferObject(data, size);
 	VA->AddBuffer(VB, Vlayout);
 }
@@ -134,6 +150,10 @@ void GenericAbstractShape<type>::SetVertexLayout(unsigned int* layout, unsigned 
 	if(Vlayout){
 		delete Vlayout;
 	}
+	if(VA){
+		delete VA;
+	}
+	VA = new Primitives::VertexArrayObject();
 	Vlayout = new Primitives::VertexBufferLayout();
 	unsigned int* layoutlocal = layout;
 	for(unsigned int i = 0; i < count; i++){

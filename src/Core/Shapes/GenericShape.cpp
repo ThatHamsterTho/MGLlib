@@ -27,18 +27,7 @@ namespace MGLlib {
 
     bool GenericShape::v_UseDefaultShader = true;
 
-    void GenericShape::GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
-        this->ST = ST;
-        // error checking
-        if((ST >= __SHAPETYPECOUNT) || (ST < 0)){
-            pERROR("Unsupported Shapetype did you mean [MGL_CUSTOM]?");
-        }
-        VertexLength = 0;
-        for(unsigned int i = 0; i < VertexLayout.size(); i++){
-            VertexLength += VertexLayout[i];
-        }
-        // checking passed vertex count
-        VertexCount = VertexData.size()/VertexLength;
+    std::vector<unsigned int> GenericShape::GenerateIndexBuffer(ShapeType ST, unsigned int VertexCount){
         if(VertexCount < ShapeMap[ST].baseCount){
             pWARNING("Not enough Vertexes for Shapetype: %s, given: %d, needed: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount);
         }
@@ -67,6 +56,23 @@ namespace MGLlib {
                 }
             }
         }
+        return IndexBuffer;
+    }
+
+    void GenericShape::GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
+        this->ST = ST;
+        // error checking
+        if((ST >= __SHAPETYPECOUNT) || (ST < 0)){
+            pERROR("Unsupported Shapetype did you mean [MGL_CUSTOM]?");
+        }
+        VertexLength = 0;
+        for(unsigned int i = 0; i < VertexLayout.size(); i++){
+            VertexLength += VertexLayout[i];
+        }
+        // checking passed vertex count
+        VertexCount = VertexData.size()/VertexLength;
+        std::vector<unsigned int> IndexBuffer = GenerateIndexBuffer(ST, VertexCount);
+
         // Create Shape
         Primitives::DrawBuffer<float>* drawbuffer = new Primitives::DrawBuffer<float>(VertexData, IndexBuffer, VertexLayout);
         GAShape = new GenericAbstractShape<float>(shader, drawbuffer, ShapeMap[ST].GLtype);
@@ -88,13 +94,16 @@ namespace MGLlib {
 // member functions
 
     void GenericShape::Draw(void){
+        //printf("%d\n", use_texture);
         if(use_texture){
-            this->GAShape->EnableTexture();
+            if(CHtexture_on_render){
+                this->GAShape->BindTexture();
+            }
         }
         else{
             this->GAShape->DisableTexture();
         }
-        if(change_color_on_render){
+        if(CHcolor_on_render){
             SetColorNDC(this->color);
         }
         this->GAShape->Draw();

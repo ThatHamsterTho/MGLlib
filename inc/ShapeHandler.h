@@ -54,7 +54,6 @@ class ShapeHandler
 		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
 		void Draw(GenericShape* Shape, void (*DrawFunc)(void) = nullptr);
 		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
-		void Draw(Cube* Shape, void (*DrawFunc)(void) = nullptr);
 
 		Camera* GetCamera(void);
 		Shader* GetGlobalShader(void);

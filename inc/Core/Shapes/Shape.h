@@ -20,7 +20,7 @@ class Shape : public GenericShape
 	GLFWwindow* window;
 	Shader* shader;
 
-	void GenColors();
+	void UpdateVectorBuffers();
 	void UpdateVertexCount(std::vector<float> vector, int VertexSize);
 	void SetData(void);
 
