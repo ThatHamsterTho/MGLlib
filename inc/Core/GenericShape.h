@@ -9,11 +9,18 @@
 
 namespace MGLlib{
 
-	struct Color {
+	struct ColorNDC {
 		float R = 1.0f;
 		float G = 1.0f;
 		float B = 1.0f;
 		float A = 1.0f;
+	};
+
+	struct Color {
+		int R = 255;
+		int G = 255;
+		int B = 255;
+		int A = 255;
 	};
 
 	enum ShapeType {
@@ -32,8 +39,8 @@ namespace MGLlib{
 		__SHAPETYPECOUNT
 	};
 
-typedef void (*SetColorFunc)(Primitives::Shader* shader, Color RGBA);
-void SetColorDefault(Primitives::Shader* shader, Color RGBA);
+typedef void (*SetColorFunc)(Shader* shader, ColorNDC RGBA);
+void SetColorDefault(Shader* shader, ColorNDC RGBA);
 
 class GenericShape
 {
@@ -62,7 +69,7 @@ class GenericShape
 	public:
 		//! @brief takes vector of points, layout should describe the layout of 1 vector
 		//! @remark VertexLayout example: vector {X, Y, Z, R, G, B, A} layout : {3, 4}
-		GenericShape(Primitives::Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
+		GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
 		~GenericShape();
 
 		//! @brief returns the name of the shape
@@ -75,14 +82,19 @@ class GenericShape
 		//! @brief sets scale of shape
 		void Scale(float x, float y, float z = 1.0f);
 		//! @brief Sets the color of the model
+		//! @remark Color value between 0.0 and 1.0
+		void SetColorNDC(ColorNDC RGBA);
+		//! @brief Sets the color of the model
+		//! @remark Color value between 0 and 255
 		void SetColor(Color RGBA);
 		//! @brief Sets the "SetColor" function, usefull when using custom shaders
+		//! @remark this function should accept RGBA values between 0.0 and 1.0
 		void SetSetColorFunc(SetColorFunc SCF);
 
 		//! @brief Sets the texture of the shape
 		//! @remark When using a custom shader disable the UseDefaultShader
 		//! @remark Or disable it globally by using UseDefaultShader()
-		void SetTexture(Primitives::Texture* texture, int slot = 0, bool UseDefaultShader = v_UseDefaultShader);
+		void SetTexture(Texture* texture, int slot = 0, bool UseDefaultShader = v_UseDefaultShader);
 		//! @brief Sets the default value for all GenericShape SetTexture function's "UseDefaultShader" parameter
 		void UseDefaultShader(bool v);
 		//! @brief Disables the texture
@@ -103,7 +115,7 @@ class GenericShape
 		//! @remark Call this function when using a [MGL_CUSTOM] with a special indexbufferobject;
 		void SetIndexBuffer(std::vector<unsigned int> IndexBuffer);
 
-		Primitives::Shader* GetShader(void);
+		Shader* GetShader(void);
 };
 
 }	// namespace

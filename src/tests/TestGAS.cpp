@@ -14,7 +14,7 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 	width = 1.0f;
 	height = 1.0f;
 
-/*
+
 	std::vector<float> vbo = {
 		// 3D position, 			Texture coord	Color coord
 		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,
@@ -22,7 +22,7 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 		width, height, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
 		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
 	};
-*/
+/*
 	std::vector<float> vbo = {
 		// 3D position,
 		 0.0f,   0.0f, 0.0f,
@@ -30,11 +30,11 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 		width, height, 0.0f,
 		 0.0f, height, 0.0f,
 	};
-
+*/
 	shader = new Shader("res/shaders/SimpleShader.glsl");
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	GShape = new GenericShape(shader, MGL_QUADS, vbo);
+	GShape = new GenericShape(shader, MGL_QUADS, vbo, {3, 2, 4});
 
 	cam = new Camera({1.0, 1.0, 3.5}, {1.0, 1.0, 0.0});
 	cam->SetFOV(90);
@@ -67,7 +67,7 @@ void TestGAS::onRender()
 	GShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
 	GShape->Draw();
 	
-	GShape->SetColor({m_Color[0], 0.0f, 0.0f});
+	//GShape->SetColor({m_Color[0], 0.0f, 0.0f});
 	GShape->SetPosition(translation2);
 
 	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() *  GShape->GetModelMat();

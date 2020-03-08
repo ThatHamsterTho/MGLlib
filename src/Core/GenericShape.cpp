@@ -6,8 +6,7 @@
 namespace MGLlib {
 
 // non member functions
-    void SetColorDefault(Primitives::Shader* shader, Color RGBA){
-        shader->Bind();
+    void SetColorDefault(Shader* shader, ColorNDC RGBA){
         shader->SetUniform4f("u_Color", RGBA.R, RGBA.G, RGBA.B, RGBA.A);
     }
 
@@ -30,7 +29,7 @@ namespace MGLlib {
 
 
 // constructor
-    GenericShape::GenericShape(Primitives::Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
+    GenericShape::GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
         this->ST = ST;
         // error checking
         if((ST >= __SHAPETYPECOUNT) || (ST < 0)){
@@ -90,13 +89,21 @@ namespace MGLlib {
         GAShape->GetShader()->Bind();
         this->GAShape->SetScale(x, y, z);
     }
-    void GenericShape::SetColor(Color RGBA){
+    void GenericShape::SetColorNDC(ColorNDC RGBA){
         GAShape->GetShader()->Bind();
         this->SCF(this->GAShape->GetShader(), RGBA);
     }
 
+    void GenericShape::SetColor(Color RGBA){
+        RGBA.R /= 255;
+        RGBA.G /= 255;
+        RGBA.B /= 255;
+        RGBA.A /= 255;
+        SetColorNDC({(float)RGBA.R, (float)RGBA.G, (float)RGBA.B, (float)RGBA.A});
+    }
+
 // texture methods
-    void GenericShape::SetTexture(Primitives::Texture* texture, int slot, bool UseDefaultShader){
+    void GenericShape::SetTexture(Texture* texture, int slot, bool UseDefaultShader){
         this->GAShape->SetTexture(texture, slot, UseDefaultShader);
     }
     void GenericShape::UseDefaultShader(bool v){
@@ -155,7 +162,7 @@ namespace MGLlib {
         return this->ShapeMap[ST].ShapeName;
     }
 
-    Primitives::Shader* GenericShape::GetShader(void){
+    Shader* GenericShape::GetShader(void){
         return this->GAShape->GetShader();
     }
 }

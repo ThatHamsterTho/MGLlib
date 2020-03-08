@@ -8,8 +8,8 @@ using namespace Primitives;
 namespace test {
 TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 {
-	width = 1.0f;
-	height = 1.0f;
+	width = 400.0f;
+	height = 400.0f;
 
 /*
 	std::vector<float> vbo = {
@@ -20,12 +20,21 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
 	};
 */
+
 	std::vector<float> vbo = {
-		// 3D position,
-		 0.0f,   0.0f, 0.0f,
-		width, 	 0.0f, 0.0f,
-		width, height, 0.0f,
-		 0.0f, height, 0.0f,
+		// 3D position, 			Texture coord	Color coord
+		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		255.0f,   0.0f,   0.0f, 128.0f,
+		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		  0.0f, 255.0f,   0.0f, 128.0f,	
+		width, height, 0.0f,		1.0f, 1.0f,		  0.0f,   0.0f, 255.0f,	128.0f,
+		 0.0f, height, 0.0f,		0.0f, 1.0f,		255.0f, 255.0f, 255.0f,	128.0f
+	};
+
+	std::vector<float> vbo2 = {
+		// 3D position, 			Texture coord	Color coord
+		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 0.5f,
+		 1.0f, 	 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f, 0.5f,
+		 1.0f,   1.0f, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 0.5f,
+		 0.0f,   1.0f, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 0.5f
 	};
 
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -33,15 +42,17 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	texture = new Texture("res/textures/gunsalpha.png");
 	//GShape->SetTexture(texture);
 
-	scale = 1.5f;
+	scale = 1.0f;
 
-	translation1 = glm::vec3(0, 0, 0);
-	translation2 = glm::vec3(-1.0, -1.0, 0);
-	translation3 = glm::vec3(-0.5, -0.5, -0.1);
+	translation1 = glm::vec3(-1.0, -1.0,  0.0);
+	translation2 = glm::vec3( 0.0,  0.0,  0.0);
+	translation3 = glm::vec3(-0.5, -0.5,  0.0);
 	//SH = window->CreateShapeNDC(MGL_QUADS, vbo);
 
-	shader = new Shader("res/shaders/SimpleShader.glsl");
-	SH = window->CreateShapeNDC(MGL_QUADS, vbo);
+	//shader = new Shader("res/shaders/SimpleShader.glsl");
+	//SH = window->CreateShapeNDC(MGL_QUADS, vbo2, {3, 2, 4});
+	SH = window->CreateShape(MGL_QUADS, vbo, {NDC_XYZ, 2, NDC_RGBA});
+	SH->SetTexture(texture);
 }
 TestShapeHandler::~TestShapeHandler() {
 	delete texture;
@@ -52,17 +63,17 @@ void TestShapeHandler::onUpdate() {}
 
 void TestShapeHandler::onRender()
 {	
-	//SH->Scale(scale, scale, scale);
+	SH->Scale(scale, scale, scale);
 
 	SH->SetPosition(translation1);
 	window->Draw(SH);
 	
-	SH->SetPosition(translation3);
-	SH->SetColor({0.0f, 1.0f, 0.0f});
+	SH->SetPosition(translation2);
+	//SH->SetColor({0, 255, 0});
 	window->Draw(SH);
 
-	SH->SetColor({1.0f, 0.0f, 0.0f});
-	SH->SetPosition(translation2);
+	//SH->SetColor({255, 0, 0});
+	SH->SetPosition(translation3);
 	window->Draw(SH);
 	
 	// change color
@@ -84,7 +95,7 @@ void TestShapeHandler::onImGuiRender()
 	ImGui::SliderFloat3("Translation1", &translation1.x, -1.0f, 1.0f);
 	ImGui::SliderFloat3("Translation2", &translation2.x, -1.0f, 1.0f);
 	ImGui::SliderFloat("Scale", &scale, 0.0f, 10.0f);
-	ImGui::SliderFloat3("Camera", &window->GetCamera()->getPosition()[0], 0.61f, 0.62f);
+	ImGui::SliderFloat3("Camera", &window->GetCamera()->getPosition()[0], -5.0f, 5.0f);
 	ImGui::SliderFloat3("Lookat", &window->GetCamera()->getLookat()[0], -5.0f, 5.0f);
 	ImGui::SliderFloat("Perspective FOV", &FOV, 0.0f, 180.0f);
 	ImGui::SliderFloat2("Perspective Z", &Z[0], 0.0f, 10.0f);

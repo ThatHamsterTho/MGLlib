@@ -51,6 +51,7 @@ Window::Window(const char* title, int width, int height, int offsetx, int offset
 	glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
 
 	InitHandler(window);
+	//Enableortho();
 }
 Window::~Window(){}
 
@@ -70,6 +71,8 @@ void Window::enable3D(void){
 	// Use depth buffering for hidden surface elimination.
 	glEnable(GL_DEPTH_TEST);	
 	glDepthFunc(GL_LEQUAL);
+	Enable3Drender();
+	//Disableortho();
 }
 void Window::enableAA(void){
 	#ifdef SHOWINITINFO
@@ -98,6 +101,12 @@ void Window::enableAlpha(void){
 	// enable alpha
 	GLCall(glEnable(GL_BLEND));
 	GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+	// dual depth peeling,,, hmmm interresting, but out of scope...
+	// http://developer.download.nvidia.com/SDK/10/opengl/src/dual_depth_peeling/doc/DualDepthPeeling.pdf
+
+	//GLCall(glBlendEquation(GL_FUNC_ADD)); 
+	//GLCall(glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE, GL_ZERO, GL_ONE_MINUS_SRC_ALPHA)); 
 }
 void Window::enableVsync(void){
 	#ifdef SHOWINITINFO

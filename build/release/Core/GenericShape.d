@@ -6,8 +6,8 @@ build/release/Core/GenericShape.o: src/Core/GenericShape.cpp \
  inc/Core/Primitives/VertexArrayObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
- inc/Core/Primitives/IndexBufferObject.hpp \
- inc/Core/Primitives/Texture.hpp inc/Core/Primitives/Shader.hpp
+ inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Texture.hpp \
+ inc/Core/Shader.hpp
 
 inc/Core/GenericShape.h:
 
@@ -31,6 +31,6 @@ inc/Core/Primitives/VertexBufferObject.hpp:
 
 inc/Core/Primitives/IndexBufferObject.hpp:
 
-inc/Core/Primitives/Texture.hpp:
+inc/Core/Texture.hpp:
 
-inc/Core/Primitives/Shader.hpp:
+inc/Core/Shader.hpp:

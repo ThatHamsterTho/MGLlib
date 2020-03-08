@@ -96,7 +96,7 @@ class DrawBuffer{
 		void SetData(const std::vector<type> array){
 			if((array.size() % VertexLength)){
 				#ifdef VBLAYOUTWARNING
-					pWARNING("[WARNING]: Vertex Data does not match given layout of %d values", VertexLength);
+					pWARNING("Vertex Data does not match given layout of %d values", VertexLength);
 				#endif
 			}
 			for(unsigned int i = 0; i < array.size(); i++){

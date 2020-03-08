@@ -3,8 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-namespace MGLlib { 
-namespace Primitives { 
+namespace MGLlib {
 
 Texture::Texture(const std::string& path)
     : m_RendererID(0), m_FilePath(path), m_LocalBuffer(nullptr), m_Width(0), m_Height(0), m_BPP(0) 
@@ -53,4 +52,4 @@ void Texture::Unbind() const{
     GLCall(glBindTexture(GL_TEXTURE_2D, 0));
 }
 
-}} // namespace
+} // namespace

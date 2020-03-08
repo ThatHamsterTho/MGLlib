@@ -40,7 +40,7 @@ namespace test {
 			Primitives::VertexArrayObject* va;
 			Primitives::IndexBufferObject* ib;
 			
-			Primitives::Shader* shader;
-			Primitives::Texture* texture;
+			Shader* shader;
+			Texture* texture;
 	};
 }}

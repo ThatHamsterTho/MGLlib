@@ -53,11 +53,11 @@ namespace test {
 		// NOTE: MULTIPLY IN THIS ORDER OR IT BREAKS!
 
 		// Create and compile our GLSL program from the shaders
-		shader = new Primitives::Shader("res/shaders/SimpleShader.glsl");
+		shader = new Shader("res/shaders/SimpleShader.glsl");
 		shader->Bind();
 		shader->SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 0.5f);
 
-		texture = new Primitives::Texture("res/textures/gunsalpha.png");
+		texture = new Texture("res/textures/gunsalpha.png");
 		texture->Bind(0);	// bind slot should match u_Texture slot
 		
 		shader->SetUniform1i("u_Texture", 0);

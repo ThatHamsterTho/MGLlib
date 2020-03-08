@@ -26,6 +26,7 @@ class Camera
 		void UpdateAspectRatio(float width, float height);
 		void UpdatePerspective(void);
 		void UpdateCamera(void);
+		bool CheckUpdated(void);
 
 		float* getPosition(void) { return pos; }
 		float* getLookat(void) { return lookat; }
@@ -38,6 +39,7 @@ class Camera
 		float FOV;
 		float aspectratio;
 		std::array<float, 2> Zplane;
+		bool updated = true;
 
 };
 

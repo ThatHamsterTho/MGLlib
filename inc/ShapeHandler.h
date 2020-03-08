@@ -10,25 +10,36 @@
 
 namespace MGLlib {
 
-typedef GenericShape Shape;
-
 // Determines the conversion based on which length
-enum C2NDC {
-	NDC_NOT,
-	NDC_WIDTH,
-	NDC_HEIGHT
+enum C2NDC : int {
+	NDC_XY		= -1,
+	NDC_XYZ		= -2,
+	NDC_RGB 	= -3,
+	NDC_RGBA 	= -4,
 };
 
 class ShapeHandler
 {
+	private:
+		glm::mat4 vp;
+
+		void SetProjectionView(void);
+
 	protected:
-		Camera *cam;
-		Primitives::Shader* shader;
-		GLFWwindow* window;
+		Camera*		cam		= nullptr;
+		Shader*		shader	= nullptr;
+		GLFWwindow* window	= nullptr;
+		bool		_3Drendering = false;
+		bool		_OrthoRender = false;
 
 	public:
 		ShapeHandler();
 		~ShapeHandler();
+
+		void Enable3Drender(void);
+		void Disable3Drender(void);
+		void Enableortho(void);
+		void Disableortho(void);
 		
 		void InitHandler(GLFWwindow* window);
 
@@ -36,16 +47,16 @@ class ShapeHandler
 		Shape* CreateShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout = {3});
 
 		//! @brief creates a Shape based on coordinates between pixels, origin is at the bottom left
-		//! @param VertexLayout boolean represents if that part of the layout should be normalized
-		Shape* CreateShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<std::pair<unsigned int, C2NDC>> VertexLayout = {{3, NDC_WIDTH}});
+		//! @param VertexLayout pass a value of type "enum C2NDC" or a positive int value
+		Shape* CreateShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout = {NDC_XYZ});
 
-		void SetDefaultShader(Primitives::Shader* shader);
+		void SetDefaultShader(Shader* shader);
 		//! @brief draws the shape
 		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
 		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
 
 		Camera* GetCamera(void);
-		Primitives::Shader* GetGlobalShader(void);
+		Shader* GetGlobalShader(void);
 };
 
 } // namespace

@@ -44,6 +44,14 @@ void Camera::UpdateCamera(void){
         glm::vec3(this->pos[0], this->pos[1], this->pos[2]),
         glm::vec3(this->lookat[0], this->lookat[1], this->lookat[2]), 
         glm::vec3(this->up[0], this->up[1], this->up[2]));
+    updated = true;
+}
+
+//! @brief turns back if camera has updated since last read
+bool Camera::CheckUpdated(void){
+    bool t = this->updated;
+    this->updated = false;
+    return t;
 }
 
 void Camera::UpdateAspectRatio(float width, float height){

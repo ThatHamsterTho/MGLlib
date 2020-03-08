@@ -4,8 +4,7 @@
 #include <string>
 #include "Debugger.hpp"
 
-namespace MGLlib { 
-namespace Primitives { 
+namespace MGLlib {
 
 class Texture
 {
@@ -26,5 +25,5 @@ public:
 	inline int GetHeight() const { return m_Height; }
 };
 
-}} // namespace
+} // namespace
 #endif

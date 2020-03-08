@@ -45,8 +45,8 @@ namespace MGLlib {
 
 				GenericShape* GShape;
 				
-				Primitives::Shader* shader;
-				Primitives::Texture* texture;
+				Shader* shader;
+				Texture* texture;
 		};
 	}
 }

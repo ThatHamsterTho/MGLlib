@@ -7,7 +7,6 @@
 #include <glm/glm.hpp>
 
 namespace MGLlib { 
-namespace Primitives { 
 
 class Shader 
 {
@@ -79,5 +78,5 @@ public:
     void SetuniformMat4f(const std::string& name, glm::mat4 matrix);
 };
 
-}} // namespace
+} // namespace
 #endif

@@ -47,6 +47,7 @@
 		"numeric": "cpp",
 		"map": "cpp",
 		"cstring": "cpp",
-		"iomanip": "cpp"
+		"iomanip": "cpp",
+		"variant": "cpp"
 	}
 }

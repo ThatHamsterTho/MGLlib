@@ -7,8 +7,7 @@
 #include "Shader.hpp"
 #include "Debugger.hpp"
 
-namespace MGLlib { 
-namespace Primitives { 
+namespace MGLlib {
 
 void Shader::Bind() const{
 	GLCall(glUseProgram(m_RendererID));
@@ -275,4 +274,4 @@ void Shader::SetuniformMat4f(const std::string& name, glm::mat4 matrix){
 	GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 }
 
-}} // namespace
+} // namespace
