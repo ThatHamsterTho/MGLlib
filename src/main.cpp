@@ -38,7 +38,6 @@ int main(){
 	TestMenu->AddTest<test::TestBasicTexture>("TextureTest");
 
 	window->SetCallback(render);
-
 	window->Show();
 
 	IGH->Exit();

@@ -31,7 +31,6 @@ Window::Window(const char* title, int width, int height, int offsetx, int offset
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetWindowPos(window, offsetx, offsety);
-	
 
 	// Initialize GLEW
 	glewExperimental = true; // Needed for core profile
