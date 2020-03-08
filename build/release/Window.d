@@ -8,7 +8,7 @@ build/release/Window.o: src/Window.cpp inc/Window.h inc/ShapeHandler.h \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Texture.hpp \
- inc/Core/Shader.hpp
+ inc/Core/Shader.hpp inc/Core/Shape.h inc/Core/GenericShape.h
 
 inc/Window.h:
 
@@ -45,3 +45,7 @@ inc/Core/Primitives/IndexBufferObject.hpp:
 inc/Core/Texture.hpp:
 
 inc/Core/Shader.hpp:
+
+inc/Core/Shape.h:
+
+inc/Core/GenericShape.h:

@@ -24,11 +24,11 @@ void ShapeHandler::Disable3Drender(void){this->_3Drendering = false;}
 void ShapeHandler::Enableortho(void){this->_OrthoRender = true;}
 void ShapeHandler::Disableortho(void){this->_OrthoRender = false;}
 
-Shape* ShapeHandler::CreateShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout){
+GenericShape* ShapeHandler::CreateGenShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout){
 	return new GenericShape(this->shader, ST, VertexBuffer, VertexLayout);
 }
 
-Shape* ShapeHandler::CreateShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout){
+GenericShape* ShapeHandler::CreateGenShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout){
 	auto getPosLayoutVal = [](int VertexLayoutI)->unsigned int {
 		if(VertexLayoutI < 0){
 			switch (VertexLayoutI)
@@ -81,22 +81,42 @@ Shape* ShapeHandler::CreateShape(ShapeType ST, std::vector<float> VertexBuffer, 
 				switch(VertexLayout[i]){
 					case NDC_XY:
 						for(unsigned int j = 0; j < 2; j++){
-							NDCVertexBuffer.push_back(2*(VertexBuffer[v * VertexLength + VertexBase + j])/((float)dim[j]));
+							if(VertexBuffer[v * VertexLength + VertexBase + j]){
+								NDCVertexBuffer.push_back(2*(VertexBuffer[v * VertexLength + VertexBase + j])/((float)dim[j]));
+							}
+							else{
+								NDCVertexBuffer.push_back(0.0f);
+							}
 						}
 						break;
 					case NDC_XYZ:
 						for(unsigned int j = 0; j < 3; j++){
-							NDCVertexBuffer.push_back(2*(VertexBuffer[v * VertexLength + VertexBase + j])/((float)dim[j]));
+							if(VertexBuffer[v * VertexLength + VertexBase + j]){
+								NDCVertexBuffer.push_back(2*(VertexBuffer[v * VertexLength + VertexBase + j])/((float)dim[j]));
+							}
+							else{
+								NDCVertexBuffer.push_back(0.0f);
+							}
 						}
 						break;
 					case NDC_RGB:
 						for(unsigned int j = 0; j < 3; j++){
-							NDCVertexBuffer.push_back((VertexBuffer[v * VertexLength + VertexBase + j])/(255));
+							if(VertexBuffer[v * VertexLength + VertexBase + j]){
+								NDCVertexBuffer.push_back((VertexBuffer[v * VertexLength + VertexBase + j])/(255));
+							}
+							else{
+								NDCVertexBuffer.push_back(0.0f);
+							}
 						}						
 						break;
 					case NDC_RGBA:
 						for(unsigned int j = 0; j < 4; j++){
-							NDCVertexBuffer.push_back((VertexBuffer[v * VertexLength + VertexBase + j])/(255));
+							if(VertexBuffer[v * VertexLength + VertexBase + j]){
+								NDCVertexBuffer.push_back((VertexBuffer[v * VertexLength + VertexBase + j])/(255));
+							}
+							else{
+								NDCVertexBuffer.push_back(0.0f);
+							}
 						}						
 						break;
 					default:
@@ -110,10 +130,12 @@ Shape* ShapeHandler::CreateShape(ShapeType ST, std::vector<float> VertexBuffer, 
 			VertexBase += NDCVertexLayout[i];
 		}
 	}
-	return CreateShapeNDC(ST, NDCVertexBuffer, NDCVertexLayout);
+	return CreateGenShapeNDC(ST, NDCVertexBuffer, NDCVertexLayout);
 }
 
-
+Shape* ShapeHandler::CreateShape(ShapeType ST){
+	return new Shape(ST, shader, window);
+}
 
 void ShapeHandler::SetProjectionView(void){
 	int width, height;
@@ -126,7 +148,28 @@ void ShapeHandler::SetProjectionView(void){
 	}
 }
 
+void ShapeHandler::Draw(GenericShape* shape, void (*DrawFunc)(void)){
+	if(_3Drendering){
+		if(cam->CheckUpdated()){
+			SetProjectionView();
+		}
+	}
+	shader->Bind();
+	if(DrawFunc){
+		DrawFunc();
+	}
+	glm::mat4 mvp = shape->GetModelMat();
+	if(_3Drendering){
+		mvp = vp * shape->GetModelMat();
+	}
+	
+	shape->GetShader()->SetuniformMat4f("u_MVP", mvp);
+	shape->Draw();
+}
+
 void ShapeHandler::Draw(Shape* shape, void (*DrawFunc)(void)){
+	shape->UpdateData();
+	
 	if(_3Drendering){
 		if(cam->CheckUpdated()){
 			SetProjectionView();

@@ -23,9 +23,9 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	std::vector<float> vbo = {
 		// 3D position, 			Texture coord	Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		255.0f,   0.0f,   0.0f, 128.0f,
-		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		  0.0f, 255.0f,   0.0f, 128.0f,	
-		width, height, 0.0f,		1.0f, 1.0f,		  0.0f,   0.0f, 255.0f,	128.0f,
+		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		255.0f, 255.0f, 255.0f, 128.0f,
+		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		255.0f, 255.0f, 255.0f, 128.0f,	
+		width, height, 0.0f,		1.0f, 1.0f,		255.0f, 255.0f, 255.0f,	128.0f,
 		 0.0f, height, 0.0f,		0.0f, 1.0f,		255.0f, 255.0f, 255.0f,	128.0f
 	};
 
@@ -47,33 +47,46 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	translation1 = glm::vec3(-1.0, -1.0,  0.0);
 	translation2 = glm::vec3( 0.0,  0.0,  0.0);
 	translation3 = glm::vec3(-0.5, -0.5,  0.0);
-	//SH = window->CreateShapeNDC(MGL_QUADS, vbo);
+	//GSH = window->CreateGenShapeNDC(MGL_QUADS, vbo);
 
 	//shader = new Shader("res/shaders/SimpleShader.glsl");
-	//SH = window->CreateShapeNDC(MGL_QUADS, vbo2, {3, 2, 4});
-	SH = window->CreateShape(MGL_QUADS, vbo, {NDC_XYZ, 2, NDC_RGBA});
-	SH->SetTexture(texture);
+	//GSH = window->CreateGenShapeNDC(MGL_QUADS, vbo2, {3, 2, 4});
+	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 2, NDC_RGBA});
+	GSH->SetTexture(texture);
+
+	SH = window->CreateShape(MGL_QUADS);
+	SH->SetModel3D({
+		  0.0f,    0.0f, 0.0f,
+		 width,    0.0f, 0.0f,
+		 width,  height, 0.0f,
+		  0.0f,  height, 0.0f
+	});
 }
 TestShapeHandler::~TestShapeHandler() {
 	delete texture;
-	delete SH;
+	delete GSH;
 }
 
 void TestShapeHandler::onUpdate() {}
 
 void TestShapeHandler::onRender()
 {	
-	SH->Scale(scale, scale, scale);
+	/*
+	GSH->Scale(scale, scale, scale);
 
-	SH->SetPosition(translation1);
-	window->Draw(SH);
+	GSH->SetPosition(translation1);
+	window->Draw(GSH);
 	
-	SH->SetPosition(translation2);
-	//SH->SetColor({0, 255, 0});
-	window->Draw(SH);
+	GSH->SetPosition(translation2);
+	//GSH->SetColor({0, 255, 0});
+	window->Draw(GSH);
+	*/
 
-	//SH->SetColor({255, 0, 0});
-	SH->SetPosition(translation3);
+	//GSH->SetColor({255, 0, 0});
+	GSH->SetPosition(translation3);
+	window->Draw(GSH);
+	
+	SH->SetPosition(translation1);
 	window->Draw(SH);
 	
 	// change color

@@ -9,7 +9,8 @@ build/release/tests/TestBasicTexture.o: src/tests/TestBasicTexture.cpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Texture.hpp \
- inc/Core/Shader.hpp inc/Core/Texture.hpp inc/external/ImGui/imgui.h \
+ inc/Core/Shader.hpp inc/Core/Shape.h inc/Core/GenericShape.h \
+ inc/Core/Texture.hpp inc/external/ImGui/imgui.h \
  inc/external/ImGui/imconfig.h
 
 inc/tests/TestBasicTexture.hpp:
@@ -51,6 +52,10 @@ inc/Core/Primitives/IndexBufferObject.hpp:
 inc/Core/Texture.hpp:
 
 inc/Core/Shader.hpp:
+
+inc/Core/Shape.h:
+
+inc/Core/GenericShape.h:
 
 inc/Core/Texture.hpp:
 

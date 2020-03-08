@@ -1,5 +1,4 @@
-build/release/ShapeHandler.o: src/ShapeHandler.cpp inc/ShapeHandler.h \
- inc/Core/Camera.h inc/Core/Debug/DefineDebug.h inc/Core/Shader.hpp \
+build/release/Core/Shape.o: src/Core/Shape.cpp inc/Core/Shape.h \
  inc/Core/GenericShape.h inc/Core/GenericAbstractShape.h \
  inc/Core/Primitives/DrawBuffer.hpp \
  inc/Core/Primitives/VertexBufferLayout.hpp inc/Core/Debug/Debugger.hpp \
@@ -8,15 +7,9 @@ build/release/ShapeHandler.o: src/ShapeHandler.cpp inc/ShapeHandler.h \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Texture.hpp \
- inc/Core/Shader.hpp inc/Core/Shape.h inc/Core/GenericShape.h
+ inc/Core/Shader.hpp
 
-inc/ShapeHandler.h:
-
-inc/Core/Camera.h:
-
-inc/Core/Debug/DefineDebug.h:
-
-inc/Core/Shader.hpp:
+inc/Core/Shape.h:
 
 inc/Core/GenericShape.h:
 
@@ -43,7 +36,3 @@ inc/Core/Primitives/IndexBufferObject.hpp:
 inc/Core/Texture.hpp:
 
 inc/Core/Shader.hpp:
-
-inc/Core/Shape.h:
-
-inc/Core/GenericShape.h:

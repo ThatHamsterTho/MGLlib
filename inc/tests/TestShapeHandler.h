@@ -44,9 +44,8 @@ namespace MGLlib {
 				glm::vec3 translation2;
 				glm::vec3 translation3;
 
-				GenericShape* SH;
-				Shader* shader;
-				
+				GenericShape* GSH;
+				Shape* SH;				
 				Texture* texture;
 		};
 	}

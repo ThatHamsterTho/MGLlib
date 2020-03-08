@@ -59,6 +59,9 @@ class GenericShape
 	unsigned int VertexLength;	// how many floats in 1 vertex
 	unsigned int VertexCount;	// how many vertexes in the buffer
 
+	bool use_texture = false;
+
+protected:
 	ShapeType ST;
 
 	GenericAbstractShape<float>* GAShape;
@@ -66,10 +69,14 @@ class GenericShape
 
 	glm::vec3 Position = glm::vec3(0.0f);
 
+	void GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
+
 	public:
 		//! @brief takes vector of points, layout should describe the layout of 1 vector
 		//! @remark VertexLayout example: vector {X, Y, Z, R, G, B, A} layout : {3, 4}
 		GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
+		//! @brief this constructor is used by the Shape class
+		GenericShape();
 		~GenericShape();
 
 		//! @brief returns the name of the shape
@@ -97,8 +104,10 @@ class GenericShape
 		void SetTexture(Texture* texture, int slot = 0, bool UseDefaultShader = v_UseDefaultShader);
 		//! @brief Sets the default value for all GenericShape SetTexture function's "UseDefaultShader" parameter
 		void UseDefaultShader(bool v);
-		//! @brief Disables the texture
+		//! @brief Disables the set texture
 		void DisableTexture();
+		//! @brief Enables the set texture
+		void EnableTexture();
 		
 		//! @brief Sets the position of the object relative to the world
 		void SetPosition(std::array<float, 3> position);

@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "Shader.hpp"		// for default shader
 #include "GenericShape.h"
+#include "Shape.h"
 
 namespace MGLlib {
 
@@ -44,15 +45,18 @@ class ShapeHandler
 		void InitHandler(GLFWwindow* window);
 
 		//! @brief creates a Shape based on coordinates between -1 and 1
-		Shape* CreateShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout = {3});
+		GenericShape* CreateGenShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout = {3});
 
 		//! @brief creates a Shape based on coordinates between pixels, origin is at the bottom left
 		//! @param VertexLayout pass a value of type "enum C2NDC" or a positive int value
-		Shape* CreateShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout = {NDC_XYZ});
+		GenericShape* CreateGenShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout = {NDC_XYZ});
+
+		Shape* CreateShape(ShapeType ST);
 
 		void SetDefaultShader(Shader* shader);
 		//! @brief draws the shape
 		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
+		void Draw(GenericShape* Shape, void (*DrawFunc)(void) = nullptr);
 		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
 
 		Camera* GetCamera(void);

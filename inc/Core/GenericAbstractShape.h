@@ -17,6 +17,7 @@ namespace MGLlib {
 template<typename type>
 class GenericAbstractShape{
 	public:
+		GenericAbstractShape(Shader* shader, unsigned int DrawType = GL_TRIANGLES);
 		GenericAbstractShape(const GenericAbstractShape& GAS);
 		GenericAbstractShape(Shader* shader, Primitives::DrawBuffer<type>* data, unsigned int DrawType = GL_TRIANGLES);
 		~GenericAbstractShape();
@@ -25,6 +26,7 @@ class GenericAbstractShape{
 		void RenderTextures(void);
 		void SetTexture(Texture* texture, int slot = 0, bool UseDefaultShader = true);
 		void DisableTexture(void);
+		void EnableTexture(void);
 		void SetIndexBuffer(unsigned int* IndexBuffer, unsigned int count);
 		void SetVertexBuffer(const void* data, unsigned int size);
 		void SetVertexLayout(unsigned int* layout, unsigned int count);
@@ -46,6 +48,12 @@ class GenericAbstractShape{
 
 
 // template implementation
+
+template<typename type>
+GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, unsigned int DrawType){
+	this->shader = shader;
+	this->DrawType = DrawType;
+}
 
 template<typename type>
 GenericAbstractShape<type>::GenericAbstractShape(const GenericAbstractShape& GAS){
@@ -97,6 +105,12 @@ void GenericAbstractShape<type>::DisableTexture(void){
 	shader->Bind();
 	//texture->Unbind();
 	shader->SetUniform1i("u_Use_Texture", false); // disable textures
+}
+
+template<typename type>
+void GenericAbstractShape<type>::EnableTexture(void){
+	shader->Bind();
+	shader->SetUniform1i("u_Use_Texture", true); // disable textures
 }
 
 template<typename type>

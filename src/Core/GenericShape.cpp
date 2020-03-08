@@ -27,9 +27,7 @@ namespace MGLlib {
 
     bool GenericShape::v_UseDefaultShader = true;
 
-
-// constructor
-    GenericShape::GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
+    void GenericShape::GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
         this->ST = ST;
         // error checking
         if((ST >= __SHAPETYPECOUNT) || (ST < 0)){
@@ -74,6 +72,14 @@ namespace MGLlib {
         GAShape = new GenericAbstractShape<float>(shader, drawbuffer, ShapeMap[ST].GLtype);
         delete drawbuffer;
     }
+
+// constructor
+    GenericShape::GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
+        GenerateGAS(shader, ST, VertexData, VertexLayout);
+    }
+    GenericShape::GenericShape(){
+        GAShape = nullptr;
+    }
 // destructor
     GenericShape::~GenericShape(){
         delete GAShape;
@@ -82,6 +88,12 @@ namespace MGLlib {
 // member functions
 
     void GenericShape::Draw(void){
+        if(use_texture){
+            this->GAShape->EnableTexture();
+        }
+        else{
+            this->GAShape->DisableTexture();
+        }
         this->GAShape->Draw();
     }
 
@@ -105,12 +117,16 @@ namespace MGLlib {
 // texture methods
     void GenericShape::SetTexture(Texture* texture, int slot, bool UseDefaultShader){
         this->GAShape->SetTexture(texture, slot, UseDefaultShader);
+        use_texture = true;
     }
     void GenericShape::UseDefaultShader(bool v){
         this->v_UseDefaultShader = v;
     }
     void GenericShape::DisableTexture(){
-        this->GAShape->DisableTexture();
+        use_texture = false;
+    }
+    void GenericShape::EnableTexture(){
+        use_texture = true;
     }
     
 // position methods
