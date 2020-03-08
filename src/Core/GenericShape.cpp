@@ -20,7 +20,7 @@ namespace MGLlib {
         {MGL_LINE_LOOP,         "[MGL_LINE_LOOP]",              GL_LINE_LOOP,       {0},                1, 1},
         {MGL_TRIANGLES,         "[MGL_TRIANGLES]",              GL_TRIANGLES,       {0, 1, 2},          3, 3},
         {MGL_TRIANGLE_STRIP,    "[MGL_TRIANGLE_STRIP]",         GL_TRIANGLE_STRIP,  {0, 1, 2},          3, 1},
-        {MGL_TRIANGLE_FAN,      "[MGL_TRIANGLE_FAN | POLYGON]", GL_TRIANGLE_FAN,    {0, 1, 2},          3, 1},
+        {MGL_TRIANGLE_FAN,      "[MGL_TRIANGLE_FAN | POLYGON]", GL_TRIANGLE_FAN,    {0, 1, 2},          3, 2},
         {MGL_QUADS,             "[MGL_QUADS]",                  GL_TRIANGLES,       {0, 1, 2, 2, 3, 0}, 4, 4},
         {MGL_QUAD_STRIP,        "[MGL_QUAD_STRIP]",             GL_TRIANGLES,       {0, 2, 3, 3, 1, 0}, 4, 2}
     };
@@ -40,10 +40,10 @@ namespace MGLlib {
         // checking passed vertex count
         VertexCount = VertexData.size()/VertexLength;
         if(VertexCount < ShapeMap[ST].baseCount){
-            pWARNING("Not enough Vertexes for Shapetype: %s", getName().c_str());
+            pWARNING("Not enough Vertexes for Shapetype: %s, given: %d, needed: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount);
         }
         if((VertexCount - ShapeMap[ST].baseCount) % ShapeMap[ST].extendCount){
-            pWARNING("Vertex count does not match shapetype: %s", getName().c_str());
+            pWARNING("Vertex count does not match shapetype: %s, given: %d, needed: %d, extends width: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount, ShapeMap[ST].extendCount);
         }
         // creating index buffer
         std::vector<unsigned int> IndexBuffer;
@@ -77,8 +77,8 @@ namespace MGLlib {
     GenericShape::GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout){
         GenerateGAS(shader, ST, VertexData, VertexLayout);
     }
-    GenericShape::GenericShape(){
-        GAShape = nullptr;
+    GenericShape::GenericShape(Shader* shader, ShapeType ST){
+        GAShape = new GenericAbstractShape<float>(shader, ShapeMap[ST].GLtype);
     }
 // destructor
     GenericShape::~GenericShape(){
@@ -94,6 +94,9 @@ namespace MGLlib {
         else{
             this->GAShape->DisableTexture();
         }
+        if(change_color_on_render){
+            SetColorNDC(this->color);
+        }
         this->GAShape->Draw();
     }
 
@@ -103,15 +106,21 @@ namespace MGLlib {
     }
     void GenericShape::SetColorNDC(ColorNDC RGBA){
         GAShape->GetShader()->Bind();
+        this->color.R = RGBA.R;
+        this->color.G = RGBA.G;
+        this->color.B = RGBA.B;
+        this->color.A = RGBA.A;
+
         this->SCF(this->GAShape->GetShader(), RGBA);
     }
 
     void GenericShape::SetColor(Color RGBA){
-        RGBA.R /= 255;
-        RGBA.G /= 255;
-        RGBA.B /= 255;
-        RGBA.A /= 255;
-        SetColorNDC({(float)RGBA.R, (float)RGBA.G, (float)RGBA.B, (float)RGBA.A});
+        ColorNDC RGBANDC;
+        RGBANDC.R = (float)RGBA.R / 255.0f;
+        RGBANDC.G = (float)RGBA.G / 255.0f;;
+        RGBANDC.B = (float)RGBA.B / 255.0f;;
+        RGBANDC.A = (float)RGBA.A / 255.0f;;
+        SetColorNDC({RGBANDC.R, RGBANDC.G, RGBANDC.B, RGBANDC.A});
     }
 
 // texture methods

@@ -9,6 +9,7 @@ build/release/tests/Test.o: src/tests/Test.cpp inc/tests/Test.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Texture.hpp \
  inc/Core/Shader.hpp inc/Core/Shape.h inc/Core/GenericShape.h \
+ inc/Shapes/Rectangle.hpp inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp \
  inc/external/ImGui/imgui.h inc/external/ImGui/imconfig.h
 
 inc/tests/Test.hpp:
@@ -52,6 +53,12 @@ inc/Core/Shader.hpp:
 inc/Core/Shape.h:
 
 inc/Core/GenericShape.h:
+
+inc/Shapes/Rectangle.hpp:
+
+inc/Shapes/Circle.hpp:
+
+inc/Shapes/Cube.hpp:
 
 inc/external/ImGui/imgui.h:
 

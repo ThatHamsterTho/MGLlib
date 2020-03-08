@@ -1,10 +1,14 @@
 #include "Shape.h"
 
 namespace MGLlib {
-	Shape::Shape(ShapeType ST, Shader* shader, GLFWwindow* window) : GenericShape(){
+	Shape::Shape(ShapeType ST, Shader* shader) : GenericShape(shader, ST){
 		this->ST = ST;
-		this->window = window;
 		this->shader = shader;
+	}
+	Shape::Shape(ShapeType ST, Shader* shader, GLFWwindow* window) : GenericShape(shader, ST){
+		this->ST = ST;
+		this->shader = shader;
+		this->window = window;
 	}
 	Shape::~Shape(){}
 
@@ -75,6 +79,20 @@ namespace MGLlib {
 		this->TextureCoords = TextureBuffer;
 		DataChanged = true;
 	}
+	void Shape::SetColor(std::array<float, 4> Color){
+		for(unsigned int i = 0; i < VertexCount; i++){
+			for(int j = 0; j < 4; j++){
+				this->ColorPerVector[i][j] = Color[j]/255;
+			}
+		}
+	}
+	void Shape::SetColorNDC(std::array<float, 4> Color){
+		for(unsigned int i = 0; i < VertexCount; i++){
+			for(int j = 0; j < 4; j++){
+				this->ColorPerVector[i][j] = Color[j];
+			}
+		}
+	}
 
 	void Shape::SetColorVec(unsigned int Vertex, std::array<float, 4> Color){
 		std::array<float, 4> ColorNDC;
@@ -111,17 +129,21 @@ namespace MGLlib {
 		SetVertex3D_NDC(Vertex, {coor[0], coor[1], 0.0f});
 	}
 	void Shape::SetVertex3D_NDC(unsigned int Vertex, std::array<float, 3> coor){
-		for(int i = 0; i < 3; i++){
-			this->Model[Vertex][i] = coor[i];
+		if(Vertex >= VertexCount){
+			this->Model.push_back(coor);
+			VertexCount++;
+		}
+		else{
+			for(unsigned int i = 0; i < 3; i++){
+				this->Model[Vertex][i] = coor[i];
+			}
 		}
 		DataChanged = true;
+		GenColors();
 	}
 
 	void Shape::SetData(void){
-		if(GAShape){
-			delete GAShape;
-			GAShape = nullptr;
-		}
+		delete GAShape;
 		std::vector<float> VBO;
 		for(unsigned int i = 0; i < VertexCount; i++){
 			// push model

@@ -24,6 +24,91 @@ void ShapeHandler::Disable3Drender(void){this->_3Drendering = false;}
 void ShapeHandler::Enableortho(void){this->_OrthoRender = true;}
 void ShapeHandler::Disableortho(void){this->_OrthoRender = false;}
 
+void ShapeHandler::SetProjectionView(void){
+	int width, height;
+	glfwGetWindowSize(this->window, &width, &height);
+	if(_OrthoRender){
+		vp = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.1f, 20.0f) * cam->getViewMatrix();
+	}
+	else{
+		vp = cam->getProjectionMatrix() * cam->getViewMatrix();	
+	}
+}
+
+void ShapeHandler::Draw(GenericShape* shape, void (*DrawFunc)(void)){
+	if(_3Drendering){
+		if(cam->CheckUpdated()){
+			SetProjectionView();
+		}
+	}
+	shader->Bind();
+	if(DrawFunc){
+		DrawFunc();
+	}
+	glm::mat4 mvp = shape->GetModelMat();
+	if(_3Drendering){
+		mvp = vp * shape->GetModelMat();
+	}
+	
+	shape->GetShader()->SetuniformMat4f("u_MVP", mvp);
+	shape->Draw();
+}
+
+void ShapeHandler::Draw(Shape* shape, void (*DrawFunc)(void)){
+	shape->UpdateData();
+	
+	if(_3Drendering){
+		if(cam->CheckUpdated()){
+			SetProjectionView();
+		}
+	}
+	shader->Bind();
+	if(DrawFunc){
+		DrawFunc();
+	}
+	glm::mat4 mvp = shape->GetModelMat();
+	if(_3Drendering){
+		mvp = vp * shape->GetModelMat();
+	}
+	
+	shape->GetShader()->SetuniformMat4f("u_MVP", mvp);
+	shape->Draw();
+}
+
+void ShapeHandler::Draw(Cube* cube, void (*DrawFunc)(void)){
+	cube->UpdateData();
+	
+	
+	if(_3Drendering){
+		if(cam->CheckUpdated()){
+			SetProjectionView();
+		}
+	}
+	shader->Bind();
+	if(DrawFunc){
+		DrawFunc();
+	}
+
+	glm::mat4 mvp = cube->GetModelMat();
+	if(_3Drendering){
+		mvp = vp * cube->GetModelMat();
+	}
+	cube->GetShader()->SetuniformMat4f("u_MVP", mvp);
+	cube->Draw();	
+}
+
+void ShapeHandler::SetDefaultShader(Shader* shader){
+	this->shader = shader;
+}
+
+Camera* ShapeHandler::GetCamera(void){
+	return this->cam;
+}
+Shader* ShapeHandler::GetGlobalShader(void){
+	return this->shader;
+}
+
+// Generic Shapes
 GenericShape* ShapeHandler::CreateGenShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout){
 	return new GenericShape(this->shader, ST, VertexBuffer, VertexLayout);
 }
@@ -133,70 +218,41 @@ GenericShape* ShapeHandler::CreateGenShape(ShapeType ST, std::vector<float> Vert
 	return CreateGenShapeNDC(ST, NDCVertexBuffer, NDCVertexLayout);
 }
 
+// Shape
 Shape* ShapeHandler::CreateShape(ShapeType ST){
-	return new Shape(ST, shader, window);
+	Shape* SH = new Shape(ST, shader);
+	SH->SetWindowContext(window);
+	return SH;
 }
 
-void ShapeHandler::SetProjectionView(void){
-	int width, height;
-	glfwGetWindowSize(this->window, &width, &height);
-	if(_OrthoRender){
-		vp = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 0.1f, 20.0f) * cam->getViewMatrix();
-	}
-	else{
-		vp = cam->getProjectionMatrix() * cam->getViewMatrix();	
-	}
+// Rectangle
+Rectangle* ShapeHandler::CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild){
+	Rectangle* R = new Rectangle(shader);
+	R->SetWindowContext(window);
+	R->MakeShape(x, y, z, width, height, depth, tild);
+	return R;
+}
+Rectangle* ShapeHandler::CreateRectangle(float x, float y, float width, float height){
+	return CreateRectangle(x, y, 0.0f, width, height, 0.0);
 }
 
-void ShapeHandler::Draw(GenericShape* shape, void (*DrawFunc)(void)){
-	if(_3Drendering){
-		if(cam->CheckUpdated()){
-			SetProjectionView();
-		}
-	}
-	shader->Bind();
-	if(DrawFunc){
-		DrawFunc();
-	}
-	glm::mat4 mvp = shape->GetModelMat();
-	if(_3Drendering){
-		mvp = vp * shape->GetModelMat();
-	}
-	
-	shape->GetShader()->SetuniformMat4f("u_MVP", mvp);
-	shape->Draw();
+// Circle
+Circle* ShapeHandler::CreateCircle(float x, float y, float z, float Radius, int Sectors){
+	Circle* C = new Circle(shader);
+	C->SetWindowContext(window);
+	C->MakeShape(x, y, z, Radius, Sectors);
+	return C;
+}
+Circle* ShapeHandler::CreateCircle(float x, float y, float Radius, int Sectors){
+	return CreateCircle(x, y, 0.0f, Radius, Sectors);
 }
 
-void ShapeHandler::Draw(Shape* shape, void (*DrawFunc)(void)){
-	shape->UpdateData();
-	
-	if(_3Drendering){
-		if(cam->CheckUpdated()){
-			SetProjectionView();
-		}
-	}
-	shader->Bind();
-	if(DrawFunc){
-		DrawFunc();
-	}
-	glm::mat4 mvp = shape->GetModelMat();
-	if(_3Drendering){
-		mvp = vp * shape->GetModelMat();
-	}
-	
-	shape->GetShader()->SetuniformMat4f("u_MVP", mvp);
-	shape->Draw();
-}
-
-void ShapeHandler::SetDefaultShader(Shader* shader){
-	this->shader = shader;
-}
-
-Camera* ShapeHandler::GetCamera(void){
-	return this->cam;
-}
-Shader* ShapeHandler::GetGlobalShader(void){
-	return this->shader;
+// Cube
+Cube* ShapeHandler::CreateCube(float x, float y, float z, float width, float height, float depth){
+	Cube* C = new Cube(shader);
+	C->SetWindowContext(window);
+	C->SetCube(x, y, z, width, height, depth);
+	return C;
 }
 
 } // namespace

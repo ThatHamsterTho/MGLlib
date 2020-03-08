@@ -6,8 +6,13 @@
 
 #include "Camera.h"
 #include "Shader.hpp"		// for default shader
+
 #include "GenericShape.h"
 #include "Shape.h"
+
+#include "Rectangle.hpp"
+#include "Circle.hpp"
+#include "Cube.hpp"
 
 namespace MGLlib {
 
@@ -44,6 +49,16 @@ class ShapeHandler
 		
 		void InitHandler(GLFWwindow* window);
 
+		void SetDefaultShader(Shader* shader);
+		//! @brief draws the shape
+		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
+		void Draw(GenericShape* Shape, void (*DrawFunc)(void) = nullptr);
+		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
+		void Draw(Cube* Shape, void (*DrawFunc)(void) = nullptr);
+
+		Camera* GetCamera(void);
+		Shader* GetGlobalShader(void);
+
 		//! @brief creates a Shape based on coordinates between -1 and 1
 		GenericShape* CreateGenShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout = {3});
 
@@ -51,16 +66,16 @@ class ShapeHandler
 		//! @param VertexLayout pass a value of type "enum C2NDC" or a positive int value
 		GenericShape* CreateGenShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout = {NDC_XYZ});
 
+		//! @brief returns an empty shape object
+		//! @remark shape data should be set after calling this function
 		Shape* CreateShape(ShapeType ST);
 
-		void SetDefaultShader(Shader* shader);
-		//! @brief draws the shape
-		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
-		void Draw(GenericShape* Shape, void (*DrawFunc)(void) = nullptr);
-		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
-
-		Camera* GetCamera(void);
-		Shader* GetGlobalShader(void);
+		//! @brief returns a rectangle object
+		Rectangle* CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild = false);
+		Rectangle* CreateRectangle(float x, float y, float width, float height);
+		Circle* CreateCircle(float x, float y, float z, float Radius, int Sectors);
+		Circle* CreateCircle(float x, float y, float Radius, int Sectors);
+		Cube* CreateCube(float x, float y, float z, float width, float height, float depth);
 };
 
 } // namespace

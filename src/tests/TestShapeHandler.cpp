@@ -50,33 +50,40 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 		 width,  height, 0.0f,
 		  0.0f,  height, 0.0f
 	});
+
+	rec = window->CreateRectangle(0.0f, 0.0f, width, height);
+	rec->SetColor({255, 0, 0, 10});
+
+	circ = window->CreateCircle(0.0f, 0.0f, 200.0f, 360);
+	circ->SetColor({0, 255, 0, 128});
+
+	cube = window->CreateCube(-200.0f, -200.0f, -200.0f, 400.0f, 400.0f, 400.0f);
+	cube->SetColor({0, 0, 255, 64});
 }
 TestShapeHandler::~TestShapeHandler() {
 	delete texture;
 	delete GSH;
+	delete SH;
+	delete rec;
+	delete circ;
+	delete cube;
 }
 
 void TestShapeHandler::onUpdate() {}
 
 void TestShapeHandler::onRender()
 {	
-	/*
-	GSH->Scale(scale, scale, scale);
-
-	GSH->SetPosition(translation1);
-	window->Draw(GSH);
-	
-	GSH->SetPosition(translation2);
-	//GSH->SetColor({0, 255, 0});
-	window->Draw(GSH);
-	*/
-
-	//GSH->SetColor({255, 0, 0});
 	GSH->SetPosition(translation3);
 	window->Draw(GSH);
 	
+	circ->SetPosition(translation2);
+	window->Draw(circ);
+
 	SH->SetPosition(translation1);
 	window->Draw(SH);
+
+	//cube->SetPosition(translation1);
+	window->Draw(cube);
 	
 	// change color
 	if (m_Color[0] > 1.0)

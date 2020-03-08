@@ -11,7 +11,8 @@ build/release/Core/ImGuiHelper.o: src/Core/ImGuiHelper.cpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Texture.hpp \
- inc/Core/Shader.hpp inc/Core/Shape.h inc/Core/GenericShape.h
+ inc/Core/Shader.hpp inc/Core/Shape.h inc/Core/GenericShape.h \
+ inc/Shapes/Rectangle.hpp inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp
 
 inc/ImGuiHelper.h:
 
@@ -62,3 +63,9 @@ inc/Core/Shader.hpp:
 inc/Core/Shape.h:
 
 inc/Core/GenericShape.h:
+
+inc/Shapes/Rectangle.hpp:
+
+inc/Shapes/Circle.hpp:
+
+inc/Shapes/Cube.hpp:

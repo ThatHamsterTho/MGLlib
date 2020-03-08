@@ -45,7 +45,10 @@ namespace MGLlib {
 				glm::vec3 translation3;
 
 				GenericShape* GSH;
-				Shape* SH;				
+				Shape* SH;	
+				Rectangle* rec;	
+				Circle* circ;	
+				Cube* cube;	
 				Texture* texture;
 		};
 	}

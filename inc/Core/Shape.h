@@ -9,7 +9,8 @@ namespace MGLlib{
 
 class Shape : public GenericShape
 {
-	unsigned int VertexCount;
+	protected:
+	unsigned int VertexCount = 0;
 	std::vector<std::array<float, 3>> Model;
 	std::vector<std::array<float, 2>> TextureCoords;
 	std::vector<std::array<float, 4>> ColorPerVector;
@@ -24,6 +25,7 @@ class Shape : public GenericShape
 	void SetData(void);
 
 	public:
+		Shape(ShapeType ST, Shader* shader);
 		Shape(ShapeType ST, Shader* shader, GLFWwindow* window);
 		~Shape();
 
@@ -34,12 +36,18 @@ class Shape : public GenericShape
 		void SetModel3D(std::vector<float> Model);
 		void SetModel2D(std::vector<float> Model);
 		void SetTextureCoord(std::vector<float> TextureCoords);
+		void SetColor(std::array<float, 4> Color);
+		void SetColorNDC(std::array<float, 4> Color);
 		void SetColorVec(unsigned int Vertex, std::array<float, 4> Color);
 		void SetColorVecNDC(unsigned int Vertex, std::array<float, 4> Color);
 		void SetVertex2D(unsigned int Vertex, std::array<float, 2> coor);
 		void SetVertex3D(unsigned int Vertex, std::array<float, 3> coor);
 		void SetVertex2D_NDC(unsigned int Vertex, std::array<float, 2> coor);
 		void SetVertex3D_NDC(unsigned int Vertex, std::array<float, 3> coor);
+
+		void SetWindowContext(GLFWwindow* window){this->window = window;}
+
+		std::vector<std::array<float, 3>> GetModel(void){return this->Model;}
 };
 
 }

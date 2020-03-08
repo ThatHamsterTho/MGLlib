@@ -60,12 +60,14 @@ class GenericShape
 	unsigned int VertexCount;	// how many vertexes in the buffer
 
 	bool use_texture = false;
+	bool change_color_on_render = true;
 
 protected:
 	ShapeType ST;
 
 	GenericAbstractShape<float>* GAShape;
 	SetColorFunc SCF = SetColorDefault;
+	ColorNDC color = {1.0f, 1.0f, 1.0f};
 
 	glm::vec3 Position = glm::vec3(0.0f);
 
@@ -76,7 +78,7 @@ protected:
 		//! @remark VertexLayout example: vector {X, Y, Z, R, G, B, A} layout : {3, 4}
 		GenericShape(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
 		//! @brief this constructor is used by the Shape class
-		GenericShape();
+		GenericShape(Shader* shader, ShapeType ST);
 		~GenericShape();
 
 		//! @brief returns the name of the shape
@@ -97,6 +99,8 @@ protected:
 		//! @brief Sets the "SetColor" function, usefull when using custom shaders
 		//! @remark this function should accept RGBA values between 0.0 and 1.0
 		void SetSetColorFunc(SetColorFunc SCF);
+		//! @brief When turned on the shape uses the color of last drawn shape
+		void change_shader_color_on_render(bool v){this->change_color_on_render = v;}
 
 		//! @brief Sets the texture of the shape
 		//! @remark When using a custom shader disable the UseDefaultShader
