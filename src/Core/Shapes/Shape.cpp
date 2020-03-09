@@ -137,7 +137,7 @@ namespace MGLlib {
 		}
 		dim[2] = dim[0];
 		for(int i = 0; i < 3; i++){
-			NDC_coor[i] = (2*coor[i])/(float)dim[i];
+			NDC_coor[i] = (2*coor[i])/(float)dim[i] - 1.0f;
 		}
 		SetVertex3D_NDC(Vertex, NDC_coor);
 	}

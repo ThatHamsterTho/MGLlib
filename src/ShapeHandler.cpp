@@ -19,7 +19,7 @@ ShapeHandler::~ShapeHandler(){
 void ShapeHandler::InitHandler(GLFWwindow* window){
 	this->window = window;
 	this->shader = new Shader("res/shaders/SimpleShader.glsl");
-	this->cam = new Camera({0.0, 0.0, 0.618}, {0.0, 0.0, 0.0});
+	this->cam = new Camera({0.0, 0.0, 1.0}, {0.0, 0.0, 0.0});
 	// .618 is a magic number
 	this->baseShape = new Shape(MGL_CUSTOM, shader, Draw_Static);
 	baseShape->SetWindowContext(window);
