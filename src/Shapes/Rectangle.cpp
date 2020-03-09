@@ -7,7 +7,7 @@ namespace MGLlib
 		this->height = height;
 		this->depth = depth;
 		float v[3] = { width, height, depth };
-		bool graycode[4][2] = {{1, 1}, {1, 0}, {0, 0}, {0, 1}}; 
+		bool graycode[4][2] = {{0, 0}, {1, 0}, {1, 1}, {0, 1}}; 
 		for(int i = 0; i < 4; i++){
 			SetVertex3D(i, {
 				x + (graycode[i][0] ? v[0] : 0),
@@ -16,6 +16,6 @@ namespace MGLlib
 			});
 		}
 	}
-	Rectangle::Rectangle(Shader* shader) : Shape(MGL_QUADS, shader){}
+	Rectangle::Rectangle(Shader* shader, Usage_Type uType) : Shape(MGL_QUADS, shader, uType){}
 	Rectangle::~Rectangle(){};
 } // namespace MGLlib

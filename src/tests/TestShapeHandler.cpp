@@ -31,8 +31,8 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	texture = new Texture("res/textures/gunsalpha.png");
-	//GShape->SetTexture(texture);
+	texture[0] = new Texture("res/textures/gunsalpha.png");
+	texture[1] = new Texture("res/textures/lmao.png");
 
 	scale = 1.0f;
 
@@ -41,7 +41,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	translation3 = glm::vec3(-0.5, -0.5,  0.0);
 
 	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 2, 4});
-	GSH->SetTexture(texture);
+	GSH->SetTexture(texture[0]);
 
 	SH = window->CreateShape(MGL_QUADS);
 	SH->SetModel3D({
@@ -50,18 +50,61 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 		 width,  height, 0.0f,
 		  0.0f,  height, 0.0f
 	});
+	SH->SetTextureCoord({
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
+	});
+	SH->SetTexture(texture[0]);
 
 	rec = window->CreateRectangle(0.0f, 0.0f, width, height);
-	rec->SetColor({255, 0, 0, 10});
+	rec->SetColor({255, 0, 0, 128});
+	rec->SetTextureCoord({
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
+	});
+	rec->SetTexture(texture[1]);
 
 	circ = window->CreateCircle(0.0f, 0.0f, 200.0f, 360);
-	circ->SetColor({0, 255, 0, 128});
+	circ->SetColor({0, 255, 0, 64});
+
 
 	cube = window->CreateCube(-200.0f, -200.0f, -200.0f, 400.0f, 400.0f, 400.0f);
-	cube->SetColor({0, 0, 255, 64});
+	cube->SetColor({0, 0, 255, 180});
+	cube->SetTexture(texture[1]);
+	cube->SetTextureCoord({
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+	});
 }
 TestShapeHandler::~TestShapeHandler() {
-	delete texture;
+	delete texture[0];
+	delete texture[1];
 	delete GSH;
 	delete SH;
 	delete rec;
@@ -73,18 +116,20 @@ void TestShapeHandler::onUpdate() {}
 
 void TestShapeHandler::onRender()
 {	
-	GSH->SetPosition(translation3);
-	window->Draw(GSH);
-	
-	circ->SetPosition(translation2);
-	window->Draw(circ);
+	//GSH->SetPosition(translation3);
+	//window->Draw(GSH);
 
 	SH->SetPosition(translation1);
 	window->Draw(SH);
 
-	//cube->SetPosition(translation1);
+	//rec->SetPosition(translation2);
+	//window->Draw(rec);
+
+	cube->SetPosition(translation1);
 	window->Draw(cube);
 	
+	circ->SetPosition(translation2);
+	window->Draw(circ);
 	// change color
 	if (m_Color[0] > 1.0)
 	{

@@ -2,7 +2,7 @@
 
 namespace MGLlib
 {
-	Circle::Circle(Shader* shader) : Shape(MGL_TRIANGLE_FAN, shader){}
+	Circle::Circle(Shader* shader, Usage_Type uType) : Shape(MGL_TRIANGLE_FAN, shader, uType){}
 	Circle::~Circle(){};
 	// https://stackoverflow.com/q/22444450
 	void Circle::MakeShape(float Mx, float My, float Z, float Radius, int Sectors){

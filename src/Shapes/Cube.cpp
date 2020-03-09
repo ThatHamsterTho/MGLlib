@@ -2,9 +2,7 @@
 
 namespace MGLlib
 {
-	Cube::Cube(Shader* shader, bool hollow) : Shape(MGL_QUADS, shader){
-		this->_hollow = hollow;
-		
+	Cube::Cube(Shader* shader, Usage_Type uType) : Shape(MGL_QUADS, shader, uType){		
 		// cube sides
 		float normals[6][3] = {
 			{-1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {1.0, 0.0, 0.0},

@@ -1,6 +1,9 @@
+SHELL:=/bin/bash
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
 BIN_NAME := main
+# The name of the lib headerfile
+HeaderFile := MGLlib.hpp
 # Compiler used
 CXX ?= g++
 # Extension of source files used in the project
@@ -16,9 +19,19 @@ RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/Shapes/ -Iinc/tests/ -Iinc/Core/ -Iinc/Core/Debug/ -Iinc/Core/Primitives/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/
+INCDIR := inc
+# Exclude these folders from LIB (these are inside inc)
+EXCLUDEDIR := tests external
+# gets all the directories inside the inc folder
+RINCDIRS := $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))
+INCLUDES := $(foreach dir, $(RINCDIRS), $(patsubst %, -I%, $(dir))) -ILibraries/
+
 # General linker settings
-LINK_FLAGS = -lGLEW -lglfw -lGL
+ifeq ($(OS), Windows_NT)
+	LINK_FLAGS = -lopengl32 -lglu32 -llibglew32 -llibglfw3
+else 
+	LINK_FLAGS = -lGLEW -lglfw -lGL
+endif
 # Additional release-specific linker settings
 RLINK_FLAGS = -o2
 # Additional debug-specific linker settings
@@ -27,6 +40,9 @@ DLINK_FLAGS = -ggdb3
 DESTDIR = 
 # Install path (bin/ is appended automatically)
 INSTALL_PREFIX = 
+
+# for lib
+BuildDir := build/release
 #### END PROJECT SETTINGS ####
 
 # Optionally you may move the section above to a separate config.mk file, and
@@ -222,3 +238,93 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
 	$(CMD_PREFIX)$(CXX) $(CXXFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 	@echo -en "\t Compile time: "
 	@$(END_TIME)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ROBJDIRS := $(foreach dir, $(BuildDir), $(shell find $(dir) -type d))
+ROBJS	 := $(foreach dir, $(ROBJDIRS), $(wildcard $(dir)/*.o))
+
+RINCDIRS := $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))
+EXPR 	 := $(shell echo $(EXCLUDEDIR) | sed 's/ /|/g';)
+RIDIRS	 := $(shell echo $(RINCDIRS) | sed --regexp-extended 's/([A-Z]|[a-z]|\/)*($(EXPR))([^ ])*//g';)
+RINCS 	 := $(foreach dir, $(RIDIRS), $(wildcard $(dir)/*.hpp) $(wildcard $(dir)/*.h))
+
+#external
+#Hfiles := $(shell echo $(RINCS) | grep -E "(inc\/*filepath*)([^ ])*((\.hpp)|(\.h))")
+#UtilFunc
+HfilesPRE := $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/UtilFunc)([^ ])*((\.hpp)|(\.h))")
+# Debug
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Debug)([^ ])*((\.hpp)|(\.h))")
+# Primitives
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/VertexBufferObject)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/VertexBufferLayout)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/IndexBufferObject)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives)([^ ])*((\.hpp)|(\.h))")
+# Shapes Core
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes\/GenericAbstractShape)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes)([^ ])*((\.hpp)|(\.h))")
+# 3Drender
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/3Drender)([^ ])*((\.hpp)|(\.h))")
+# Shapes
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Shapes)([^ ])*((\.hpp)|(\.h))")
+# other
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/ShapeHandler)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Window)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/)([^ \/])*((\.hpp)|(\.h))")
+# Controllers
+
+Hfiles := $(shell echo $(HfilesPRE) | awk -v RS="[ \n]+" '!n[$$0]++') 
+
+lib: $(ROBJS)
+	rm -f MGLlib.lib MGLlib.hpp
+	touch MGLlib.hpp
+	@echo "" > "$(HeaderFile)"
+
+	@$(foreach header, $(Hfiles), echo "//$(header) : " >> $(HeaderFile); echo "" >> $(HeaderFile); cat $(header) >> $(HeaderFile); echo "" >> $(HeaderFile);)
+	@cat "$(HeaderFile)" | sed 's/#include "/\/\/#include /g' > temp
+	@mv temp "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include <GL\/glew.h>//g' > temp
+	@mv temp "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include <GLFW\/glfw3.h>//g' > temp
+	@mv temp "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include <glm\/glm.h>//g' > temp
+	@mv temp "$(HeaderFile)"
+
+	@echo "#include <GL/glew.h>		// sudo apt-get install libglew-dev" > temp
+	@echo "#include <GLFW/glfw3.h>	// sudo apt-get install libglfw3-dev" >> temp
+	@echo "#include <glm/glm.hpp>	// sudo apt-get install libglm-dev" >> temp
+	@cat "$(HeaderFile)" >> temp
+	@mv temp "$(HeaderFile)"
+
+	@ar rcs MGLlib.lib $(ROBJS)

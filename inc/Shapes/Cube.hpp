@@ -7,11 +7,10 @@ namespace MGLlib
 {
 	class Cube : public Shape{
 	private:
-		bool _hollow;
 		// list of vertices
 
 	public:
-		Cube(Shader* shader, bool hollow = false);
+		Cube(Shader* shader, Usage_Type uType = Draw_Dynamic);
 		~Cube();
 
 		// set the cube's material to given material
