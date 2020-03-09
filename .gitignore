@@ -1,6 +1,7 @@
 *.o
 *.d
 Example/*
+.vscode/*
 
 main
 MGLlib.hpp
