@@ -1,6 +1,8 @@
 #include "ShapeHandler.h"
 
 namespace MGLlib {
+	Shape* ShapeHandler::baseShape = nullptr;
+
 ShapeHandler::ShapeHandler(){}
 ShapeHandler::~ShapeHandler(){
 	if(this->shader){
@@ -9,6 +11,9 @@ ShapeHandler::~ShapeHandler(){
 	if(this->cam){
 		delete this->cam;
 	}
+	if(this->baseShape){
+		delete this->baseShape;
+	}
 }
 
 void ShapeHandler::InitHandler(GLFWwindow* window){
@@ -16,6 +21,8 @@ void ShapeHandler::InitHandler(GLFWwindow* window){
 	this->shader = new Shader("res/shaders/SimpleShader.glsl");
 	this->cam = new Camera({0.0, 0.0, 0.618}, {0.0, 0.0, 0.0});
 	// .618 is a magic number
+	this->baseShape = new Shape(MGL_CUSTOM, shader, Draw_Static);
+	baseShape->SetWindowContext(window);
 }
 
 
@@ -181,38 +188,34 @@ GenericShape* ShapeHandler::CreateGenShape(ShapeType ST, std::vector<float> Vert
 }
 
 // Shape
-Shape* ShapeHandler::CreateShape(ShapeType ST){
-	Shape* SH = new Shape(ST, shader);
-	SH->SetWindowContext(window);
+Shape* ShapeHandler::CreateShape(ShapeType ST, Usage_Type uType){
+	Shape* SH = new Shape(ST, shader, uType);
 	return SH;
 }
 
 // Rectangle
-Rectangle* ShapeHandler::CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild){
-	Rectangle* R = new Rectangle(shader);
-	R->SetWindowContext(window);
+Rectangle* ShapeHandler::CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild, Usage_Type uType){
+	Rectangle* R = new Rectangle(shader, uType);
 	R->MakeShape(x, y, z, width, height, depth, tild);
 	return R;
 }
-Rectangle* ShapeHandler::CreateRectangle(float x, float y, float width, float height){
-	return CreateRectangle(x, y, 0.0f, width, height, 0.0);
+Rectangle* ShapeHandler::CreateRectangle(float x, float y, float width, float height, Usage_Type uType){
+	return CreateRectangle(x, y, 0.0f, width, height, 0.0, uType);
 }
 
 // Circle
-Circle* ShapeHandler::CreateCircle(float x, float y, float z, float Radius, int Sectors){
-	Circle* C = new Circle(shader);
-	C->SetWindowContext(window);
+Circle* ShapeHandler::CreateCircle(float x, float y, float z, float Radius, int Sectors, Usage_Type uType){
+	Circle* C = new Circle(shader, uType);
 	C->MakeShape(x, y, z, Radius, Sectors);
 	return C;
 }
-Circle* ShapeHandler::CreateCircle(float x, float y, float Radius, int Sectors){
-	return CreateCircle(x, y, 0.0f, Radius, Sectors);
+Circle* ShapeHandler::CreateCircle(float x, float y, float Radius, int Sectors, Usage_Type uType){
+	return CreateCircle(x, y, 0.0f, Radius, Sectors, uType);
 }
 
 // Cube
-Cube* ShapeHandler::CreateCube(float x, float y, float z, float width, float height, float depth){
-	Cube* C = new Cube(shader);
-	C->SetWindowContext(window);
+Cube* ShapeHandler::CreateCube(float x, float y, float z, float width, float height, float depth, Usage_Type uType){
+	Cube* C = new Cube(shader, uType);
 	C->SetCube(x, y, z, width, height, depth);
 	return C;
 }

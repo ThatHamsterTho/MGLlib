@@ -127,7 +127,7 @@ build/release/tests/Test.o: src/tests/Test.cpp inc/tests/Test.hpp \
  Libraries/glm/detail/func_trigonometric.inl Libraries/glm/packing.hpp \
  Libraries/glm/detail/func_packing.inl Libraries/glm/detail/type_half.hpp \
  Libraries/glm/detail/type_half.inl Libraries/glm/integer.hpp \
- Libraries/glm/detail/func_integer.inl inc/Controllers/ShapeHandler.h \
+ Libraries/glm/detail/func_integer.inl inc/ShapeHandler.h \
  inc/Core/3Drender/Camera.h inc/Core/Debug/DefineDebug.h \
  Libraries/glm/gtc/matrix_transform.hpp \
  Libraries/glm/gtc/../ext/matrix_projection.hpp \
@@ -439,7 +439,7 @@ Libraries/glm/integer.hpp:
 
 Libraries/glm/detail/func_integer.inl:
 
-inc/Controllers/ShapeHandler.h:
+inc/ShapeHandler.h:
 
 inc/Core/3Drender/Camera.h:
 

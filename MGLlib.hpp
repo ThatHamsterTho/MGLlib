@@ -135,29 +135,28 @@ void GLLogCall(const char* function, const char* file, int line);
 #endif
 
 #endif
-//inc/Core/Primitives/IndexBufferObject.hpp : 
+//inc/Core/Primitives/VertexBufferObject.hpp : 
 
-#ifndef IBOHEADERGUARD
-#define IBOHEADERGUARD
+#ifndef VBOHEADERGUARD
+#define VBOHEADERGUARD
 
-namespace MGLlib {
-namespace Primitives {
-	class IndexBufferObject{
-	private:
-		unsigned int m_RendererID;
-		unsigned int m_Count;
+namespace MGLlib { 
+namespace Primitives { 
 
-	public:
-		IndexBufferObject(const unsigned int* data, unsigned int count);
-		~IndexBufferObject();
+class VertexBufferObject{
+private:
+	unsigned int m_RendererID;
 
-		void Bind() const;
-		void UnBind() const;
+public:
+	VertexBufferObject(const void* data, unsigned int size);
+ 	~VertexBufferObject();
 
-		inline unsigned int GetCount() const { return m_Count; }
-	};
-}
-}
+	void Bind() const;
+	void UnBind() const;
+
+};
+
+}} // namespace
 #endif
 //inc/Core/Primitives/VertexBufferLayout.hpp : 
 
@@ -212,171 +211,29 @@ public:
 
 }} // namespace
 #endif
-//inc/Core/Primitives/Shader.hpp : 
+//inc/Core/Primitives/IndexBufferObject.hpp : 
 
-#ifndef SHADER_HPP
-#define SHADER_HPP
-
-#include <unordered_map>
-#include <string>
-
-#include <glm/glm.hpp>
-
-namespace MGLlib { 
-
-class Shader 
-{
-private:   
-    unsigned int m_RendererID;
-    std::string m_filepath[3];
-    std::unordered_map<std::string, int> m_uniformLocationCache;
-
-    enum __ShaderType {
-        SINGLE,
-        Fragment,
-        Vertex,
-        ShaderCount
-    };
-
-    std::string ShaderType[ShaderCount-1] = {"Fragment", "Vertex"};
-    
-    struct ShaderProgramSource
-    {
-        std::string VertexSource;
-        std::string FragmentSource;
-    };
-
-    // used for multiple shader files
-    std::string ReadShaderFile(enum __ShaderType T);
-    // used for single shader file
-    ShaderProgramSource ParseShader();
-    // compiles the shader
-    unsigned int CompileShader(unsigned int type, const std::string& ShaderCode);
-    // links the shader files
-    void LinkShaders(unsigned int VertexShaderID, unsigned int FragmentShaderID);
-
-    int GetUniformLocation(const std::string& name);
-
-public:
-    Shader(const char * vertex_file_path,const char * fragment_file_path);
-    Shader(const char* shader_file_path);
-    ~Shader();
-
-    void Bind() const;
-    void UnBind() const;
-
-    // set uniforms
-    void SetUniform1f(const std::string& name, float value);
-    void SetUniform1i(const std::string& name, int value);
-    void SetUniform1ui(const std::string& name, unsigned int value);
-    void SetUniform1fv(const std::string& name, int count, const float *value);
-    void SetUniform1iv(const std::string& name, int count, const int *value);
-    void SetUniform1uiv(const std::string& name, int count, const unsigned int *value);
-    void SetUniform2f(const std::string& name, float v0, float v1);
-    void SetUniform2i(const std::string& name, int v0, int v1);
-    void SetUniform2ui(const std::string& name, unsigned int v0, unsigned int v1);
-    void SetUniform2fv(const std::string& name, int count, const float *value);
-    void SetUniform2iv(const std::string& name, int count, const int *value);
-    void SetUniform2uiv(const std::string& name, int count, const unsigned int *value);
-    void SetUniform3f(const std::string& name, float v0, float v1, float v2);
-    void SetUniform3i(const std::string& name, int v0, int v1, int v2);
-    void SetUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2);
-    void SetUniform3fv(const std::string& name, int count, const float *value);
-    void SetUniform3iv(const std::string& name, int count, const int *value);
-    void SetUniform3uiv(const std::string& name, int count, const unsigned int *value);
-    void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
-    void SetUniform4i(const std::string& name, int v0, int v1, int v2, int v3);
-    void SetUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
-    void SetUniform4fv(const std::string& name, int count, const float *value);
-    void SetUniform4iv(const std::string& name, int count, const int *value);
-    void SetUniform4uiv(const std::string& name, int count, const unsigned int *value);
-
-    void SetuniformMat4f(const std::string& name, glm::mat4 matrix);
-};
-
-} // namespace
-#endif
-
-//inc/Core/Primitives/VertexArrayObject.hpp : 
-
-#ifndef VAOHEADERGUARD
-#define VAOHEADERGUARD
-
-//#include VertexBufferObject.hpp"
-//#include VertexBufferLayout.hpp"
-
-namespace MGLlib { 
-namespace Primitives { 
-
-class VertexArrayObject{
-private:
-	unsigned int m_RendererID;
-public:
-	VertexArrayObject();
-	~VertexArrayObject();
-
-	void AddBuffer(const VertexBufferObject* vb, const VertexBufferLayout* layout);
-
-	void Bind() const;
-	void UnBind() const;
-};
-
-}} // namespace
-
-#endif
-//inc/Core/Primitives/VertexBufferObject.hpp : 
-
-#ifndef VBOHEADERGUARD
-#define VBOHEADERGUARD
-
-namespace MGLlib { 
-namespace Primitives { 
-
-class VertexBufferObject{
-private:
-	unsigned int m_RendererID;
-
-public:
-	VertexBufferObject(const void* data, unsigned int size);
- 	~VertexBufferObject();
-
-	void Bind() const;
-	void UnBind() const;
-
-};
-
-}} // namespace
-#endif
-//inc/Core/Primitives/Texture.hpp : 
-
-#ifndef TEXTUREHEADERGUARD
-#define TEXTUREHEADERGUARD
-
-#include <string>
-//#include Debugger.hpp"
+#ifndef IBOHEADERGUARD
+#define IBOHEADERGUARD
 
 namespace MGLlib {
+namespace Primitives {
+	class IndexBufferObject{
+	private:
+		unsigned int m_RendererID;
+		unsigned int m_Count;
 
-class Texture
-{
-private:
-	unsigned int m_RendererID;
-	std::string m_FilePath;
-	unsigned char* m_LocalBuffer;
-	int m_Width, m_Height, m_BPP;
-public:
- 	Texture(const std::string& path);
- 	~Texture();
+	public:
+		IndexBufferObject(const unsigned int* data, unsigned int count);
+		~IndexBufferObject();
 
-	// slot determines the texture binding slot
-	void Bind(unsigned int slot = 0) const;
-	void Unbind() const;
+		void Bind() const;
+		void UnBind() const;
 
-	inline int GetWidth() const { return m_Width; }
-	inline int GetHeight() const { return m_Height; }
-};
-
-} // namespace
+		inline unsigned int GetCount() const { return m_Count; }
+	};
+}
+}
 #endif
 //inc/Core/Primitives/DrawBuffer.hpp : 
 
@@ -505,62 +362,149 @@ class DrawBuffer{
 }} // namespace
 
 #endif
-//inc/Core/Shapes/Shape.h : 
+//inc/Core/Primitives/Texture.hpp : 
 
-#ifndef SHAPEHEADERGUARD
-#define SHAPEHEADERGUARD
+#ifndef TEXTUREHEADERGUARD
+#define TEXTUREHEADERGUARD
 
-//#include GenericShape.h"
-//#include GL/glew.h"
-//#include GLFW/glfw3.h"
+#include <string>
+//#include Debugger.hpp"
 
-namespace MGLlib{
+namespace MGLlib {
 
-class Shape : public GenericShape
+class Texture
 {
-	protected:
-	unsigned int VertexCount = 0;
-	std::vector<std::array<float, 3>> Model;
-	std::vector<std::array<float, 2>> TextureCoords;
-	std::vector<std::array<float, 4>> ColorPerVector;
-	
-	bool DataChanged = true;
+private:
+	unsigned int m_RendererID;
+	std::string m_FilePath;
+	unsigned char* m_LocalBuffer;
+	int m_Width, m_Height, m_BPP;
+public:
+ 	Texture(const std::string& path);
+ 	~Texture();
 
-	GLFWwindow* window;
-	Shader* shader;
+	// slot determines the texture binding slot
+	void Bind(unsigned int slot = 0) const;
+	void Unbind() const;
 
-	void UpdateVectorBuffers();
-	void UpdateVertexCount(std::vector<float> vector, int VertexSize);
-	void SetData(void);
-
-	public:
-		Shape(ShapeType ST, Shader* shader);
-		Shape(ShapeType ST, Shader* shader, GLFWwindow* window);
-		~Shape();
-
-		void UpdateData(void);
-		void Draw(void);
-
-		void SetModelNDC(std::vector<std::array<float, 3>> Model){this->Model = Model;}
-		void SetModel3D(std::vector<float> Model);
-		void SetModel2D(std::vector<float> Model);
-		void SetTextureCoord(std::vector<float> TextureCoords);
-		void SetColor(std::array<float, 4> Color);
-		void SetColorNDC(std::array<float, 4> Color);
-		void SetColorVec(unsigned int Vertex, std::array<float, 4> Color);
-		void SetColorVecNDC(unsigned int Vertex, std::array<float, 4> Color);
-		void SetVertex2D(unsigned int Vertex, std::array<float, 2> coor);
-		void SetVertex3D(unsigned int Vertex, std::array<float, 3> coor);
-		void SetVertex2D_NDC(unsigned int Vertex, std::array<float, 2> coor);
-		void SetVertex3D_NDC(unsigned int Vertex, std::array<float, 3> coor);
-
-		void SetWindowContext(GLFWwindow* window){this->window = window;}
-
-		std::vector<std::array<float, 3>> GetModel(void){return this->Model;}
+	inline int GetWidth() const { return m_Width; }
+	inline int GetHeight() const { return m_Height; }
 };
 
-}
+} // namespace
 #endif
+//inc/Core/Primitives/VertexArrayObject.hpp : 
+
+#ifndef VAOHEADERGUARD
+#define VAOHEADERGUARD
+
+//#include VertexBufferObject.hpp"
+//#include VertexBufferLayout.hpp"
+
+namespace MGLlib { 
+namespace Primitives { 
+
+class VertexArrayObject{
+private:
+	unsigned int m_RendererID;
+public:
+	VertexArrayObject();
+	~VertexArrayObject();
+
+	void AddBuffer(const VertexBufferObject* vb, const VertexBufferLayout* layout);
+
+	void Bind() const;
+	void UnBind() const;
+};
+
+}} // namespace
+
+#endif
+//inc/Core/Primitives/Shader.hpp : 
+
+#ifndef SHADER_HPP
+#define SHADER_HPP
+
+#include <unordered_map>
+#include <string>
+
+#include <glm/glm.hpp>
+
+namespace MGLlib { 
+
+class Shader 
+{
+private:   
+    unsigned int m_RendererID;
+    std::string m_filepath[3];
+    std::unordered_map<std::string, int> m_uniformLocationCache;
+
+    enum __ShaderType {
+        SINGLE,
+        Fragment,
+        Vertex,
+        ShaderCount
+    };
+
+    std::string ShaderType[ShaderCount-1] = {"Fragment", "Vertex"};
+    
+    struct ShaderProgramSource
+    {
+        std::string VertexSource;
+        std::string FragmentSource;
+    };
+
+    // used for multiple shader files
+    std::string ReadShaderFile(enum __ShaderType T);
+    // used for single shader file
+    ShaderProgramSource ParseShader();
+    // compiles the shader
+    unsigned int CompileShader(unsigned int type, const std::string& ShaderCode);
+    // links the shader files
+    void LinkShaders(unsigned int VertexShaderID, unsigned int FragmentShaderID);
+
+    int GetUniformLocation(const std::string& name);
+
+public:
+    Shader(const char * vertex_file_path,const char * fragment_file_path);
+    Shader(const char* shader_file_path);
+    ~Shader();
+
+    void Bind() const;
+    void UnBind() const;
+
+    // set uniforms
+    void SetUniform1f(const std::string& name, float value);
+    void SetUniform1i(const std::string& name, int value);
+    void SetUniform1ui(const std::string& name, unsigned int value);
+    void SetUniform1fv(const std::string& name, int count, const float *value);
+    void SetUniform1iv(const std::string& name, int count, const int *value);
+    void SetUniform1uiv(const std::string& name, int count, const unsigned int *value);
+    void SetUniform2f(const std::string& name, float v0, float v1);
+    void SetUniform2i(const std::string& name, int v0, int v1);
+    void SetUniform2ui(const std::string& name, unsigned int v0, unsigned int v1);
+    void SetUniform2fv(const std::string& name, int count, const float *value);
+    void SetUniform2iv(const std::string& name, int count, const int *value);
+    void SetUniform2uiv(const std::string& name, int count, const unsigned int *value);
+    void SetUniform3f(const std::string& name, float v0, float v1, float v2);
+    void SetUniform3i(const std::string& name, int v0, int v1, int v2);
+    void SetUniform3ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2);
+    void SetUniform3fv(const std::string& name, int count, const float *value);
+    void SetUniform3iv(const std::string& name, int count, const int *value);
+    void SetUniform3uiv(const std::string& name, int count, const unsigned int *value);
+    void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void SetUniform4i(const std::string& name, int v0, int v1, int v2, int v3);
+    void SetUniform4ui(const std::string& name, unsigned int v0, unsigned int v1, unsigned int v2, unsigned int v3);
+    void SetUniform4fv(const std::string& name, int count, const float *value);
+    void SetUniform4iv(const std::string& name, int count, const int *value);
+    void SetUniform4uiv(const std::string& name, int count, const unsigned int *value);
+
+    void SetuniformMat4f(const std::string& name, glm::mat4 matrix);
+};
+
+} // namespace
+#endif
+
 //inc/Core/Shapes/GenericAbstractShape.h : 
 
 #ifndef GASHEADERGUARD
@@ -895,6 +839,67 @@ protected:
 }	// namespace
 
 #endif
+//inc/Core/Shapes/Shape.h : 
+
+#ifndef SHAPEHEADERGUARD
+#define SHAPEHEADERGUARD
+
+//#include GenericShape.h"
+//#include GL/glew.h"
+//#include GLFW/glfw3.h"
+
+namespace MGLlib{
+
+enum Usage_Type{
+	Draw_Static,
+	Draw_Dynamic
+};
+
+class Shape : public GenericShape
+{
+	protected:
+	unsigned int VertexCount = 0;
+	std::vector<std::array<float, 3>> Model;
+	std::vector<std::array<float, 2>> TextureCoords;
+	std::vector<std::array<float, 4>> ColorPerVector;
+	
+	Usage_Type uType = Draw_Dynamic;
+	bool DataChanged = true;
+
+	static GLFWwindow* window;
+	Shader* shader;
+
+	void UpdateVectorBuffers();
+	void UpdateVertexCount(std::vector<float> vector, int VertexSize);
+	void SetData(void);
+
+	public:
+		Shape(ShapeType ST, Shader* shader, Usage_Type uType = Draw_Dynamic);
+		~Shape();
+
+		void UpdateData(void);
+		void Draw(void);
+
+		void SetModelNDC(std::vector<std::array<float, 3>> Model){this->Model = Model;}
+		void SetModel3D(std::vector<float> Model);
+		void SetModel2D(std::vector<float> Model);
+		void SetTextureCoord(std::vector<float> TextureCoords);
+		void SetColor(std::array<float, 4> Color);
+		void SetColorNDC(std::array<float, 4> Color);
+		void SetColorVec(unsigned int Vertex, std::array<float, 4> Color);
+		void SetColorVecNDC(unsigned int Vertex, std::array<float, 4> Color);
+		void SetVertex2D(unsigned int Vertex, std::array<float, 2> coor);
+		void SetVertex3D(unsigned int Vertex, std::array<float, 3> coor);
+		void SetVertex2D_NDC(unsigned int Vertex, std::array<float, 2> coor);
+		void SetVertex3D_NDC(unsigned int Vertex, std::array<float, 3> coor);
+
+		void SetWindowContext(GLFWwindow* window){this->window = window;}
+
+		std::vector<std::array<float, 3>> GetModel(void){return this->Model;}
+};
+
+}
+#endif
 //inc/Core/3Drender/Camera.h : 
 
 #ifndef CAMERAHEADERGUARD
@@ -944,6 +949,50 @@ class Camera
 
 } // namespace
 #endif
+//inc/Shapes/Circle.hpp : 
+
+#ifndef CIRCLEHEADERGUARD
+#define CIRCLEHEADERGUARD
+
+//#include Shape.h"
+
+namespace MGLlib
+{
+	class Circle : public Shape {
+		float Mx, My;
+		
+		public:
+		Circle(Shader* shader, Usage_Type uType = Draw_Dynamic);
+		void MakeShape(float Mx, float My, float Z, float Radius, int Sectors);
+		~Circle();
+	};
+} // namespace MGLlib
+
+
+#endif
+//inc/Shapes/Rectangle.hpp : 
+
+#ifndef RECTANGLEHEADERGUARD
+#define RECTANGLEHEADERGUARD
+
+//#include Shape.h"
+
+namespace MGLlib
+{
+	class Rectangle : public Shape
+	{
+		float width, height, depth;
+
+		public:
+			Rectangle(Shader* shader, Usage_Type uType = Draw_Dynamic);
+			void MakeShape(float x, float y, float z, float width, float height, float depth, bool tild = false);
+			~Rectangle();
+	};
+
+} // namespace MGLlib
+
+
+#endif
 //inc/Shapes/Cube.hpp : 
 
 #ifndef CUBEHEADERGUARD
@@ -955,11 +1004,10 @@ namespace MGLlib
 {
 	class Cube : public Shape{
 	private:
-		bool _hollow;
 		// list of vertices
 
 	public:
-		Cube(Shader* shader, bool hollow = false);
+		Cube(Shader* shader, Usage_Type uType = Draw_Dynamic);
 		~Cube();
 
 		// set the cube's material to given material
@@ -993,49 +1041,90 @@ namespace MGLlib
 
 
 #endif
-//inc/Shapes/Rectangle.hpp : 
+//inc/ShapeHandler.h : 
 
-#ifndef RECTANGLEHEADERGUARD
-#define RECTANGLEHEADERGUARD
+#ifndef SHAPEHANDLER
+#define SHAPEHANDLER
 
+//#include GL/glew.h"
+//#include GLFW/glfw3.h"
+
+//#include Camera.h"
+//#include Shader.hpp"		// for default shader
+
+//#include GenericShape.h"
 //#include Shape.h"
 
-namespace MGLlib
+//#include Rectangle.hpp"
+//#include Circle.hpp"
+//#include Cube.hpp"
+
+namespace MGLlib {
+
+// Determines the conversion based on which length
+enum C2NDC : int {
+	NDC_XY		= -1,
+	NDC_XYZ		= -2,
+	NDC_RGB 	= -3,
+	NDC_RGBA 	= -4,
+};
+
+class ShapeHandler
 {
-	class Rectangle : public Shape
-	{
-		float width, height, depth;
+	private:
+		glm::mat4 vp;
 
-		public:
-			Rectangle(Shader* shader);
-			void MakeShape(float x, float y, float z, float width, float height, float depth, bool tild = false);
-			~Rectangle();
-	};
+		void SetProjectionView(void);
 
-} // namespace MGLlib
+	protected:
+		Camera*		cam		= nullptr;
+		Shader*		shader	= nullptr;
+		GLFWwindow* window	= nullptr;
+		bool		_3Drendering = false;
+		bool		_OrthoRender = false;
 
-
-#endif
-//inc/Shapes/Circle.hpp : 
-
-#ifndef CIRCLEHEADERGUARD
-#define CIRCLEHEADERGUARD
-
-//#include Shape.h"
-
-namespace MGLlib
-{
-	class Circle : public Shape {
-		float Mx, My;
+	
+		ShapeHandler();
+		~ShapeHandler();
 		
-		public:
-		Circle(Shader* shader);
-		void MakeShape(float Mx, float My, float Z, float Radius, int Sectors);
-		~Circle();
-	};
-} // namespace MGLlib
+		void InitHandler(GLFWwindow* window);
 
+		static Shape* baseShape;
+	public:
+		void Enable3Drender(void);
+		void Disable3Drender(void);
+		void Enableortho(void);
+		void Disableortho(void);
 
+		void SetDefaultShader(Shader* shader);
+		//! @brief draws the shape
+		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
+		void Draw(GenericShape* Shape, void (*DrawFunc)(void) = nullptr);
+		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
+
+		Camera* GetCamera(void);
+		Shader* GetGlobalShader(void);
+
+		//! @brief creates a Shape based on coordinates between -1 and 1
+		GenericShape* CreateGenShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout = {3});
+
+		//! @brief creates a Shape based on coordinates between pixels, origin is at the bottom left
+		//! @param VertexLayout pass a value of type "enum C2NDC" or a positive int value
+		GenericShape* CreateGenShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout = {NDC_XYZ});
+
+		//! @brief returns an empty shape object
+		//! @remark shape data should be set after calling this function
+		Shape* CreateShape(ShapeType ST, Usage_Type uType = Draw_Dynamic);
+
+		//! @brief returns a rectangle object
+		Rectangle* CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild = false, Usage_Type uType = Draw_Dynamic);
+		Rectangle* CreateRectangle(float x, float y, float width, float height, Usage_Type uType = Draw_Dynamic);
+		Circle* CreateCircle(float x, float y, float z, float Radius, int Sectors, Usage_Type uType = Draw_Dynamic);
+		Circle* CreateCircle(float x, float y, float Radius, int Sectors, Usage_Type uType = Draw_Dynamic);
+		Cube* CreateCube(float x, float y, float z, float width, float height, float depth, Usage_Type uType = Draw_Dynamic);
+};
+
+} // namespace
 #endif
 //inc/Window.h : 
 
@@ -1111,90 +1200,7 @@ namespace MGLlib {
 
 } // namespace
 #endif
-//inc/Controllers/ShapeHandler.h : 
-
-#ifndef SHAPEHANDLER
-#define SHAPEHANDLER
-
-//#include GL/glew.h"
-//#include GLFW/glfw3.h"
-
-//#include Camera.h"
-//#include Shader.hpp"		// for default shader
-
-//#include GenericShape.h"
-//#include Shape.h"
-
-//#include Rectangle.hpp"
-//#include Circle.hpp"
-//#include Cube.hpp"
-
-namespace MGLlib {
-
-// Determines the conversion based on which length
-enum C2NDC : int {
-	NDC_XY		= -1,
-	NDC_XYZ		= -2,
-	NDC_RGB 	= -3,
-	NDC_RGBA 	= -4,
-};
-
-class ShapeHandler
-{
-	private:
-		glm::mat4 vp;
-
-		void SetProjectionView(void);
-
-	protected:
-		Camera*		cam		= nullptr;
-		Shader*		shader	= nullptr;
-		GLFWwindow* window	= nullptr;
-		bool		_3Drendering = false;
-		bool		_OrthoRender = false;
-
-	public:
-		ShapeHandler();
-		~ShapeHandler();
-
-		void Enable3Drender(void);
-		void Disable3Drender(void);
-		void Enableortho(void);
-		void Disableortho(void);
-		
-		void InitHandler(GLFWwindow* window);
-
-		void SetDefaultShader(Shader* shader);
-		//! @brief draws the shape
-		//! @param DrawFunc Performs this function between binding the shader and drawing the Shape
-		void Draw(GenericShape* Shape, void (*DrawFunc)(void) = nullptr);
-		void Draw(Shape* Shape, void (*DrawFunc)(void) = nullptr);
-
-		Camera* GetCamera(void);
-		Shader* GetGlobalShader(void);
-
-		//! @brief creates a Shape based on coordinates between -1 and 1
-		GenericShape* CreateGenShapeNDC(ShapeType ST, std::vector<float> VertexBuffer, std::vector<unsigned int> VertexLayout = {3});
-
-		//! @brief creates a Shape based on coordinates between pixels, origin is at the bottom left
-		//! @param VertexLayout pass a value of type "enum C2NDC" or a positive int value
-		GenericShape* CreateGenShape(ShapeType ST, std::vector<float> VertexBuffer, std::vector<int> VertexLayout = {NDC_XYZ});
-
-		//! @brief returns an empty shape object
-		//! @remark shape data should be set after calling this function
-		Shape* CreateShape(ShapeType ST);
-
-		//! @brief returns a rectangle object
-		Rectangle* CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild = false);
-		Rectangle* CreateRectangle(float x, float y, float width, float height);
-		Circle* CreateCircle(float x, float y, float z, float Radius, int Sectors);
-		Circle* CreateCircle(float x, float y, float Radius, int Sectors);
-		Cube* CreateCube(float x, float y, float z, float width, float height, float depth);
-};
-
-} // namespace
-#endif
-//inc/Controllers/ImGuiHelper.h : 
+//inc/ImGuiHelper.h : 
 
 #ifndef IMGUIHELPERHEADERGUARD
 #define IMGUIHELPERHEADERGUARD

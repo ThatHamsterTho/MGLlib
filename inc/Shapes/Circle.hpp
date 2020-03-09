@@ -9,7 +9,7 @@ namespace MGLlib
 		float Mx, My;
 		
 		public:
-		Circle(Shader* shader);
+		Circle(Shader* shader, Usage_Type uType = Draw_Dynamic);
 		void MakeShape(float Mx, float My, float Z, float Radius, int Sectors);
 		~Circle();
 	};

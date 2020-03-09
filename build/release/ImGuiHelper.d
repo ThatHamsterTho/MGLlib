@@ -1,6 +1,8 @@
-build/release/tests/TestShapeHandler.o: src/tests/TestShapeHandler.cpp \
- inc/tests/TestShapeHandler.h inc/tests/Test.hpp inc/Window.h \
- Libraries/GL/glew.h Libraries/GLFW/glfw3.h Libraries/glm/glm.hpp \
+build/release/ImGuiHelper.o: src/ImGuiHelper.cpp inc/ImGuiHelper.h \
+ inc/external/ImGui/imgui.h inc/external/ImGui/imconfig.h \
+ inc/external/ImGui/imgui_impl_glfw.h \
+ inc/external/ImGui/imgui_impl_opengl3.h inc/Window.h Libraries/GL/glew.h \
+ Libraries/GLFW/glfw3.h Libraries/glm/glm.hpp \
  Libraries/glm/detail/_fixes.hpp Libraries/glm/detail/setup.hpp \
  Libraries/glm/detail/../simd/platform.h Libraries/glm/fwd.hpp \
  Libraries/glm/detail/qualifier.hpp Libraries/glm/detail/setup.hpp \
@@ -152,13 +154,17 @@ build/release/tests/TestShapeHandler.o: src/tests/TestShapeHandler.cpp \
  inc/Core/Primitives/IndexBufferObject.hpp \
  inc/Core/Primitives/Texture.hpp inc/Core/Shapes/Shape.h \
  inc/Core/Shapes/GenericShape.h inc/Shapes/Rectangle.hpp \
- inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp \
- inc/Core/Shapes/GenericAbstractShape.h inc/external/ImGui/imgui.h \
- inc/external/ImGui/imconfig.h
+ inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp
 
-inc/tests/TestShapeHandler.h:
+inc/ImGuiHelper.h:
 
-inc/tests/Test.hpp:
+inc/external/ImGui/imgui.h:
+
+inc/external/ImGui/imconfig.h:
+
+inc/external/ImGui/imgui_impl_glfw.h:
+
+inc/external/ImGui/imgui_impl_opengl3.h:
 
 inc/Window.h:
 
@@ -509,9 +515,3 @@ inc/Shapes/Rectangle.hpp:
 inc/Shapes/Circle.hpp:
 
 inc/Shapes/Cube.hpp:
-
-inc/Core/Shapes/GenericAbstractShape.h:
-
-inc/external/ImGui/imgui.h:
-
-inc/external/ImGui/imconfig.h:

@@ -1,17 +1,16 @@
 #include "Shape.h"
 
 namespace MGLlib {
-	Shape::Shape(ShapeType ST, Shader* shader) 
+
+	GLFWwindow* Shape::window = nullptr;
+
+	Shape::Shape(ShapeType ST, Shader* shader, Usage_Type uType) 
 		: GenericShape(shader, ST){
 		this->ST = ST;
 		this->shader = shader;
 		unsigned int layout[3] = {3, 2, 4};
 		this->GAShape->SetVertexLayout(layout, 3);
-	}
-	Shape::Shape(ShapeType ST, Shader* shader, GLFWwindow* window) : GenericShape(shader, ST, {0.0f}, {3, 2, 4}){
-		this->ST = ST;
-		this->shader = shader;
-		this->window = window;
+		this->uType = uType;
 	}
 	Shape::~Shape(){}
 
@@ -56,7 +55,13 @@ namespace MGLlib {
 	void Shape::SetModel3D(std::vector<float> Model){
 		//std::vector<std::array<float, 3>> NDCVertexBuffer;
 		int dim[3];
-		glfwGetWindowSize(this->window, &dim[0], &dim[1]);
+		if(window){
+			glfwGetWindowSize(this->window, &dim[0], &dim[1]);
+		}
+		else{
+			dim[0] = 1.0f; dim[1] = 1.0f;
+			pERROR("No window context set for Shape class");
+		}
 		dim[2] = dim[0];
 		UpdateVertexCount(Model, 3);
 		UpdateVectorBuffers();
@@ -123,7 +128,13 @@ namespace MGLlib {
 	void Shape::SetVertex3D(unsigned int Vertex, std::array<float, 3> coor){
 		std::array<float, 3> NDC_coor;
 		int dim[3];
-		glfwGetWindowSize(this->window, &dim[0], &dim[1]);
+		if(window){
+			glfwGetWindowSize(this->window, &dim[0], &dim[1]);
+		}
+		else{
+			dim[0] = 1.0f; dim[1] = 1.0f;
+			pERROR("No window context set for Shape class");
+		}
 		dim[2] = dim[0];
 		for(int i = 0; i < 3; i++){
 			NDC_coor[i] = (2*coor[i])/(float)dim[i];
@@ -164,6 +175,12 @@ namespace MGLlib {
 			}
 		}
 		
+		if(uType == Draw_Static){
+			Model.clear();
+			TextureCoords.clear();
+			ColorPerVector.clear();
+		}
+
 		// settings GenericAbstractShape VBO;
 		this->GAShape->SetVertexBuffer(VertexDataArray, sizeof(float) * VertexCount * 9);
 		delete [] VertexDataArray;

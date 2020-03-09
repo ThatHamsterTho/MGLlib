@@ -7,6 +7,11 @@
 
 namespace MGLlib{
 
+enum Usage_Type{
+	Draw_Static,
+	Draw_Dynamic
+};
+
 class Shape : public GenericShape
 {
 	protected:
@@ -15,9 +20,10 @@ class Shape : public GenericShape
 	std::vector<std::array<float, 2>> TextureCoords;
 	std::vector<std::array<float, 4>> ColorPerVector;
 	
+	Usage_Type uType = Draw_Dynamic;
 	bool DataChanged = true;
 
-	GLFWwindow* window;
+	static GLFWwindow* window;
 	Shader* shader;
 
 	void UpdateVectorBuffers();
@@ -25,8 +31,7 @@ class Shape : public GenericShape
 	void SetData(void);
 
 	public:
-		Shape(ShapeType ST, Shader* shader);
-		Shape(ShapeType ST, Shader* shader, GLFWwindow* window);
+		Shape(ShapeType ST, Shader* shader, Usage_Type uType = Draw_Dynamic);
 		~Shape();
 
 		void UpdateData(void);

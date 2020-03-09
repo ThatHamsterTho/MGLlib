@@ -11,11 +11,11 @@ namespace MGLlib
 		for(int i = 0; i < 4; i++){
 			SetVertex3D(i, {
 				x + (graycode[i][0] ? v[0] : 0),
-				y + (graycode[i][1] ? v[1] : 0),
+				y - (graycode[i][1] ? v[1] : 0),
 				z + (graycode[i][!tild] ? v[2] : 0)
 			});
 		}
 	}
-	Rectangle::Rectangle(Shader* shader) : Shape(MGL_QUADS, shader){}
+	Rectangle::Rectangle(Shader* shader, Usage_Type uType) : Shape(MGL_QUADS, shader, uType){}
 	Rectangle::~Rectangle(){};
 } // namespace MGLlib

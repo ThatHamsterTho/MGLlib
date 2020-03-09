@@ -38,16 +38,18 @@ class ShapeHandler
 		bool		_3Drendering = false;
 		bool		_OrthoRender = false;
 
-	public:
+	
 		ShapeHandler();
 		~ShapeHandler();
+		
+		void InitHandler(GLFWwindow* window);
 
+		static Shape* baseShape;
+	public:
 		void Enable3Drender(void);
 		void Disable3Drender(void);
 		void Enableortho(void);
 		void Disableortho(void);
-		
-		void InitHandler(GLFWwindow* window);
 
 		void SetDefaultShader(Shader* shader);
 		//! @brief draws the shape
@@ -67,14 +69,14 @@ class ShapeHandler
 
 		//! @brief returns an empty shape object
 		//! @remark shape data should be set after calling this function
-		Shape* CreateShape(ShapeType ST);
+		Shape* CreateShape(ShapeType ST, Usage_Type uType = Draw_Dynamic);
 
 		//! @brief returns a rectangle object
-		Rectangle* CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild = false);
-		Rectangle* CreateRectangle(float x, float y, float width, float height);
-		Circle* CreateCircle(float x, float y, float z, float Radius, int Sectors);
-		Circle* CreateCircle(float x, float y, float Radius, int Sectors);
-		Cube* CreateCube(float x, float y, float z, float width, float height, float depth);
+		Rectangle* CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild = false, Usage_Type uType = Draw_Dynamic);
+		Rectangle* CreateRectangle(float x, float y, float width, float height, Usage_Type uType = Draw_Dynamic);
+		Circle* CreateCircle(float x, float y, float z, float Radius, int Sectors, Usage_Type uType = Draw_Dynamic);
+		Circle* CreateCircle(float x, float y, float Radius, int Sectors, Usage_Type uType = Draw_Dynamic);
+		Cube* CreateCube(float x, float y, float z, float width, float height, float depth, Usage_Type uType = Draw_Dynamic);
 };
 
 } // namespace

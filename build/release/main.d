@@ -126,7 +126,7 @@ build/release/main.o: src/main.cpp inc/Window.h Libraries/GL/glew.h \
  Libraries/glm/detail/func_trigonometric.inl Libraries/glm/packing.hpp \
  Libraries/glm/detail/func_packing.inl Libraries/glm/detail/type_half.hpp \
  Libraries/glm/detail/type_half.inl Libraries/glm/integer.hpp \
- Libraries/glm/detail/func_integer.inl inc/Controllers/ShapeHandler.h \
+ Libraries/glm/detail/func_integer.inl inc/ShapeHandler.h \
  inc/Core/3Drender/Camera.h inc/Core/Debug/DefineDebug.h \
  Libraries/glm/gtc/matrix_transform.hpp \
  Libraries/glm/gtc/../ext/matrix_projection.hpp \
@@ -151,7 +151,7 @@ build/release/main.o: src/main.cpp inc/Window.h Libraries/GL/glew.h \
  inc/Core/Primitives/IndexBufferObject.hpp \
  inc/Core/Primitives/Texture.hpp inc/Core/Shapes/Shape.h \
  inc/Core/Shapes/GenericShape.h inc/Shapes/Rectangle.hpp \
- inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp inc/Controllers/ImGuiHelper.h \
+ inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp inc/ImGuiHelper.h \
  inc/external/ImGui/imgui.h inc/external/ImGui/imconfig.h \
  inc/external/ImGui/imgui_impl_glfw.h \
  inc/external/ImGui/imgui_impl_opengl3.h inc/tests/TestGAS.hpp \
@@ -440,7 +440,7 @@ Libraries/glm/integer.hpp:
 
 Libraries/glm/detail/func_integer.inl:
 
-inc/Controllers/ShapeHandler.h:
+inc/ShapeHandler.h:
 
 inc/Core/3Drender/Camera.h:
 
@@ -508,7 +508,7 @@ inc/Shapes/Circle.hpp:
 
 inc/Shapes/Cube.hpp:
 
-inc/Controllers/ImGuiHelper.h:
+inc/ImGuiHelper.h:
 
 inc/external/ImGui/imgui.h:
 

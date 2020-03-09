@@ -272,7 +272,7 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
 
 
 
-ROBJDIRS := $(foreach dir, $(BLDDIR), $(shell find $(dir) -type d))
+ROBJDIRS := $(foreach dir, $(BuildDir), $(shell find $(dir) -type d))
 ROBJS	 := $(foreach dir, $(ROBJDIRS), $(wildcard $(dir)/*.o))
 
 RINCDIRS := $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))
@@ -287,17 +287,22 @@ HfilesPRE := $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/UtilFunc)([^ ])*((\
 # Debug
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Debug)([^ ])*((\.hpp)|(\.h))")
 # Primitives
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/VertexBufferObject)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/VertexBufferLayout)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/IndexBufferObject)([^ ])*((\.hpp)|(\.h))")
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives)([^ ])*((\.hpp)|(\.h))")
 # Shapes Core
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes\/GenericAbstractShape)([^ ])*((\.hpp)|(\.h))")
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes)([^ ])*((\.hpp)|(\.h))")
 # 3Drender
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/3Drender)([^ ])*((\.hpp)|(\.h))")
 # Shapes
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Shapes)([^ ])*((\.hpp)|(\.h))")
 # other
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/ShapeHandler)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Window)([^ ])*((\.hpp)|(\.h))")
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/)([^ \/])*((\.hpp)|(\.h))")
 # Controllers
-HfilesPRE += $(shell echo $(RINCS) | grep -o -E "([ ])(inc\/Controllers)([^ ])*((\.hpp)|(\.h))")
 
 Hfiles := $(shell echo $(HfilesPRE) | awk -v RS="[ \n]+" '!n[$$0]++') 
 
@@ -305,12 +310,16 @@ lib: $(ROBJS)
 	rm -f MGLlib.lib MGLlib.hpp
 	touch MGLlib.hpp
 	@echo "" > "$(HeaderFile)"
-	
+
 	@$(foreach header, $(Hfiles), echo "//$(header) : " >> $(HeaderFile); echo "" >> $(HeaderFile); cat $(header) >> $(HeaderFile); echo "" >> $(HeaderFile);)
-	@cat "$(HeaderFile)" | sed 's/#include "/\/\/#include /g' > "$(HeaderFile)"
-	@cat "$(HeaderFile)" | sed 's/#include <GL\/glew.h>//g' > "$(HeaderFile)"
-	@cat "$(HeaderFile)" | sed 's/#include <GLFW\/glfw3.h>//g' > "$(HeaderFile)"
-	@cat "$(HeaderFile)" | sed 's/#include <glm\/glm.h>//g' > "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include "/\/\/#include /g' > temp
+	@mv temp "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include <GL\/glew.h>//g' > temp
+	@mv temp "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include <GLFW\/glfw3.h>//g' > temp
+	@mv temp "$(HeaderFile)"
+	@cat "$(HeaderFile)" | sed 's/#include <glm\/glm.h>//g' > temp
+	@mv temp "$(HeaderFile)"
 
 	@echo "#include <GL/glew.h>		// sudo apt-get install libglew-dev" > temp
 	@echo "#include <GLFW/glfw3.h>	// sudo apt-get install libglfw3-dev" >> temp
@@ -318,4 +327,4 @@ lib: $(ROBJS)
 	@cat "$(HeaderFile)" >> temp
 	@mv temp "$(HeaderFile)"
 
-	ar rcs MGLlib.lib $(libOBJ)
+	@ar rcs MGLlib.lib $(ROBJS)
