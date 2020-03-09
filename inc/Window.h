@@ -3,7 +3,7 @@
 
 #include <GL/glew.h>		// sudo apt-get install libglew-dev
 #include <GLFW/glfw3.h>		// sudo apt-get install libglfw3-dev	
-#include <glm/glm.hpp>		// sudo apt-get install libglm-dev
+#include "glm/glm.hpp"
 
 #include "ShapeHandler.h"
 

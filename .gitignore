@@ -1,0 +1,7 @@
+*.o
+*.d
+Example/*
+
+main
+MGLlib.hpp
+MGLlib.lib
