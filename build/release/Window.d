@@ -126,7 +126,7 @@ build/release/Window.o: src/Window.cpp inc/Window.h Libraries/GL/glew.h \
  Libraries/glm/detail/func_trigonometric.inl Libraries/glm/packing.hpp \
  Libraries/glm/detail/func_packing.inl Libraries/glm/detail/type_half.hpp \
  Libraries/glm/detail/type_half.inl Libraries/glm/integer.hpp \
- Libraries/glm/detail/func_integer.inl inc/ShapeHandler.h \
+ Libraries/glm/detail/func_integer.inl inc/Controllers/ShapeHandler.h \
  inc/Core/3Drender/Camera.h inc/Core/Debug/DefineDebug.h \
  Libraries/glm/gtc/matrix_transform.hpp \
  Libraries/glm/gtc/../ext/matrix_projection.hpp \
@@ -140,7 +140,7 @@ build/release/Window.o: src/Window.cpp inc/Window.h Libraries/GL/glew.h \
  Libraries/glm/gtc/../ext/matrix_clip_space.inl \
  Libraries/glm/gtc/../ext/matrix_transform.hpp \
  Libraries/glm/gtc/../ext/matrix_transform.inl \
- Libraries/glm/gtc/matrix_transform.inl inc/Core/Shapes/Shader.hpp \
+ Libraries/glm/gtc/matrix_transform.inl inc/Core/Primitives/Shader.hpp \
  inc/Core/Shapes/GenericShape.h inc/Core/Shapes/GenericAbstractShape.h \
  inc/Core/Primitives/DrawBuffer.hpp \
  inc/Core/Primitives/VertexBufferLayout.hpp inc/Core/Debug/Debugger.hpp \
@@ -148,8 +148,8 @@ build/release/Window.o: src/Window.cpp inc/Window.h Libraries/GL/glew.h \
  inc/Core/Primitives/VertexArrayObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
- inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Shapes/Texture.hpp \
- inc/Core/Shapes/Shader.hpp inc/Core/Shapes/Shape.h \
+ inc/Core/Primitives/IndexBufferObject.hpp \
+ inc/Core/Primitives/Texture.hpp inc/Core/Shapes/Shape.h \
  inc/Core/Shapes/GenericShape.h inc/Shapes/Rectangle.hpp \
  inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp
 
@@ -435,7 +435,7 @@ Libraries/glm/integer.hpp:
 
 Libraries/glm/detail/func_integer.inl:
 
-inc/ShapeHandler.h:
+inc/Controllers/ShapeHandler.h:
 
 inc/Core/3Drender/Camera.h:
 
@@ -467,7 +467,7 @@ Libraries/glm/gtc/../ext/matrix_transform.inl:
 
 Libraries/glm/gtc/matrix_transform.inl:
 
-inc/Core/Shapes/Shader.hpp:
+inc/Core/Primitives/Shader.hpp:
 
 inc/Core/Shapes/GenericShape.h:
 
@@ -491,9 +491,7 @@ inc/Core/Primitives/VertexBufferObject.hpp:
 
 inc/Core/Primitives/IndexBufferObject.hpp:
 
-inc/Core/Shapes/Texture.hpp:
-
-inc/Core/Shapes/Shader.hpp:
+inc/Core/Primitives/Texture.hpp:
 
 inc/Core/Shapes/Shape.h:
 

@@ -140,7 +140,7 @@ build/release/ShapeHandler.o: src/ShapeHandler.cpp inc/ShapeHandler.h \
  Libraries/glm/gtc/../ext/matrix_clip_space.inl \
  Libraries/glm/gtc/../ext/matrix_transform.hpp \
  Libraries/glm/gtc/../ext/matrix_transform.inl \
- Libraries/glm/gtc/matrix_transform.inl inc/Core/Shapes/Shader.hpp \
+ Libraries/glm/gtc/matrix_transform.inl inc/Core/Primitives/Shader.hpp \
  Libraries/glm/glm.hpp Libraries/glm/detail/_fixes.hpp \
  Libraries/glm/detail/setup.hpp Libraries/glm/fwd.hpp \
  Libraries/glm/packing.hpp Libraries/glm/detail/func_packing.inl \
@@ -154,8 +154,8 @@ build/release/ShapeHandler.o: src/ShapeHandler.cpp inc/ShapeHandler.h \
  inc/Core/Primitives/VertexArrayObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
- inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Shapes/Texture.hpp \
- inc/Core/Shapes/Shader.hpp inc/Core/Shapes/Shape.h \
+ inc/Core/Primitives/IndexBufferObject.hpp \
+ inc/Core/Primitives/Texture.hpp inc/Core/Shapes/Shape.h \
  inc/Core/Shapes/GenericShape.h inc/Shapes/Rectangle.hpp \
  inc/Shapes/Circle.hpp inc/Shapes/Cube.hpp
 
@@ -451,7 +451,7 @@ Libraries/glm/gtc/../ext/matrix_transform.inl:
 
 Libraries/glm/gtc/matrix_transform.inl:
 
-inc/Core/Shapes/Shader.hpp:
+inc/Core/Primitives/Shader.hpp:
 
 Libraries/glm/glm.hpp:
 
@@ -497,9 +497,7 @@ inc/Core/Primitives/VertexBufferObject.hpp:
 
 inc/Core/Primitives/IndexBufferObject.hpp:
 
-inc/Core/Shapes/Texture.hpp:
-
-inc/Core/Shapes/Shader.hpp:
+inc/Core/Primitives/Texture.hpp:
 
 inc/Core/Shapes/Shape.h:
 

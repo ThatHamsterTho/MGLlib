@@ -8,12 +8,13 @@ build/release/Shapes/Cube.o: src/Shapes/Cube.cpp inc/Shapes/Cube.hpp \
  inc/Core/Primitives/VertexArrayObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
  inc/Core/Primitives/VertexBufferObject.hpp \
- inc/Core/Primitives/IndexBufferObject.hpp inc/Core/Shapes/Texture.hpp \
- inc/Core/Shapes/Shader.hpp Libraries/glm/glm.hpp \
- Libraries/glm/detail/_fixes.hpp Libraries/glm/detail/setup.hpp \
- Libraries/glm/detail/../simd/platform.h Libraries/glm/fwd.hpp \
- Libraries/glm/detail/qualifier.hpp Libraries/glm/detail/setup.hpp \
- Libraries/glm/vec2.hpp Libraries/glm/./ext/vector_bool2.hpp \
+ inc/Core/Primitives/IndexBufferObject.hpp \
+ inc/Core/Primitives/Texture.hpp inc/Core/Primitives/Shader.hpp \
+ Libraries/glm/glm.hpp Libraries/glm/detail/_fixes.hpp \
+ Libraries/glm/detail/setup.hpp Libraries/glm/detail/../simd/platform.h \
+ Libraries/glm/fwd.hpp Libraries/glm/detail/qualifier.hpp \
+ Libraries/glm/detail/setup.hpp Libraries/glm/vec2.hpp \
+ Libraries/glm/./ext/vector_bool2.hpp \
  Libraries/glm/./ext/../detail/type_vec2.hpp \
  Libraries/glm/./ext/../detail/type_vec2.inl \
  Libraries/glm/./ext/../detail/./compute_vector_relational.hpp \
@@ -166,9 +167,9 @@ inc/Core/Primitives/VertexBufferObject.hpp:
 
 inc/Core/Primitives/IndexBufferObject.hpp:
 
-inc/Core/Shapes/Texture.hpp:
+inc/Core/Primitives/Texture.hpp:
 
-inc/Core/Shapes/Shader.hpp:
+inc/Core/Primitives/Shader.hpp:
 
 Libraries/glm/glm.hpp:
 

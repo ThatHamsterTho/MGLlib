@@ -1,5 +1,5 @@
 build/release/Core/Shapes/Shader.o: src/Core/Shapes/Shader.cpp \
- Libraries/GL/glew.h inc/Core/Shapes/Shader.hpp Libraries/glm/glm.hpp \
+ Libraries/GL/glew.h inc/Core/Primitives/Shader.hpp Libraries/glm/glm.hpp \
  Libraries/glm/detail/_fixes.hpp Libraries/glm/detail/setup.hpp \
  Libraries/glm/detail/../simd/platform.h Libraries/glm/fwd.hpp \
  Libraries/glm/detail/qualifier.hpp Libraries/glm/detail/setup.hpp \
@@ -131,7 +131,7 @@ build/release/Core/Shapes/Shader.o: src/Core/Shapes/Shader.cpp \
 
 Libraries/GL/glew.h:
 
-inc/Core/Shapes/Shader.hpp:
+inc/Core/Primitives/Shader.hpp:
 
 Libraries/glm/glm.hpp:
 
