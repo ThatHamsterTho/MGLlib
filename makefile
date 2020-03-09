@@ -312,7 +312,7 @@ lib: $(ROBJS)
 	@echo "" > "$(HeaderFile)"
 
 	@$(foreach header, $(Hfiles), echo "//$(header) : " >> $(HeaderFile); echo "" >> $(HeaderFile); cat $(header) >> $(HeaderFile); echo "" >> $(HeaderFile);)
-	@cat "$(HeaderFile)" | sed 's/#include "/\/\/#include /g' > temp
+	@cat "$(HeaderFile)" | sed 's/#include "/\/\/#include "/g' > temp
 	@mv temp "$(HeaderFile)"
 	@cat "$(HeaderFile)" | sed 's/#include <GL\/glew.h>//g' > temp
 	@mv temp "$(HeaderFile)"
