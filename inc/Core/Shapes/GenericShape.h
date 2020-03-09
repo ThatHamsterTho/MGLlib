@@ -5,7 +5,6 @@
 #include <array>
 #include <string>
 #include "GenericAbstractShape.h"
-#include "DrawBuffer.hpp"
 
 namespace MGLlib{
 
@@ -68,7 +67,7 @@ protected:
 
 	GenericAbstractShape<float>* GAShape;
 	SetColorFunc SCF = SetColorDefault;
-	ColorNDC color = {1.0f, 1.0f, 1.0f};
+	ColorNDC color = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	glm::vec3 Position = glm::vec3(0.0f);
 

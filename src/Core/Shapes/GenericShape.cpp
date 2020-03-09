@@ -2,6 +2,7 @@
 
 #include "Debugger.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "UtilFunc.hpp"
 
 namespace MGLlib {
 
@@ -73,10 +74,19 @@ namespace MGLlib {
         VertexCount = VertexData.size()/VertexLength;
         std::vector<unsigned int> IndexBuffer = GenerateIndexBuffer(ST, VertexCount);
 
-        // Create Shape
-        Primitives::DrawBuffer<float>* drawbuffer = new Primitives::DrawBuffer<float>(VertexData, IndexBuffer, VertexLayout);
-        GAShape = new GenericAbstractShape<float>(shader, drawbuffer, ShapeMap[ST].GLtype);
-        delete drawbuffer;
+        float* VBOtemp = Util::VecToArray<float>(VertexData);
+        unsigned int* IBOtemp = Util::VecToArray<unsigned int>(IndexBuffer);
+        unsigned int* VBOlayouttemp = Util::VecToArray<unsigned int>(VertexLayout);
+        GAShape = new GenericAbstractShape<float>(
+            shader, 
+            VBOtemp, VertexData.size() * sizeof(float), 
+            VBOlayouttemp, VertexLayout.size(),
+            IBOtemp, IndexBuffer.size(), 
+            ShapeMap[ST].GLtype
+        );
+        delete VBOtemp;
+        delete IBOtemp;
+        delete VBOlayouttemp;
     }
 
 // constructor
