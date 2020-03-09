@@ -27,7 +27,11 @@ RINCDIRS := $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))
 INCLUDES := $(foreach dir, $(RINCDIRS), $(patsubst %, -I%, $(dir))) -ILibraries/
 
 # General linker settings
-LINK_FLAGS = -lopengl32 -lglu32 -llibglew32 -llibglfw3 #-lGLEW -lglfw -lGL
+ifeq ($(OS), Windows_NT)
+	LINK_FLAGS = -lopengl32 -lglu32 -llibglew32 -llibglfw3
+else 
+	LINK_FLAGS = -lGLEW -lglfw -lGL
+endif
 # Additional release-specific linker settings
 RLINK_FLAGS = -o2
 # Additional debug-specific linker settings
