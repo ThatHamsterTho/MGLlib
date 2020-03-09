@@ -16,9 +16,9 @@ RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/Shapes/ -Iinc/tests/ -Iinc/Core/ -Iinc/Core/3Drender/ -Iinc/Core/Shapes/ -Iinc/Core/Debug/ -Iinc/Core/Primitives/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/
+INCLUDES = -I $(SRC_PATH) -Iinc/ -Iinc/Shapes/ -Iinc/tests/ -Iinc/Core/ -Iinc/Core/3Drender/ -Iinc/Core/Shapes/ -Iinc/Core/Debug/ -Iinc/Core/Primitives/ -Iinc/external/ -Iinc/external/ImGui/ -Iinc/external/slb_image/ -ILibraries/
 # General linker settings
-LINK_FLAGS = -lGLEW -lglfw -lGL
+LINK_FLAGS = -lopengl32 -lglu32 -llibglew32 -llibglfw3 #-lGLEW -lglfw -lGL
 # Additional release-specific linker settings
 RLINK_FLAGS = -o2
 # Additional debug-specific linker settings
