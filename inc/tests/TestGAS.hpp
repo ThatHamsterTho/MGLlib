@@ -11,7 +11,6 @@
 #include "VertexArrayObject.hpp"
 #include "VertexBufferObject.hpp"
 #include "IndexBufferObject.hpp"
-#include "GenericAbstractShape.h"
 #include "GenericShape.h"
 
 // http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/

@@ -1,7 +1,5 @@
 #include "TestGAS.hpp"
 
-#include "DrawBuffer.hpp"
-
 #include "ImGui/imgui.h"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -22,15 +20,7 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 		width, height, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
 		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
 	};
-/*
-	std::vector<float> vbo = {
-		// 3D position,
-		 0.0f,   0.0f, 0.0f,
-		width, 	 0.0f, 0.0f,
-		width, height, 0.0f,
-		 0.0f, height, 0.0f,
-	};
-*/
+
 	shader = new Shader("res/shaders/SimpleShader.glsl");
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -73,7 +63,7 @@ void TestGAS::onRender()
 	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() *  GShape->GetModelMat();
 	GShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
 	GShape->Draw();
-	
+
 	// change color
 	if (m_Color[0] > 1.0)
 	{

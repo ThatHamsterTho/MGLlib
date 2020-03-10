@@ -1,8 +1,6 @@
 #ifndef GASHEADERGUARD
 #define GASHEADERGUARD
 
-#include "DrawBuffer.hpp"
-
 #include "VertexArrayObject.hpp"
 #include "VertexBufferObject.hpp"
 #include "IndexBufferObject.hpp"
@@ -18,8 +16,15 @@ template<typename type>
 class GenericAbstractShape{
 	public:
 		GenericAbstractShape(Shader* shader, unsigned int DrawType = GL_TRIANGLES);
-		GenericAbstractShape(const GenericAbstractShape& GAS);
-		GenericAbstractShape(Shader* shader, Primitives::DrawBuffer<type>* data, unsigned int DrawType = GL_TRIANGLES);
+		//! @brief Creates a GenericAbstractShape based on the provided VertexBuffer, VertexLayout and IndexBuffer
+		//! @param VertexBuffer array of data points
+		//! @param VertexBufferSize size of VertexBuffer in BYTES
+		//! @param VertexLayout array that describes the VertexBuffer layout
+		//! @param VertexLayoutCount VertexLayout element count
+		//! @param IndexBuffer array that describes the order to use the given Vertices in
+		//! @param IndexBufferCount IndexBuffer element count
+		GenericAbstractShape(Shader* shader, type* VertexBuffer, unsigned int VertexBufferSize, unsigned int* VertexLayout, unsigned int VertexlayoutCount, unsigned int* IndexBuffer, unsigned int IndexBufferCount, unsigned int DrawType = GL_TRIANGLES);
+		
 		~GenericAbstractShape();
 
 		void Draw(void);
@@ -36,6 +41,7 @@ class GenericAbstractShape{
 		Shader* GetShader(void);
 
 	private:
+		void GenerateGASObjects(void* VBO, unsigned int VBOsize, unsigned int* VBOlayout, unsigned int VBOlayoutCount, unsigned int* IBO, unsigned int IBOCount);
 		Primitives::VertexArrayObject* 	VA 		= nullptr;
 		Primitives::VertexBufferObject* VB 		= nullptr;
 		Primitives::VertexBufferLayout* Vlayout = nullptr;
@@ -49,43 +55,48 @@ class GenericAbstractShape{
 		unsigned int					DrawType;
 };
 
+template<typename type>
+void GenericAbstractShape<type>::GenerateGASObjects(void* VBO, unsigned int VBOsize, unsigned int* VBOlayout, unsigned int VBOlayoutCount, unsigned int* IBO, unsigned int IBOCount){
+	VA = new Primitives::VertexArrayObject();
+	if(VBO){
+		VB = new Primitives::VertexBufferObject(VBO, VBOsize);
+	}
+	else{
+		type data[] = {0.0f};
+		VB = new Primitives::VertexBufferObject(data, VBOsize);
+	}
+	if(IBO){
+		IB = new Primitives::IndexBufferObject(IBO, IBOCount);
+	}
+	else{
+		unsigned int IBempty[] = {0};
+		IB = new Primitives::IndexBufferObject(IBempty, 0);
+	}
+	Vlayout = new Primitives::VertexBufferLayout();
+	for(unsigned int i = 0; i < VBOlayoutCount; i++){
+		Vlayout->Push<type>(VBOlayout[i]);
+	}
+	VA->AddBuffer(VB, Vlayout);
+}
+
 
 // template implementation
-
 template<typename type>
 GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, unsigned int DrawType)
 	: VA(new Primitives::VertexArrayObject()), DrawType(DrawType)
 {
-	float data[] = {0.0f};
-	VB = new Primitives::VertexBufferObject(data, sizeof(float));
-	Vlayout = new Primitives::VertexBufferLayout();
 	this->shader = shader;
+	// generate empty GAS
+	GenerateGASObjects(nullptr, 0, nullptr, 0, nullptr, 0);
 }
 
 template<typename type>
-GenericAbstractShape<type>::GenericAbstractShape(const GenericAbstractShape& GAS){
-	this->VA = GAS.VA;
-	this->Vlayout = GAS.Vlayout;
-	this->IB = GAS.IB;
-	this->texture = GAS.texture;
-	this->shader = GAS.shader;
-	this->use_texture = GAS.use_texture;
+GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, type* VertexBuffer, unsigned int VertexBufferSize, unsigned int* VertexLayout, unsigned int VertexlayoutCount, unsigned int* IndexBuffer, unsigned int IndexBufferCount, unsigned int DrawType){
+	this->shader = shader;
+	this->DrawType = DrawType;
+	GenerateGASObjects(VertexBuffer, VertexBufferSize, VertexLayout, VertexlayoutCount, IndexBuffer, IndexBufferCount);
 }
 
-template<typename type>
-GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, Primitives::DrawBuffer<type>* data, unsigned int DrawType)
-	: VA(new Primitives::VertexArrayObject()), DrawType(DrawType)
-{	
-	this->shader = shader;
-	VB = new Primitives::VertexBufferObject(data->GetData(), data->getSize());
-	IB = new Primitives::IndexBufferObject(data->GetIBO(), data->GetIBOSize());
-	Vlayout = new Primitives::VertexBufferLayout();
-	unsigned int* layoutlocal = data->GetLayout();
-	for(unsigned int i = 0; i < data->GetLayoutSize(); i++){
-		Vlayout->Push<type>(layoutlocal[i]);
-	}
-	VA->AddBuffer(VB, Vlayout);
-}
 
 template<typename type>
 GenericAbstractShape<type>::~GenericAbstractShape(){

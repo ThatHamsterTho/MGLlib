@@ -125,8 +125,8 @@ void TestShapeHandler::onRender()
 	//rec->SetPosition(translation2);
 	//window->Draw(rec);
 
-	cube->SetPosition(translation1);
-	window->Draw(cube);
+	//cube->SetPosition(translation1);
+	//window->Draw(cube);
 	
 	circ->SetPosition(translation2);
 	window->Draw(circ);
