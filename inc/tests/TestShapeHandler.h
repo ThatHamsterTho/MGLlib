@@ -49,7 +49,7 @@ namespace MGLlib {
 				Rectangle* rec;	
 				Circle* circ;	
 				Cube* cube;	
-				Texture* texture[2];
+				Texture* texture[4];
 		};
 	}
 }

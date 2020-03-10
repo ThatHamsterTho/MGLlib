@@ -33,6 +33,8 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	texture[0] = new Texture("res/textures/gunsalpha.png");
 	texture[1] = new Texture("res/textures/lmao.png");
+	texture[2] = new Texture("res/textures/skybox.png");
+	texture[3] = new Texture("res/textures/clouds.jpg");
 
 	scale = 1.0f;
 
@@ -60,24 +62,28 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	rec = window->CreateRectangle(0.0f, 0.0f, width, height);
 	rec->SetColor({255, 0, 0, 128});
-	rec->SetTextureCoord({
-		0.0f, 0.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f,
-		0.0f, 1.0f
-	});
-	rec->SetTexture(texture[1]);
+	//rec->SetTextureCoord({
+	//	0.0f, 0.0f,
+	//	1.0f, 0.0f,
+	//	1.0f, 1.0f,
+	//	0.0f, 1.0f
+	//});
+	//rec->SetTexture(texture[1]);
 
 	circ = window->CreateCircle(0.0f, 0.0f, 200.0f, 360);
 	circ->SetColor({0, 255, 0, 64});
 
 
-	cube = window->CreateCube(-200.0f, -200.0f, -200.0f, 400.0f, 400.0f, 400.0f);
+	cube = window->CreateCube(-1600.0f, -1600.0f, -1600.0f, 3200.0f, 3200.0f, 3200.0f);
 	//cube->SetColor({0, 0, 255, 180});
-	cube->SetTexture(texture[1]);
-	cube->SetTexture(texture[0], 1);
-	for(unsigned int i = 0; i < 12; i++){
+	cube->SetTexture(texture[2]);
+	cube->SetTexture(texture[3], 1);
+	cube->SetTexture(texture[1], 2);
+	for(unsigned int i = 16; i < 20; i++){
 		cube->SetTextureSlot(i, 1.0f);
+	}
+	for(unsigned int i = 20; i < 24; i++){
+		cube->SetTextureSlot(i, 2.0f);
 	}
 	cube->SetTextureCoord({
 		0.0f, 0.0f,
@@ -126,10 +132,10 @@ void TestShapeHandler::onRender()
 	SH->SetPosition(translation1);
 	window->Draw(SH);
 
-	//rec->SetPosition(translation2);
-	//window->Draw(rec);
+	rec->SetPosition(translation2);
+	window->Draw(rec);
 
-	cube->SetPosition(translation1);
+	//cube->SetPosition(translation1);
 	window->Draw(cube);
 	
 	//circ->SetPosition(translation2);
