@@ -29,7 +29,7 @@ class GenericAbstractShape{
 
 		void Draw(void);
 		void RenderTextures(void);
-		void SetTexture(Texture* texture, int slot = 0, bool UseDefaultShader = true);
+		void SetTexture(Texture* texture, unsigned int slot = 0, bool UseDefaultShader = true);
 		void DisableTexture(void);
 		void EnableTexture(void);
 		void BindTexture(void);
@@ -46,8 +46,7 @@ class GenericAbstractShape{
 		Primitives::VertexBufferObject* VB 		= nullptr;
 		Primitives::VertexBufferLayout* Vlayout = nullptr;
 		Primitives::IndexBufferObject* 	IB		= nullptr;
-		Texture* 						texture = nullptr;
-		unsigned int 					TextureSlot = 0;
+		std::vector<Texture*>			texture = {nullptr};
 		bool 							UseDefaultShader = false;
 		Shader*							shader	= nullptr;
 		// used for when no IBO is given
@@ -107,9 +106,13 @@ GenericAbstractShape<type>::~GenericAbstractShape(){
 }
 
 template<typename type>
-void GenericAbstractShape<type>::SetTexture(Texture* texture, int slot, bool UseDefaultShader){
-	this->texture = texture;
-	this->TextureSlot = slot;
+void GenericAbstractShape<type>::SetTexture(Texture* texture, unsigned int slot, bool UseDefaultShader){
+	if(slot >= this->texture.size()){
+		this->texture.push_back(texture);
+	}
+	else{
+		this->texture[slot] = texture;
+	}
 	this->UseDefaultShader = UseDefaultShader;
 }
 
@@ -129,10 +132,12 @@ void GenericAbstractShape<type>::EnableTexture(void){
 template<typename type>
 void GenericAbstractShape<type>::BindTexture(void){
 	shader->Bind();
-	this->texture->Bind(TextureSlot);
-	if(UseDefaultShader){
-		shader->SetUniform1i("u_Texture", TextureSlot);
-		shader->SetUniform1i("u_Use_Texture", true); // enable textures
+	for(unsigned int i = 0; i < texture.size(); i++){
+		this->texture[i]->Bind(i);
+		if(UseDefaultShader){
+			shader->SetUniform1i("u_Texture", i);
+			shader->SetUniform1i("u_Use_Texture", true); // enable textures
+		}
 	}
 }
 

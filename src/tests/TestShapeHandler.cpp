@@ -22,11 +22,11 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 */
 
 	std::vector<float> vbo = {
-		// 3D position, 			Texture coord	Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,
-		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,	
-		width, height, 0.0f,		1.0f, 1.0f,		1.0f, 1.0f, 1.0f, 0.2f,
-		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 0.2f
+		// 3D position, 			Color coord					Texture coord	Slot
+		 0.0f,   0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		0.0f, 0.0f,		0.0f,
+		width, 	 0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		1.0f, 0.0f,		0.0f,
+		width, height, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		1.0f, 1.0f,		0.0f,
+		 0.0f, height, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		0.0f, 1.0f, 	0.0f
 	};
 
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -40,7 +40,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	translation2 = glm::vec3( 0.0,  0.0,  0.0);
 	translation3 = glm::vec3(-0.5, -0.5,  0.0);
 
-	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 2, 4});
+	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 4, 2, 1});
 	GSH->SetTexture(texture[0]);
 
 	SH = window->CreateShape(MGL_QUADS);
@@ -73,8 +73,12 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 
 	cube = window->CreateCube(-200.0f, -200.0f, -200.0f, 400.0f, 400.0f, 400.0f);
-	cube->SetColor({0, 0, 255, 180});
+	//cube->SetColor({0, 0, 255, 180});
 	cube->SetTexture(texture[1]);
+	cube->SetTexture(texture[0], 1);
+	for(unsigned int i = 0; i < 12; i++){
+		cube->SetTextureSlot(i, 1.0f);
+	}
 	cube->SetTextureCoord({
 		0.0f, 0.0f,
 		1.0f, 0.0f,
@@ -125,11 +129,11 @@ void TestShapeHandler::onRender()
 	//rec->SetPosition(translation2);
 	//window->Draw(rec);
 
-	//cube->SetPosition(translation1);
-	//window->Draw(cube);
+	cube->SetPosition(translation1);
+	window->Draw(cube);
 	
-	circ->SetPosition(translation2);
-	window->Draw(circ);
+	//circ->SetPosition(translation2);
+	//window->Draw(circ);
 	// change color
 	if (m_Color[0] > 1.0)
 	{

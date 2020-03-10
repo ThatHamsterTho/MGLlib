@@ -8,8 +8,8 @@ namespace MGLlib {
 		: GenericShape(shader, ST){
 		this->ST = ST;
 		this->shader = shader;
-		unsigned int layout[3] = {3, 2, 4};
-		this->GAShape->SetVertexLayout(layout, 3);
+		unsigned int layout[4] = {3, 4, 2, 1};
+		this->GAShape->SetVertexLayout(layout, 4);
 		this->uType = uType;
 	}
 	Shape::~Shape(){}
@@ -23,6 +23,9 @@ namespace MGLlib {
 		}
 		for(unsigned int i = this->Model.size(); i < VertexCount; i++){
 			Model.push_back({0.0f, 0.0f, 0.0f});
+		}
+		for(unsigned int i = this->TextureSlots.size(); i < VertexCount; i++){
+			TextureSlots.push_back(0.0f);
 		}
 		DataChanged = true;
 	}
@@ -89,6 +92,27 @@ namespace MGLlib {
 		}
 		DataChanged = true;
 	}
+	void Shape::SetTextureSlots(std::vector<float> TextureSlots){
+		UpdateVertexCount(TextureSlots, 1);
+		UpdateVectorBuffers();
+		for(unsigned int i = 0; i < TextureSlots.size(); i++){
+			this->TextureSlots[i] = TextureSlots[i];
+		}
+		DataChanged = true;
+	}
+
+	void Shape::SetTextureSlot(unsigned int Vertex, float TextureSlot){
+		if(Vertex >= VertexCount){
+			this->TextureSlots.push_back(TextureSlot);
+			VertexCount++;
+		}
+		else{
+			this->TextureSlots[Vertex] = TextureSlot;
+		}
+		UpdateVectorBuffers();
+		DataChanged = true;
+	}
+
 	void Shape::SetColor(std::array<float, 4> Color){
 		for(unsigned int i = 0; i < VertexCount; i++){
 			for(int j = 0; j < 4; j++){
@@ -159,20 +183,22 @@ namespace MGLlib {
 	}
 
 	void Shape::SetData(void){
-		float* VertexDataArray = new float[VertexCount*9];
+		float* VertexDataArray = new float[VertexCount*10];
 		for(unsigned int i = 0; i < VertexCount; i++){
 			// push model
 			for(int M = 0; M < 3; M++){
-				VertexDataArray[i*9+M] = (Model[i][M]);
-			}
-			// push texture
-			for(int T = 0; T < 2; T++){
-				VertexDataArray[i*9+T+3] = (TextureCoords[i][T]);
+				VertexDataArray[i*10+M] = (Model[i][M]);
 			}
 			// push color
 			for(int C = 0; C < 4; C++){
-				VertexDataArray[i*9+C+5] = (ColorPerVector[i][C]);
+				VertexDataArray[i*10+C+3] = (ColorPerVector[i][C]);
 			}
+			// push texture
+			for(int T = 0; T < 2; T++){
+				VertexDataArray[i*10+T+7] = (TextureCoords[i][T]);
+			}
+			// push texture slots
+			VertexDataArray[i*10+9] = TextureSlots[i];
 		}
 		
 		if(uType == Draw_Static){
@@ -182,7 +208,7 @@ namespace MGLlib {
 		}
 
 		// settings GenericAbstractShape VBO;
-		this->GAShape->SetVertexBuffer(VertexDataArray, sizeof(float) * VertexCount * 9);
+		this->GAShape->SetVertexBuffer(VertexDataArray, sizeof(float) * VertexCount * 10);
 		delete [] VertexDataArray;
 
 		// settings GenericAbstractShape IBO;

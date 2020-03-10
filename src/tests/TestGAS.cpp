@@ -14,17 +14,17 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 
 
 	std::vector<float> vbo = {
-		// 3D position, 			Texture coord	Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,
-		width, height, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
-		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
+		// 3D position, 		Color coord					Texture coord
+		 0.0f,   0.0f, 0.0f,	1.0f, 0.0f, 0.0f, 1.0f,		0.0f, 0.0f,		0.0f,
+		width, 	 0.0f, 0.0f,	0.0f, 1.0f, 0.0f, 1.0f,		1.0f, 0.0f,		0.0f,
+		width, height, 0.0f,	0.0f, 0.0f, 1.0f, 1.0f,		1.0f, 1.0f,		0.0f,
+		 0.0f, height, 0.0f,	1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f,		0.0f
 	};
 
 	shader = new Shader("res/shaders/SimpleShader.glsl");
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
 
-	GShape = new GenericShape(shader, MGL_QUADS, vbo, {3, 2, 4});
+	GShape = new GenericShape(shader, MGL_QUADS, vbo, {3, 4, 2, 1});
 
 	cam = new Camera({1.0, 1.0, 3.5}, {1.0, 1.0, 0.0});
 	cam->SetFOV(90);
