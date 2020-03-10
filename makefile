@@ -271,9 +271,13 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.$(SRC_EXT)
 
 
 
+OBJEXCLUDEDIRS  := tests
+OBJEXCLUDEFILES := main.o
 
 ROBJDIRS := $(foreach dir, $(BuildDir), $(shell find $(dir) -type d))
-ROBJS	 := $(foreach dir, $(ROBJDIRS), $(wildcard $(dir)/*.o))
+RODIRS	 := $(shell echo $(ROBJDIRS) | sed --regexp-extended 's/([A-Z]|[a-z]|\/)*($(OBJEXCLUDEDIRS))([^ ])*//g';)
+ROBJS	 := $(foreach dir, $(RODIRS), $(wildcard $(dir)/*.o))
+ROBJSFIN := $(shell echo $(ROBJS) | sed --regexp-extended 's/([A-Z]|[a-z]|\/)*($(OBJEXCLUDEFILES))()*//g';)
 
 RINCDIRS := $(foreach dir, $(INCDIR), $(shell find $(dir) -type d))
 EXPR 	 := $(shell echo $(EXCLUDEDIR) | sed 's/ /|/g';)
@@ -327,4 +331,6 @@ lib: $(ROBJS)
 	@cat "$(HeaderFile)" >> temp
 	@mv temp "$(HeaderFile)"
 
-	@ar rcs MGLlib.lib $(ROBJS)
+	@$(foreach obj, $(ROBJSFIN), echo $(obj);)
+
+	@ar rcs MGLlib.lib $(ROBJSFIN)
