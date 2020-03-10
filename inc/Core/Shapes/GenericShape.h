@@ -70,6 +70,7 @@ protected:
 	ColorNDC color = {1.0f, 1.0f, 1.0f, 1.0f};
 
 	glm::vec3 Position = glm::vec3(0.0f);
+	glm::mat4 ModelMat = glm::mat4(1.0f);
 
 	void GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
 	std::vector<unsigned int> GenerateIndexBuffer(ShapeType ST, unsigned int VertexCount);
@@ -122,6 +123,8 @@ protected:
 		glm::vec3 GetPosition(void);
 		//! @brief returns the objects model matrix
 		glm::mat4 GetModelMat(void);
+		//! @brief Sets the objects model matrix;
+		void SetModelMat(glm::mat4 modelmatrix);
 
 		//! @brief Sets vertex data
 		//! @remark This function is slow, if you only want to move the model use SetPosition();
