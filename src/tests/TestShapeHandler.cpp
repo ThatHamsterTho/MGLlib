@@ -132,7 +132,12 @@ void TestShapeHandler::onRender()
 	SH->SetPosition(translation1);
 	window->Draw(SH);
 
+	rec->SetColorNDC({0.0f, 1.0f, 0.0f, 1.0f});
 	rec->SetPosition(translation2);
+	window->Draw(rec);
+
+	rec->SetColorNDC({1.0f, 0.0f, 0.0f, 1.0f});
+	rec->SetPosition(translation1);
 	window->Draw(rec);
 
 	//cube->SetPosition(translation1);

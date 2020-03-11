@@ -17,9 +17,9 @@ class Camera
 		Camera(std::array<float, 3>  pos, std::array<float, 3> lookat);
 		~Camera();
 
-		void Position(std::array<float, 3> pos);
-		void Lookat(std::array<float, 3> lookat);
-		void SetUp(std::array<float, 3> up);
+		void Position(glm::vec3 pos);
+		void Lookat(glm::vec3 lookat);
+		void SetUp(glm::vec3 up);
 		void SetFOV(float FOV);
 		void SetPlane(float NearPlane, float FarPlane);
 

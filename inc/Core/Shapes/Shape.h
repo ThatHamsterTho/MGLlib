@@ -44,8 +44,6 @@ class Shape : public GenericShape
 		void SetTextureCoord(std::vector<float> TextureCoords);
 		void SetTextureSlots(std::vector<float> TextureSlots);
 		void SetTextureSlot(unsigned int Vertex, float TextureSlot);
-		void SetColor(std::array<float, 4> Color);
-		void SetColorNDC(std::array<float, 4> Color);
 		void SetColorVec(unsigned int Vertex, std::array<float, 4> Color);
 		void SetColorVecNDC(unsigned int Vertex, std::array<float, 4> Color);
 		void SetVertex2D(unsigned int Vertex, std::array<float, 2> coor);

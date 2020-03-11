@@ -46,7 +46,7 @@ namespace MGLlib {
 		 	 *  @remark example: WindowEnableFeatures(F_3D | F_AA);
 			 *  call before Show();
 			 */
-			void WindowEnableFeatures(unsigned int f);
+			void EnableFeatures(unsigned int f);
 			/*! @brief set Render and Update callback loop
 			 *  @param[in] render draws objects
 			 *  @param[in] update changes objects values

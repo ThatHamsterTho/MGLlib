@@ -8,6 +8,7 @@ namespace MGLlib
 	void Circle::MakeShape(float Mx, float My, float Z, float Radius, int Sectors){
 		this->Mx = Mx;
 		this->My = My;
+		this->Radius = Radius;
 		if(Sectors < 3){
 			pWARNING("not enough Vertices to make a circle minimum is 3");
 		}

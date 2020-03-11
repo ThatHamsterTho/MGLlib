@@ -33,7 +33,7 @@ namespace MGLlib {
             pWARNING("Not enough Vertexes for Shapetype: %s, given: %d, needed: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount);
         }
         if((VertexCount - ShapeMap[ST].baseCount) % ShapeMap[ST].extendCount){
-            pWARNING("Vertex count does not match shapetype: %s, given: %d, needed: %d, extends width: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount, ShapeMap[ST].extendCount);
+            pWARNING("Vertex count does not match shapetype: %s, given: %d, needed: %d, extends with: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount, ShapeMap[ST].extendCount);
         }
         // creating index buffer
         std::vector<unsigned int> IndexBuffer;

@@ -5,34 +5,33 @@ namespace MGLlib {
 Camera::Camera(std::array<float, 3> pos, std::array<float, 3> lookat)
     : FOV(70), aspectratio(1.0f), Zplane({0.1f, 20.0f})   {
     SetUp({0, 1, 0});
-    Position(pos);
-    Lookat(lookat);
+    Position({pos[0], pos[1], pos[2]});
+    Lookat({lookat[0], lookat[1], lookat[2]});
     UpdateCamera();
     UpdatePerspective();
 }
 Camera::~Camera(){}
 
-
-void Camera::Position(std::array<float, 3> pos){
-    this->pos[0] = pos[0];
-    this->pos[1] = pos[1];
-    this->pos[2] = pos[2];
+void Camera::Position(glm::vec3 pos){
+    this->pos[0] = pos.x;
+    this->pos[1] = pos.y;
+    this->pos[2] = pos.z;
 }
 
-void Camera::Lookat(std::array<float, 3> lookat){
-    this->lookat[0] = lookat[0];
-    this->lookat[1] = lookat[1];
-    this->lookat[2] = lookat[2];
+void Camera::Lookat(glm::vec3 lookat){
+    this->lookat[0] = lookat.x;
+    this->lookat[1] = lookat.y;
+    this->lookat[2] = lookat.z;
 }
 
 void Camera::SetFOV(float FOV){
     this->FOV = FOV;
 }
 
-void Camera::SetUp(std::array<float, 3> up){
-    this->up[0] = up[0];
-    this->up[1] = up[1];
-    this->up[2] = up[2];
+void Camera::SetUp(glm::vec3 up){
+    this->up[0] = up.x;
+    this->up[1] = up.y;
+    this->up[2] = up.z;
 }
 
 void Camera::UpdatePerspective(void){

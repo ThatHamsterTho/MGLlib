@@ -45,7 +45,7 @@ Window::Window(const char* title, int width, int height, int offsetx, int offset
 
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
+	glfwSetCursorPos(window, width/2, height/2);
 	// Dark blue background
 	glClearColor(ClearColor.r, ClearColor.g, ClearColor.b, ClearColor.a);
 
@@ -114,7 +114,7 @@ void Window::enableVsync(void){
 	glfwSwapInterval(1);
 }
 
-void Window::WindowEnableFeatures(unsigned int f){
+void Window::EnableFeatures(unsigned int f){
 	std::vector<WindowVoidFunc> featurefuncs;
 
 	if(f & F_3D){

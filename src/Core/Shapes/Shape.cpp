@@ -113,21 +113,6 @@ namespace MGLlib {
 		DataChanged = true;
 	}
 
-	void Shape::SetColor(std::array<float, 4> Color){
-		for(unsigned int i = 0; i < VertexCount; i++){
-			for(int j = 0; j < 4; j++){
-				this->ColorPerVector[i][j] = Color[j]/255;
-			}
-		}
-	}
-	void Shape::SetColorNDC(std::array<float, 4> Color){
-		for(unsigned int i = 0; i < VertexCount; i++){
-			for(int j = 0; j < 4; j++){
-				this->ColorPerVector[i][j] = Color[j];
-			}
-		}
-	}
-
 	void Shape::SetColorVec(unsigned int Vertex, std::array<float, 4> Color){
 		std::array<float, 4> ColorNDC;
 		for(int i = 0; i < 4; i++){
