@@ -117,7 +117,6 @@ protected:
 		void EnableTexture();
 		
 		//! @brief Sets the position of the object relative to the world
-		void SetPosition(std::array<float, 3> position);
 		void SetPosition(glm::vec3 position);
 		//! @brief returns the objects position relative to the world
 		glm::vec3 GetPosition(void);

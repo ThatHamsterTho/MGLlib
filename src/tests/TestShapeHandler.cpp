@@ -43,7 +43,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	translation3 = glm::vec3(-0.5, -0.5,  0.0);
 
 	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 4, 2, 1});
-	GSH->SetTexture(texture[0]);
+	//GSH->SetTexture(texture[0]);
 
 	SH = window->CreateShape(MGL_QUADS);
 	SH->SetModel3D({
@@ -58,7 +58,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 		1.0f, 1.0f,
 		0.0f, 1.0f
 	});
-	SH->SetTexture(texture[0]);
+	//SH->SetTexture(texture[0]);
 
 	rec = window->CreateRectangle(0.0f, 0.0f, width, height);
 	rec->SetColor({255, 0, 0, 128});
@@ -78,7 +78,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	//cube->SetColor({0, 0, 255, 180});
 	cube->SetTexture(texture[2]);
 	cube->SetTexture(texture[3], 1);
-	cube->SetTexture(texture[1], 2);
+	cube->SetTexture(texture[3], 2);
 	for(unsigned int i = 16; i < 20; i++){
 		cube->SetTextureSlot(i, 1.0f);
 	}
@@ -111,6 +111,8 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 		1.0f, 1.0f,
 		0.0f, 1.0f,
 	});
+
+	glfwSetInputMode(window->getGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 TestShapeHandler::~TestShapeHandler() {
 	delete texture[0];
@@ -140,8 +142,14 @@ void TestShapeHandler::onRender()
 	rec->SetPosition(translation1);
 	window->Draw(rec);
 
-	//cube->SetPosition(translation1);
+	cube->Scale(0.1, 0.1, 0.1);
+	cube->SetPosition(translation1);
 	window->Draw(cube);
+	cube->Scale(1.0, 1.0, 1.0);
+	cube->SetPosition({0.0f, 0.0f, 0.0f});
+	window->Draw(cube);
+
+	//cube->SetPosition(translation1);
 	
 	//circ->SetPosition(translation2);
 	//window->Draw(circ);

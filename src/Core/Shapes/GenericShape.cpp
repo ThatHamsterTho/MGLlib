@@ -158,10 +158,6 @@ namespace MGLlib {
     }
     
 // position methods
-    void GenericShape::SetPosition(std::array<float, 3> position){
-        this->Position = glm::vec3(position[0], position[1], position[2]);
-        this->ModelMat = glm::translate(glm::mat4(1.0f), Position);
-    }
     void GenericShape::SetPosition(glm::vec3 position){
         this->Position = position;
         this->ModelMat = glm::translate(glm::mat4(1.0f), Position);

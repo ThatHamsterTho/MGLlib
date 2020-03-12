@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Debugger.hpp"
+#include "UtilFunc.hpp"
 
 
 namespace MGLlib{
@@ -51,6 +52,8 @@ Window::Window(const char* title, int width, int height, int offsetx, int offset
 
 	InitHandler(window);
 	//Enableortho();
+
+	Util::quickrandomsetseed();
 }
 Window::~Window(){}
 
