@@ -1,0 +1,13 @@
+*.o
+*.d
+Example/*
+*/.vscode/*
+.vs/*
+
+main.exe
+main
+MGLlib.hpp
+MGLlib.lib
+
+*/x64/*
+x64/*

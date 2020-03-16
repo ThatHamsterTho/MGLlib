@@ -1,0 +1,56 @@
+﻿  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_widgets.cpp
+  Camera.cpp
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\3Drender\Camera.cpp(58,34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Debugger.cpp
+  IndexBufferObject.cpp
+  VertexArrayObject.cpp
+  VertexBufferLayout.cpp
+  VertexBufferObject.cpp
+  GenericShape.cpp
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\Shapes\GenericShape.cpp(194,48): warning C4244: '=': conversion from '_Ty' to 'unsigned int', possible loss of data
+          with
+          [
+              _Ty=float
+          ]
+  Point.cpp
+  Shader.cpp
+  Shape.cpp
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\Shapes\Shape.cpp(65,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\Shapes\Shape.cpp(65,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\Shapes\Shape.cpp(144,13): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\Shapes\Shape.cpp(144,28): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Texture.cpp
+  UtilFunc.cpp
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\Core\UtilFunc.cpp(33,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  ImGuiHelper.cpp
+  main.cpp
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(133,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(133,41): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(154,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(155,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(159,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(160,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(162,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(163,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Downloads\Coding\Languages\C++\MGLlibWIN\MGLlibWIN\src\main.cpp(197,18): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  ShapeHandler.cpp
+  Circle.cpp
+  Cube.cpp
+  Rectangle.cpp
+  Test.cpp
+  TestBasicTexture.cpp
+  TestGAS.cpp
+  TestShapeHandler.cpp
+  Window.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\Downloads\Coding\Languages\C++\MGLlibWIN\Debug\vc120.pdb'; linking object as if no debug info
+  MGLlibWIN.vcxproj -> D:\Downloads\Coding\Languages\C++\MGLlibWIN\Debug\MGLlibWIN.exe
