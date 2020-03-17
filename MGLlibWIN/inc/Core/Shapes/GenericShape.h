@@ -53,7 +53,6 @@ class GenericShape
 		unsigned int extendCount;
 	};
 	static const ShapeMapItem ShapeMap[__SHAPETYPECOUNT];
-	static bool v_UseDefaultShader;
 
 	unsigned int VertexLength;	// how many floats in 1 vertex
 	unsigned int VertexCount;	// how many vertexes in the buffer
@@ -106,11 +105,7 @@ public:
 	//! @brief When turned off the shape uses the texture of the last drawn shape
 	void change_texture_on_render(bool v){this->CHtexture_on_render = v;}
 	//! @brief Sets the texture of the shape
-	//! @remark When using a custom shader disable the UseDefaultShader
-	//! @remark Or disable it globally by using UseDefaultShader()
-	void SetTexture(Texture* texture, int slot = 0, bool UseDefaultShader = v_UseDefaultShader);
-	//! @brief Sets the default value for all GenericShape SetTexture function's "UseDefaultShader" parameter
-	void UseDefaultShader(bool v);
+	void SetTexture(Texture* texture, int slot = 0);
 	//! @brief Disables the set texture
 	void DisableTexture();
 	//! @brief Enables the set texture

@@ -15,7 +15,7 @@ namespace MGLlib {
 template<typename type>
 class GenericAbstractShape{
 	public:
-		GenericAbstractShape(Shader* shader, unsigned int DrawType = GL_TRIANGLES);
+		GenericAbstractShape(Shader* shader, unsigned int DrawType = GL_TRIANGLES, bool UseDefaultShader = true);
 		//! @brief Creates a GenericAbstractShape based on the provided VertexBuffer, VertexLayout and IndexBuffer
 		//! @param VertexBuffer array of data points
 		//! @param VertexBufferSize size of VertexBuffer in BYTES
@@ -23,13 +23,13 @@ class GenericAbstractShape{
 		//! @param VertexLayoutCount VertexLayout element count
 		//! @param IndexBuffer array that describes the order to use the given Vertices in
 		//! @param IndexBufferCount IndexBuffer element count
-		GenericAbstractShape(Shader* shader, type* VertexBuffer, unsigned int VertexBufferSize, unsigned int* VertexLayout, unsigned int VertexlayoutCount, unsigned int* IndexBuffer, unsigned int IndexBufferCount, unsigned int DrawType = GL_TRIANGLES);
+		GenericAbstractShape(Shader* shader, type* VertexBuffer, unsigned int VertexBufferSize, unsigned int* VertexLayout, unsigned int VertexlayoutCount, unsigned int* IndexBuffer, unsigned int IndexBufferCount, unsigned int DrawType = GL_TRIANGLES, bool UseDefaultShader = true);
 		
 		~GenericAbstractShape();
 
 		void Draw(void);
 		void RenderTextures(void);
-		void SetTexture(Texture* texture, unsigned int slot = 0, bool UseDefaultShader = true);
+		void SetTexture(Texture* texture, unsigned int slot = 0);
 		void DisableTexture(void);
 		void EnableTexture(void);
 		void BindTexture(void);
@@ -37,7 +37,7 @@ class GenericAbstractShape{
 		void SetVertexBuffer(const void* data, unsigned int size);
 		void SetVertexLayout(unsigned int* layout, unsigned int count);
 		void SetScale(type x, type y, type z);
-		void SetShader(Shader* shader);
+		void SetShader(Shader* shader, bool UseDefaultShader = false);
 		Shader* GetShader(void);
 
 	private:
@@ -47,7 +47,7 @@ class GenericAbstractShape{
 		Primitives::VertexBufferLayout* Vlayout = nullptr;
 		Primitives::IndexBufferObject* 	IB		= nullptr;
 		std::vector<Texture*>			texture = {nullptr};
-		bool 							UseDefaultShader = false;
+		bool 							UseDefaultShader = true;
 		Shader*							shader	= nullptr;
 		// used for when no IBO is given
 		unsigned int					Vertices;
@@ -81,18 +81,20 @@ void GenericAbstractShape<type>::GenerateGASObjects(void* VBO, unsigned int VBOs
 
 // template implementation
 template<typename type>
-GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, unsigned int DrawType)
+GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, unsigned int DrawType, bool UseDefaultShader)
 	: VA(new Primitives::VertexArrayObject()), DrawType(DrawType)
 {
 	this->shader = shader;
+	this->UseDefaultShader = UseDefaultShader;
 	// generate empty GAS
 	GenerateGASObjects(nullptr, 0, nullptr, 0, nullptr, 0);
 }
 
 template<typename type>
-GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, type* VertexBuffer, unsigned int VertexBufferSize, unsigned int* VertexLayout, unsigned int VertexlayoutCount, unsigned int* IndexBuffer, unsigned int IndexBufferCount, unsigned int DrawType){
+GenericAbstractShape<type>::GenericAbstractShape(Shader* shader, type* VertexBuffer, unsigned int VertexBufferSize, unsigned int* VertexLayout, unsigned int VertexlayoutCount, unsigned int* IndexBuffer, unsigned int IndexBufferCount, unsigned int DrawType, bool UseDefaultShader){
 	this->shader = shader;
 	this->DrawType = DrawType;
+	this->UseDefaultShader = UseDefaultShader;
 	GenerateGASObjects(VertexBuffer, VertexBufferSize, VertexLayout, VertexlayoutCount, IndexBuffer, IndexBufferCount);
 }
 
@@ -106,14 +108,13 @@ GenericAbstractShape<type>::~GenericAbstractShape(){
 }
 
 template<typename type>
-void GenericAbstractShape<type>::SetTexture(Texture* texture, unsigned int slot, bool UseDefaultShader){
+void GenericAbstractShape<type>::SetTexture(Texture* texture, unsigned int slot){
 	if(slot >= this->texture.size()){
 		this->texture.push_back(texture);
 	}
 	else{
 		this->texture[slot] = texture;
 	}
-	this->UseDefaultShader = UseDefaultShader;
 }
 
 template<typename type>
@@ -179,8 +180,9 @@ void GenericAbstractShape<type>::SetVertexLayout(unsigned int* layout, unsigned 
 }
 
 template<typename type>
-void GenericAbstractShape<type>::SetShader(Shader* shader){
+void GenericAbstractShape<type>::SetShader(Shader* shader, bool UseDefaultShader){
 	this->shader = shader;
+	this->UseDefaultShader = UseDefaultShader;
 }
 
 template<typename type>

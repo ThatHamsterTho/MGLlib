@@ -26,8 +26,6 @@ namespace MGLlib {
         {MGL_QUAD_STRIP,        "[MGL_QUAD_STRIP]",             GL_TRIANGLES,       {0, 2, 3, 3, 1, 0}, 4, 2}
     };
 
-    bool GenericShape::v_UseDefaultShader = true;
-
     std::vector<unsigned int> GenericShape::GenerateIndexBuffer(ShapeType ST, unsigned int VertexCount){
         if(VertexCount < ShapeMap[ST].baseCount){
             pWARNING("Not enough Vertexes for Shapetype: %s, given: %d, needed: %d", getName().c_str(), VertexCount, ShapeMap[ST].baseCount);
@@ -143,12 +141,9 @@ namespace MGLlib {
     }
 
 // texture methods
-    void GenericShape::SetTexture(Texture* texture, int slot, bool UseDefaultShader){
-        this->GAShape->SetTexture(texture, slot, UseDefaultShader);
+    void GenericShape::SetTexture(Texture* texture, int slot){
+        this->GAShape->SetTexture(texture, slot);
         use_texture = true;
-    }
-    void GenericShape::UseDefaultShader(bool v){
-        this->v_UseDefaultShader = v;
     }
     void GenericShape::DisableTexture(){
         use_texture = false;

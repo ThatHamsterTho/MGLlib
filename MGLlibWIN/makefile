@@ -296,7 +296,10 @@ HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/VertexB
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives\/IndexBufferObject)([^ ])*((\.hpp)|(\.h))")
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Primitives)([^ ])*((\.hpp)|(\.h))")
 # Shapes Core
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes\/Shader)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes\/Texture)([^ ])*((\.hpp)|(\.h))")
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes\/GenericAbstractShape)([^ ])*((\.hpp)|(\.h))")
+HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes\/GenericShape)([^ ])*((\.hpp)|(\.h))")
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/Shapes)([^ ])*((\.hpp)|(\.h))")
 # 3Drender
 HfilesPRE += $(shell echo $(RINCS) | grep -o -E "(inc\/Core\/3Drender)([^ ])*((\.hpp)|(\.h))")
