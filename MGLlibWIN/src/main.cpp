@@ -158,7 +158,7 @@ void mouse_callback(GLFWwindow* glfwwindow, double xpos, double ypos)
 			lastX = xpos;
 			lastY = ypos;
 			firstMouse = false;
-			glfwSetInputMode(window->getGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			//glfwSetInputMode(window->getGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
 
 		float xoffset = xpos - lastX;

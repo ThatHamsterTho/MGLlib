@@ -46,11 +46,4 @@ RandomGenerator::RandomGenerator(){
 
 RandomGenerator::~RandomGenerator() {}
 
-// returns value in range [min, max), thus max can never be reached.
-template <typename T>
-T RandomGenerator::GetRandom(T min, T max) {
-	std::uniform_real_distribution<T> dist(min, max);
-	return dist(rng);
-}
-
 }} // namespace

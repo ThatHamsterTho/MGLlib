@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
+#include <type_traits>
 
 namespace MGLlib { 
 namespace Util {
@@ -43,8 +44,20 @@ class RandomGenerator {
 		RandomGenerator();
 		~RandomGenerator();
 
+		// returns value in range [min, max), thus max can never be reached.
 		template <typename T>
-		T GetRandom(T min, T max);
+		T GetRandomInt(T min, T max)
+		{
+			std::uniform_int_distribution<T> dist(min, max);
+			return dist(rng);
+		}
+
+		template <typename T>
+		T GetRandomFloat(T min, T max)
+		{
+			std::uniform_real_distribution<T> dist(min, max);
+			return dist(rng);
+		}
 };
 
 

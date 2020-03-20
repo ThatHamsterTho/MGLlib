@@ -11,7 +11,7 @@ namespace MGLlib
 
 		public:
 			Rectangle(Shader* shader, Usage_Type uType = Draw_Dynamic);
-			void MakeShape(float x, float y, float z, float width, float height, float depth, bool tild = false);
+			void MakeShape(float width, float height, float depth, bool tild = false);
 			~Rectangle();
 			float getWidth(void){return width;}
 			float getHeight(void){return height;}

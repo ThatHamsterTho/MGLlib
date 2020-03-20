@@ -19,7 +19,7 @@ namespace MGLlib {
 			ColorPerVector.push_back({1.0f, 1.0f, 1.0f, 1.0f});
 		}
 		for(unsigned int i = this->TextureCoords.size(); i < VertexCount; i++){
-			TextureCoords.push_back({1.0f, 1.0f});
+			TextureCoords.push_back({0.0f, 0.0f});
 		}
 		for(unsigned int i = this->Model.size(); i < VertexCount; i++){
 			Model.push_back({0.0f, 0.0f, 0.0f});
@@ -48,8 +48,9 @@ namespace MGLlib {
 	void Shape::SetModel2D(std::vector<float> Model){
 		std::vector<float> VertexBuffer;
 		for(unsigned int i = 0; i < Model.size() / 2; i++){
-			VertexBuffer.push_back(Model[0]);
-			VertexBuffer.push_back(Model[1]);
+			for(int j = 0; j < 2; j++){
+				VertexBuffer.push_back(Model[i * 2 + j]);
+			}
 			VertexBuffer.push_back(0.0f);
 		}
 		SetModel3D(VertexBuffer);
@@ -80,6 +81,7 @@ namespace MGLlib {
 			}
 		}
 		//this->Model = NDCVertexBuffer;
+		DataChanged = true;
 	}
 
 	void Shape::SetTextureCoord(std::vector<float> TextureCoords){
@@ -146,7 +148,12 @@ namespace MGLlib {
 		}
 		dim[2] = dim[0];
 		for(int i = 0; i < 3; i++){
-			NDC_coor[i] = (2*coor[i])/(float)dim[i] - 1.0f;
+			if(coor[i]){
+				NDC_coor[i] = (2*coor[i])/(float)dim[i] - 1.0f;
+			}
+			else{
+				NDC_coor[i] = 0.0f;
+			}
 		}
 		SetVertex3D_NDC(Vertex, NDC_coor);
 	}

@@ -117,10 +117,6 @@ namespace MGLlib {
         this->GAShape->Draw();
     }
 
-    void GenericShape::Scale(float x, float y, float z){
-        GAShape->GetShader()->Bind();
-        this->GAShape->SetScale(x, y, z);
-    }
     void GenericShape::SetColorNDC(ColorNDC RGBA){
         GAShape->GetShader()->Bind();
         this->color.R = RGBA.R;
@@ -155,11 +151,16 @@ namespace MGLlib {
 // position methods
     void GenericShape::SetPosition(glm::vec3 position){
         this->Position = position;
-        this->ModelMat = glm::translate(glm::mat4(1.0f), Position);
+        this->Translation = glm::translate(glm::mat4(1.0f), Position);
+    }
+    void GenericShape::Scale(float x, float y, float z){
+        //GAShape->GetShader()->Bind();
+        //this->GAShape->SetScale(x, y, z);
+        ScaleMat = glm::vec3(x, y, z);
     }
     glm::vec3 GenericShape::GetPosition(void){return this->Position;}
     void GenericShape::SetModelMat(glm::mat4 modelmatrix){this->ModelMat = modelmatrix;}
-    glm::mat4 GenericShape::GetModelMat(void){return this->ModelMat;}
+    glm::mat4 GenericShape::GetModelMat(void){return Translation * glm::scale(this->ModelMat, this->ScaleMat);}
 
 // data methods
     void GenericShape::SetIndexBuffer(std::vector<unsigned int> IndexBuffer){

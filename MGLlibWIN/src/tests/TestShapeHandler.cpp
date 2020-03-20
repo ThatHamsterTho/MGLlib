@@ -60,7 +60,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	});
 	SH->SetTexture(texture[0]);
 
-	rec = window->CreateRectangle(0.0f, 0.0f, width, height);
+	rec = window->CreateRectangle(width, height);
 	rec->SetColor({255, 0, 0, 128});
 	//rec->SetTextureCoord({
 	//	0.0f, 0.0f,
@@ -131,9 +131,12 @@ void TestShapeHandler::onRender()
 	//GSH->SetPosition(translation3);
 	//window->Draw(GSH);
 
+	//SH->Scale(1.0f, scale, 1.0f);
+	SH->SetColorNDC({0.0f, 0.0f, 1.0f, 1.0f});
 	SH->SetPosition(translation1);
 	window->Draw(SH);
 
+	rec->Scale(1.0f, scale, 1.0f);
 	rec->SetColorNDC({0.0f, 1.0f, 0.0f, 1.0f});
 	rec->SetPosition(translation2);
 	window->Draw(rec);

@@ -71,8 +71,8 @@ class ShapeHandler
 		Shape* CreateShape(ShapeType ST, Usage_Type uType = Draw_Dynamic);
 
 		//! @brief returns a rectangle object
-		Rectangle* CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild = false, Usage_Type uType = Draw_Dynamic);
-		Rectangle* CreateRectangle(float x, float y, float width, float height, Usage_Type uType = Draw_Dynamic);
+		Rectangle* CreateRectangle(float width, float height, float depth, bool tild = false, Usage_Type uType = Draw_Dynamic);
+		Rectangle* CreateRectangle(float width, float height, Usage_Type uType = Draw_Dynamic);
 		Circle* CreateCircle(float x, float y, float z, float Radius, int Sectors, Usage_Type uType = Draw_Dynamic);
 		Circle* CreateCircle(float x, float y, float Radius, int Sectors, Usage_Type uType = Draw_Dynamic);
 		Cube* CreateCube(float x, float y, float z, float width, float height, float depth, Usage_Type uType = Draw_Dynamic);

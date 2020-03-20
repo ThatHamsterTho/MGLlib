@@ -194,13 +194,13 @@ Shape* ShapeHandler::CreateShape(ShapeType ST, Usage_Type uType){
 }
 
 // Rectangle
-Rectangle* ShapeHandler::CreateRectangle(float x, float y, float z, float width, float height, float depth, bool tild, Usage_Type uType){
+Rectangle* ShapeHandler::CreateRectangle(float width, float height, float depth, bool tild, Usage_Type uType){
 	Rectangle* R = new Rectangle(shader, uType);
-	R->MakeShape(x, y, z, width, height, depth, tild);
+	R->MakeShape(width, height, depth, tild);
 	return R;
 }
-Rectangle* ShapeHandler::CreateRectangle(float x, float y, float width, float height, Usage_Type uType){
-	return CreateRectangle(x, y, 0.0f, width, height, 0.0, uType);
+Rectangle* ShapeHandler::CreateRectangle(float width, float height, Usage_Type uType){
+	return CreateRectangle(width, height, 0.0, uType);
 }
 
 // Circle

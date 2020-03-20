@@ -9,6 +9,8 @@ main
 MGLlib.hpp
 MGLlib.lib
 
+*/imgui.ini
+
 */x64/*
 x64/*
 */Debug/*

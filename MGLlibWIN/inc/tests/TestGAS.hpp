@@ -26,8 +26,8 @@ namespace MGLlib {
 				void onRender() override;
 				void onImGuiRender() override;
 			private:
-				float m_Color[4];
-				float increment = 0.05f;
+				float m_Color[4] = {1.0f, 1.0f, 1.0f, 1.0f};
+				float increment = 0.01f;
 
 				float width;
 				float height;

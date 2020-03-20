@@ -32,7 +32,7 @@ TestGAS::TestGAS(Window* window) : Test(window), m_Color{0.0f, 0.0f, 0.0f, 1.0f}
 	texture = new Texture("res/textures/gunsalpha.png");
 	//GShape->SetTexture(texture);
 
-	scale = 1.5f;
+	scale = 1.0f;
 
 	translation1 = glm::vec3(0, 0, 0);
 	translation2 = glm::vec3(-0.5, -0.5, 0);
@@ -50,31 +50,33 @@ void TestGAS::onRender()
 {	
 	// Use our shader
 	GShape->GetShader()->Bind();
-	GShape->Scale(scale, scale, scale);
+	GShape->Scale(1.0f, scale, 1.0f);
 
 	GShape->SetPosition(translation1);
-	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() * GShape->GetModelMat();
+	//mvp = cam->getProjectionMatrix() * cam->getViewMatrix() * GShape->GetModelMat();
+	mvp = GShape->GetModelMat();
 	GShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
 	GShape->Draw();
 	
 	//GShape->SetColor({m_Color[0], 0.0f, 0.0f});
 	GShape->SetPosition(translation2);
 
-	mvp = cam->getProjectionMatrix() * cam->getViewMatrix() *  GShape->GetModelMat();
+	//mvp = cam->getProjectionMatrix() * cam->getViewMatrix() *  GShape->GetModelMat();
+	mvp = GShape->GetModelMat();
 	GShape->GetShader()->SetuniformMat4f("u_MVP", mvp);
 	GShape->Draw();
 
 	// change color
-	if (m_Color[0] > 1.0)
+	if (scale > 2.0)
 	{
 		increment *= -1;
 	}
-	else if (m_Color[0] < 0.0)
+	else if (scale < 1.0)
 	{
 		increment *= -1;
 	}
 
-	m_Color[0] += increment;
+	scale += increment;
 }
 
 void TestGAS::onImGuiRender()

@@ -70,6 +70,8 @@ protected:
 
 	glm::vec3 Position = glm::vec3(0.0f);
 	glm::mat4 ModelMat = glm::mat4(1.0f);
+	glm::vec3 ScaleMat = glm::vec3(1.0f);
+	glm::mat4 Translation = glm::mat4(1.0f);
 
 	void GenerateGAS(Shader* shader, ShapeType ST, std::vector<float> VertexData, std::vector<unsigned int> VertexLayout = {3});
 	std::vector<unsigned int> GenerateIndexBuffer(ShapeType ST, unsigned int VertexCount);
