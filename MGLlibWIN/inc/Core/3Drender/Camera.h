@@ -33,6 +33,7 @@ class Camera
 		float* getLookat(void) { return lookat; }
 		glm::mat4 getProjectionMatrix(void){return pers;}
 		glm::mat4 getViewMatrix(void){return view;}
+
 	private:
 		glm::mat4 pers;
 		glm::mat4 view;

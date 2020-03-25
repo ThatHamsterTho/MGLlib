@@ -55,7 +55,6 @@ Window::Window(const char* title, int width, int height, int offsetx, int offset
 
 	Util::quickrandomsetseed();
 }
-Window::~Window(){}
 
 // Features
 void Window::enableLighting(void){
@@ -146,7 +145,17 @@ void Window::SetCallback(void (*render)(void), void (*update)(void)){
 	this->render = render;
 	this->update = update;
 }
+
+void Window::framebuffer_resize(GLFWwindow* glfwwindow, int width, int height){
+	// make sure the viewport matches the new window dimensions; note that width and 
+    // height will be significantly larger than specified on retina displays.
+    glViewport(0, 0, width, height);
+	this->cam->UpdateAspectRatio(width, height);
+	this->cam->UpdatePerspective();
+}
+
 void Window::Show(void){
+	open = true;
 	while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
 		glfwWindowShouldClose(window) == 0 ){
 		glfwPollEvents();
@@ -164,10 +173,14 @@ void Window::Show(void){
 		
 		glfwSwapBuffers(window);	
 	}
+	open = false;
 }
 
-void Window::Exit(void){
-	glfwDestroyWindow(window);
+void Window::Destroy(Window* window){
+	GLFWwindow* win = window->getGLFWwindow();
+	delete window;
+
+	glfwDestroyWindow(win);
 	glfwTerminate();
 }
 

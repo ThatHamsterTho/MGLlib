@@ -5,7 +5,7 @@
 #define SHOWDEBUG
 #define SHOWINFO
 #define SHOWWARNING
-//#define SHOWLOGSOURCE
+#define SHOWLOGSOURCE
 
 #define SHADERWARNINGS
 

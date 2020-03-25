@@ -8,10 +8,15 @@
 #include "ShapeHandler.h"
 
 namespace MGLlib {
+
+
 	
 	class Window : public ShapeHandler
 	{
 		private:
+			// keeps track if window is open
+			bool open = false;
+
 			// used for enabling functions
 			typedef void (Window::*WindowVoidFunc)(void);
 
@@ -39,7 +44,6 @@ namespace MGLlib {
 			} feature;
 
 			Window(const char* title, int width = 500, int height = 500, int offsetx = 100, int offsety = 100);
-			~Window();
 
 			/*! @brief enable extra window features
 			 *  @param[in] f enable multiple features by | them together
@@ -52,13 +56,20 @@ namespace MGLlib {
 			 *  @param[in] update changes objects values
 			 */
 			void SetCallback(void (*render)(void), void (*update)(void) = nullptr);
+
+			/*! @brief default window resize function. */
+			void framebuffer_resize(GLFWwindow* glfwwindow, int width, int height);
+
 			/*! @brief use show when using the default render callback loop.
 			 *	Clears screen, pollsevents and Calls set Render function after Update function.
 			 *	Closes window on [x] button and ESC key.
 			 * 	For other behaviour create custom own GLFW3 loop.
 			 */
 			void Show(void);
-			void Exit(void);
+
+			static void Destroy(Window* window);
+			//! @brief returns true when window is open
+			bool isOpen(void) { return open; }
 			
 			void SetClearColor(glm::vec4 RGBA){this->ClearColor = RGBA;}
 			void getDimensions(int *width, int *height){return glfwGetWindowSize(window, width, height);}

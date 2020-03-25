@@ -11,16 +11,6 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	width = 400.0f;
 	height = 400.0f;
 
-/*
-	std::vector<float> vbo = {
-		// 3D position, 			Texture coord	Color coord
-		 0.0f,   0.0f, 0.0f,		0.0f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,
-		width, 	 0.0f, 0.0f,		1.0f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,
-		width, height, 0.0f,		1.0f, 1.0f,		0.0f, 0.0f, 1.0f, 1.0f,
-		 0.0f, height, 0.0f,		0.0f, 1.0f,		1.0f, 1.0f, 1.0f, 1.0f
-	};
-*/
-
 	std::vector<float> vbo = {
 		// 3D position, 			Color coord					Texture coord	Slot
 		 0.0f,   0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		0.0f, 0.0f,		0.0f,
@@ -62,13 +52,13 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	rec = window->CreateRectangle(width, height);
 	rec->SetColor({255, 0, 0, 128});
-	//rec->SetTextureCoord({
-	//	0.0f, 0.0f,
-	//	1.0f, 0.0f,
-	//	1.0f, 1.0f,
-	//	0.0f, 1.0f
-	//});
-	//rec->SetTexture(texture[1]);
+	rec->SetTextureCoord({
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
+	});
+	rec->SetTexture(texture[1]);
 
 	circ = window->CreateCircle(0.0f, 0.0f, 200.0f, 360);
 	circ->SetColor({0, 255, 0, 64});
@@ -132,24 +122,24 @@ void TestShapeHandler::onRender()
 	//window->Draw(GSH);
 
 	//SH->Scale(1.0f, scale, 1.0f);
-	SH->SetColorNDC({0.0f, 0.0f, 1.0f, 1.0f});
-	SH->SetPosition(translation1);
-	window->Draw(SH);
+	//SH->SetColorNDC({0.0f, 0.0f, 1.0f, 1.0f});
+	//SH->SetPosition(translation1);
+	//window->Draw(SH);
 
-	rec->Scale(1.0f, scale, 1.0f);
-	rec->SetColorNDC({0.0f, 1.0f, 0.0f, 1.0f});
-	rec->SetPosition(translation2);
-	window->Draw(rec);
+	//rec->Scale(1.0f, scale, 1.0f);
+	//rec->SetColorNDC({0.0f, 1.0f, 0.0f, 1.0f});
+	//rec->SetPosition(translation2);
+	//window->Draw(rec);
 
-	rec->SetColorNDC({1.0f, 0.0f, 0.0f, 1.0f});
-	rec->SetPosition(translation1);
-	window->Draw(rec);
+	//rec->SetColorNDC({1.0f, 0.0f, 0.0f, 1.0f});
+	//rec->SetPosition(translation1);
+	//window->Draw(rec);
 
 	//cube->SetPosition(translation1);
 	window->Draw(cube);
 	
-	//circ->SetPosition(translation2);
-	//window->Draw(circ);
+	circ->SetPosition(translation2);
+	window->Draw(circ);
 	// change color
 	if (m_Color[0] > 1.0)
 	{
