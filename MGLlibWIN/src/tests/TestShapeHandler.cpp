@@ -13,10 +13,10 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 
 	std::vector<float> vbo = {
 		// 3D position, 			Color coord					Texture coord	Slot
-		 0.0f,   0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		0.0f, 0.0f,		0.0f,
-		width, 	 0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		1.0f, 0.0f,		0.0f,
-		width, height, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		1.0f, 1.0f,		0.0f,
-		 0.0f, height, 0.0f,		1.0f, 1.0f, 1.0f, 0.2f,		0.0f, 1.0f, 	0.0f
+		 0.0f,   0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 0.0f,		0.0f,
+		width, 	 0.0f, 0.0f,		1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 0.0f,		0.0f,
+		width, height, 0.0f,		1.0f, 1.0f, 1.0f, 1.0f,		1.0f, 1.0f,		0.0f,
+		 0.0f, height, 0.0f,		1.0f, 1.0f, 1.0f, 1.0f,		0.0f, 1.0f, 	0.0f
 	};
 
 	//shader->SetUniform4f("u_Color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -32,8 +32,8 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	translation2 = glm::vec3( 0.0,  0.0,  0.0);
 	translation3 = glm::vec3(-0.5, -0.5,  0.0);
 
-	GSH = window->CreateGenShape(MGL_QUADS, vbo, {NDC_XYZ, 4, 2, 1});
-	GSH->SetTexture(texture[0]);
+	GSH = window->CreateGenShape(MGL_POINTS, vbo, {NDC_XYZ, 4, 2, 1});
+	//GSH->SetTexture(texture[0]);
 
 	SH = window->CreateShape(MGL_QUADS);
 	SH->SetModel3D({
@@ -61,8 +61,7 @@ TestShapeHandler::TestShapeHandler(Window* window) : Test(window), m_Color{0.0f,
 	rec->SetTexture(texture[1]);
 
 	circ = window->CreateCircle(0.0f, 0.0f, 200.0f, 360);
-	circ->SetColor({0, 255, 0, 64});
-
+	circ->SetColor({0, 255, 0, 128});
 
 	cube = window->CreateCube(-1600.0f, -1600.0f, -1600.0f, 3200.0f, 3200.0f, 3200.0f);
 	//cube->SetColor({0, 0, 255, 180});
@@ -118,8 +117,8 @@ void TestShapeHandler::onUpdate() {}
 
 void TestShapeHandler::onRender()
 {	
-	//GSH->SetPosition(translation3);
-	//window->Draw(GSH);
+	GSH->SetPosition(translation3);
+	window->Draw(GSH);
 
 	//SH->Scale(1.0f, scale, 1.0f);
 	//SH->SetColorNDC({0.0f, 0.0f, 1.0f, 1.0f});
@@ -136,7 +135,7 @@ void TestShapeHandler::onRender()
 	//window->Draw(rec);
 
 	//cube->SetPosition(translation1);
-	window->Draw(cube);
+	//window->Draw(cube);
 	
 	circ->SetPosition(translation2);
 	window->Draw(circ);

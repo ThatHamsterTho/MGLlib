@@ -15,18 +15,23 @@ namespace MGLlib
 		if(!((Sectors-3)%2)){
 			pWARNING("Sectors should have follow the formula: 3+2x, where X can be any value");
 		}
+		std::vector<float> points;
 		for(int i = 0; i <= Sectors; i++)
 		{
 			float theta = 2.0f * 3.14f * float(i) / float(Sectors);//get the current angle
 
 			float x = Radius * cosf(theta);//calculate the x component
 			float y = Radius * sinf(theta);//calculate the y component
-			SetVertex3D(i, {
-				x + Mx,
-				y + My,
-				Z
-			});
+			points.push_back(x + Mx);
+			points.push_back(y + My);
+			points.push_back(Z);
+			//SetVertex3D(i, {
+			//	x + Mx,
+			//	y + My,
+			//	Z
+			//});
 		}
+		SetModel3D(points);
 	}
 	
 } // namespace MGLlib

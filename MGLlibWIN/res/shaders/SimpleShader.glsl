@@ -16,7 +16,6 @@ out float v_texSlot;
 uniform mat4 u_MVP; // model view projection
 
 void main() {
-
   gl_Position = (u_MVP * (position * u_Scale));
   v_Color = Color;
   v_TexCoord = texCoord;

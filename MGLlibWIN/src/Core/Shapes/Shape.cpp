@@ -170,7 +170,6 @@ namespace MGLlib {
 				this->Model[Vertex][i] = coor[i];
 			}
 		}
-		DataChanged = true;
 		UpdateVectorBuffers();
 	}
 
